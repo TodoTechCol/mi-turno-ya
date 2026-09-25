@@ -1,0 +1,90 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { professionalSchema, type ProfessionalFormValues } from "@/schemas/professional.schema";
+import type { Professional } from "@/types/app.types";
+
+interface Props {
+  professional: Professional | null;
+  onSaved: () => void;
+  onCancel: () => void;
+}
+
+export default function ProfessionalForm({ professional, onSaved, onCancel }: Props) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<ProfessionalFormValues>({
+    resolver: zodResolver(professionalSchema),
+    defaultValues: professional
+      ? { name: professional.name, bio: professional.bio ?? "" }
+      : { name: "", bio: "" },
+  });
+
+  async function onSubmit(data: ProfessionalFormValues) {
+    try {
+      const res = await fetch(
+        professional ? `/api/professionals/${professional.id}` : "/api/professionals",
+        {
+          method: professional ? "PATCH" : "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
+      if (!res.ok) throw new Error();
+      toast.success(professional ? "Profesional actualizado" : "Profesional creado");
+      onSaved();
+    } catch {
+      toast.error("No se pudo guardar el profesional");
+    }
+  }
+
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="bg-white rounded-xl border border-gray-100 p-4 space-y-3"
+    >
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <input
+          {...register("name")}
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+          placeholder="Nombre y apellido"
+        />
+        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Bio <span className="text-gray-400 text-xs">(opcional)</span>
+        </label>
+        <textarea
+          {...register("bio")}
+          rows={2}
+          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
+          placeholder="Especialidad, experiencia..."
+        />
+      </div>
+
+      <div className="flex gap-2 pt-1">
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50"
+        >
+          {isSubmitting ? "Guardando..." : "Guardar"}
+        </button>
+        <button
+          type="button"
+          onClick={onCancel}
+          className="px-4 py-2 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          Cancelar
+        </button>
+      </div>
+    </form>
+  );
+}
