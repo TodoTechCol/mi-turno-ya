@@ -1,5 +1,6 @@
 import { getDashboardContext } from "@/lib/dashboard-context";
 import { getAllProfessionalsForOrganization } from "@/services/professionals.service";
+import { getPendingInvitationsForOrganization } from "@/services/invitations.service";
 import ProfessionalManager from "@/components/dashboard/professional-manager";
 
 export default async function ProfessionalsPage() {
@@ -22,7 +23,10 @@ export default async function ProfessionalsPage() {
     );
   }
 
-  const professionals = await getAllProfessionalsForOrganization(ctx.organizationId);
+  const [professionals, invitations] = await Promise.all([
+    getAllProfessionalsForOrganization(ctx.organizationId),
+    getPendingInvitationsForOrganization(ctx.organizationId),
+  ]);
 
   return (
     <div>
@@ -31,7 +35,7 @@ export default async function ProfessionalsPage() {
         <p className="text-sm text-gray-400">{professionals.length} profesional(es)</p>
       </div>
 
-      <ProfessionalManager professionals={professionals} />
+      <ProfessionalManager professionals={professionals} invitations={invitations} />
     </div>
   );
 }

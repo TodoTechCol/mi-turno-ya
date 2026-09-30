@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export interface DashboardContext {
+  userId: string;
   organizationId: string;
   timezone: string;
   role: "organization_admin" | "professional";
@@ -52,6 +53,7 @@ export async function getDashboardContext(): Promise<DashboardContext | null> {
   }
 
   return {
+    userId: user.id,
     organizationId: orgMember.organization_id,
     timezone: organization?.timezone ?? "America/Argentina/Buenos_Aires",
     role: orgMember.role,

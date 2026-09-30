@@ -9,6 +9,7 @@ export type Service = Database["public"]["Tables"]["services"]["Row"];
 export type Schedule = Database["public"]["Tables"]["schedules"]["Row"];
 export type ScheduleBlock = Database["public"]["Tables"]["schedule_blocks"]["Row"];
 export type Appointment = Database["public"]["Tables"]["appointments"]["Row"];
+export type OrganizationInvitation = Database["public"]["Tables"]["organization_invitations"]["Row"];
 
 export type AppointmentStatus = Appointment["status"];
 

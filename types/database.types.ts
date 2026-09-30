@@ -199,6 +199,30 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["platform_admins"]["Row"]>;
         Relationships: [];
       };
+      organization_invitations: {
+        Row: {
+          id: string;
+          organization_id: string;
+          professional_id: string | null;
+          email: string;
+          role: "organization_admin" | "professional";
+          token: string;
+          status: "pending" | "accepted" | "revoked" | "expired";
+          invited_by: string;
+          expires_at: string;
+          accepted_at: string | null;
+          created_at: string;
+        };
+        Insert: Omit<
+          Database["public"]["Tables"]["organization_invitations"]["Row"],
+          "id" | "created_at" | "status" | "accepted_at"
+        > & {
+          status?: "pending" | "accepted" | "revoked" | "expired";
+          accepted_at?: string | null;
+        };
+        Update: Partial<Database["public"]["Tables"]["organization_invitations"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -225,6 +249,16 @@ export interface Database {
       public_list_busy_slots: {
         Args: { p_professional_id: string; p_range_start: string; p_range_end: string };
         Returns: { start_datetime: string; end_datetime: string }[];
+      };
+      public_get_invitation_by_token: {
+        Args: { p_token: string };
+        Returns: {
+          email: string;
+          role: "organization_admin" | "professional";
+          status: "pending" | "accepted" | "revoked" | "expired";
+          organization_name: string;
+          expires_at: string;
+        }[];
       };
     };
     Enums: Record<string, never>;

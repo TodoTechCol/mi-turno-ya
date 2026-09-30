@@ -3,6 +3,7 @@ import { createAppointmentSchema, updateAppointmentStatusSchema } from "@/schema
 import { createAppointment, updateAppointmentStatus } from "@/services/appointments.service";
 import { getServiceById } from "@/services/services.service";
 import { upsertCustomer } from "@/services/customers.service";
+import { notifyNewAppointment } from "@/services/notifications.service";
 
 // POST /api/appointments — crear un turno
 export async function POST(request: NextRequest) {
@@ -39,6 +40,11 @@ export async function POST(request: NextRequest) {
       { status: 409 }
     );
   }
+
+  // Se espera (no "fire and forget") porque en un entorno serverless la
+  // función puede cortarse apenas se devuelve la respuesta — pero nunca
+  // puede fallar la reserva en sí (notifyNewAppointment nunca lanza).
+  await notifyNewAppointment(input, service);
 
   return NextResponse.json({ success: true }, { status: 201 });
 }
