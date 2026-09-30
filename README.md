@@ -140,3 +140,6 @@ La URL pública será automáticamente: `https://tu-dominio.com/{slug}`
 - [ ] Recordatorios automáticos 24h antes
 - [ ] Planes de suscripción (Stripe)
 - [ ] Métricas y reportes
+
+## PENDIENTES 
+- 
