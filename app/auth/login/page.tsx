@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import HeroFloatCards from "@/components/auth/hero-float-cards";
 import MobileHeroBanner from "@/components/auth/mobile-hero-banner";
+import RunningFigure from "@/components/auth/running-figure";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -46,6 +47,7 @@ export default function LoginPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] bg-lila-500/10 rounded-full blur-[100px]" />
 
         <HeroFloatCards />
+        <RunningFigure />
 
         <motion.div
           initial={{ opacity: 0, y: -12 }}
