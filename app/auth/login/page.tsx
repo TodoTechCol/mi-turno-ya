@@ -40,9 +40,10 @@ export default function LoginPage() {
     <div className="min-h-screen flex">
       {/* Panel de marca — oculto en mobile */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-pizarra-950 items-center justify-center overflow-hidden">
-        {/* Glow decorativo */}
+        {/* Glow decorativo — capas para dar profundidad detrás del logo */}
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-lila-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-lila-400/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] bg-lila-500/10 rounded-full blur-[100px]" />
 
         <HeroFloatCards />
 
