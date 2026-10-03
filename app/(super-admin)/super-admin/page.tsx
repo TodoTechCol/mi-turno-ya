@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { getAllOrganizations } from "@/services/organizations.service";
@@ -29,8 +30,15 @@ export default async function SuperAdminPage() {
             </thead>
             <tbody className="divide-y divide-pizarra-50">
               {organizations.map((org) => (
-                <tr key={org.id}>
-                  <td className="px-4 py-3 font-medium text-pizarra-900">{org.name}</td>
+                <tr key={org.id} className="hover:bg-pizarra-50 transition-colors">
+                  <td className="px-4 py-3 font-medium text-pizarra-900">
+                    <Link
+                      href={`/super-admin/organizations/${org.id}`}
+                      className="hover:text-lila-600 block"
+                    >
+                      {org.name}
+                    </Link>
+                  </td>
                   <td className="px-4 py-3 text-pizarra-500">{org.slug}</td>
                   <td className="px-4 py-3">
                     <span

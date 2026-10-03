@@ -36,6 +36,25 @@ export function emailConfirmationEmail(params: { businessName: string; confirmUr
   };
 }
 
+export function passwordResetEmail(params: { resetUrl: string }) {
+  const { resetUrl } = params;
+  return {
+    subject: "Restablecé tu contraseña — Mi Turno Ya",
+    html: wrapper(`
+      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">Restablecer contraseña</h1>
+      <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
+        Un administrador de Mi Turno Ya inició un restablecimiento de contraseña para tu cuenta. Si lo pediste vos, hacé click abajo para elegir una nueva.
+      </p>
+      <a href="${resetUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
+        Elegir nueva contraseña
+      </a>
+      <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
+        Si no esperabas este correo, podés ignorarlo — tu contraseña actual sigue funcionando.
+      </p>
+    `),
+  };
+}
+
 export function invitationEmail(params: {
   organizationName: string;
   acceptUrl: string;
