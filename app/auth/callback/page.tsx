@@ -8,10 +8,12 @@ import { createClient } from "@/lib/supabase/client";
 /**
  * Página a la que redirige el link de confirmación de email (generado con
  * admin.generateLink en /api/signup). Supabase entrega la sesión como
- * fragmento de la URL (#access_token=...), no como query param — por eso
- * esto corre client-side: el SDK del browser (detectSessionInUrl) la
- * detecta solo al montar y la persiste en cookies para que el resto de la
- * app (server-side) ya la vea logueada.
+ * fragmento de la URL (#access_token=...&refresh_token=...) — el cliente de
+ * @supabase/ssr fuerza flowType "pkce" (busca un ?code=), así que la
+ * detección automática (detectSessionInUrl) NUNCA agarra este formato.
+ * Por eso acá se parsea el hash a mano y se llama setSession()
+ * explícitamente, que sí persiste la sesión en cookies sin importar el
+ * flowType configurado.
  */
 export default function AuthCallbackPage() {
   const router = useRouter();
@@ -21,31 +23,43 @@ export default function AuthCallbackPage() {
     const supabase = createClient();
     let active = true;
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!active) return;
-      if (session) {
-        router.replace("/dashboard");
-        router.refresh();
+    async function run() {
+      const hash = window.location.hash.startsWith("#")
+        ? window.location.hash.slice(1)
+        : window.location.hash;
+      const params = new URLSearchParams(hash);
+      const accessToken = params.get("access_token");
+      const refreshToken = params.get("refresh_token");
+
+      if (!accessToken || !refreshToken) {
+        // Puede que ya haya una sesión válida (ej. navegación repetida al link)
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!active) return;
+        if (session) {
+          router.replace("/dashboard");
+          router.refresh();
+        } else {
+          setStatus("error");
+        }
         return;
       }
 
-      // El listener puede tardar un instante en procesar el hash de la URL.
-      const { data: sub } = supabase.auth.onAuthStateChange((_event, newSession) => {
-        if (newSession) {
-          router.replace("/dashboard");
-          router.refresh();
-        }
+      const { error } = await supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
       });
 
-      const timeout = setTimeout(() => {
-        if (active) setStatus("error");
-      }, 5000);
+      if (!active) return;
+      if (error) {
+        setStatus("error");
+        return;
+      }
 
-      return () => {
-        sub.subscription.unsubscribe();
-        clearTimeout(timeout);
-      };
-    });
+      router.replace("/dashboard");
+      router.refresh();
+    }
+
+    run();
 
     return () => {
       active = false;
