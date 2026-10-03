@@ -6,8 +6,8 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import Logo from "@/components/shared/logo";
 import HeroFloatCards from "@/components/auth/hero-float-cards";
+import MobileHeroBanner from "@/components/auth/mobile-hero-banner";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,8 +37,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Panel de marca — oculto en mobile */}
+    <div className="min-h-screen lg:flex">
+      {/* Panel de marca — oculto en mobile (ver MobileHeroBanner para el equivalente) */}
       <div className="hidden lg:flex lg:w-1/2 relative bg-pizarra-950 items-center justify-center overflow-hidden">
         {/* Glow decorativo — capas para dar profundidad detrás del logo */}
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-lila-500/20 rounded-full blur-3xl" />
@@ -65,18 +65,10 @@ export default function LoginPage() {
       </div>
 
       {/* Panel de formulario */}
-      <div className="flex-1 flex items-center justify-center bg-pizarra-50 px-4 py-12">
-        <div className="w-full max-w-sm">
-          {/* Logo compacto — solo visible en mobile */}
-          <motion.div
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-            className="flex lg:hidden flex-col items-center mb-8"
-          >
-            <Logo iconClassName="w-14 h-14" textClassName="text-xl" />
-          </motion.div>
-
+      <div className="min-h-screen lg:min-h-0 lg:flex-1 lg:flex lg:items-center lg:justify-center bg-pizarra-50">
+        <MobileHeroBanner />
+        <div className="px-4 pt-8 pb-8 lg:p-0 flex justify-center">
+        <div className="w-full max-w-sm relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -140,10 +132,7 @@ export default function LoginPage() {
               Creá tu negocio
             </Link>
           </p>
-
-          <p className="text-center text-xs text-pizarra-400 mt-4 lg:hidden">
-            Tu tiempo manda.
-          </p>
+        </div>
         </div>
       </div>
     </div>
