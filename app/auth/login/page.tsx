@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import Logo from "@/components/shared/logo";
+import HeroFloatCards from "@/components/auth/hero-float-cards";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -42,6 +43,8 @@ export default function LoginPage() {
         {/* Glow decorativo */}
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-lila-500/20 rounded-full blur-3xl" />
         <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-lila-400/10 rounded-full blur-3xl" />
+
+        <HeroFloatCards />
 
         <motion.div
           initial={{ opacity: 0, y: -12 }}
@@ -91,7 +94,7 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.1, ease: "easeOut" }}
             onSubmit={handleLogin}
-            className="bg-white rounded-2xl shadow-sm border border-pizarra-100 p-6 space-y-4"
+            className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow border border-pizarra-100 p-6 space-y-4"
           >
             <div>
               <label className="block text-sm font-medium text-pizarra-700 mb-1">
@@ -102,7 +105,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-lila-500/15 focus:border-lila-500"
                 placeholder="tu@email.com"
               />
             </div>
@@ -115,15 +118,16 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
+                className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-lila-500/15 focus:border-lila-500"
                 placeholder="••••••••"
               />
             </div>
             <motion.button
+              whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-lila-700 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Ingresando..." : "Ingresar"}
             </motion.button>
