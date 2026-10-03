@@ -45,11 +45,11 @@ export const APPOINTMENT_STATUS_LABELS: Record<AppointmentStatus, string> = {
 };
 
 export const APPOINTMENT_STATUS_COLORS: Record<AppointmentStatus, string> = {
-  pending: "bg-yellow-100 text-yellow-800",
-  confirmed: "bg-blue-100 text-blue-800",
-  completed: "bg-green-100 text-green-800",
-  cancelled: "bg-gray-100 text-gray-600",
-  no_show: "bg-red-100 text-red-800",
+  pending: "bg-status-warning/10 text-status-warning",
+  confirmed: "bg-status-info/10 text-status-info",
+  completed: "bg-status-success/10 text-status-success",
+  cancelled: "bg-pizarra-100 text-pizarra-600",
+  no_show: "bg-status-danger/10 text-status-danger",
 };
 
 // Transiciones de estado válidas. Fuente única de verdad — se usa

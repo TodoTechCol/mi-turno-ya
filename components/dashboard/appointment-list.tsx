@@ -31,7 +31,7 @@ export default function AppointmentList({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col items-center justify-center py-16 text-gray-300"
+        className="flex flex-col items-center justify-center py-16 text-pizarra-300"
       >
         <CalendarX2 className="w-12 h-12 mb-3" />
         <p className="text-sm">{emptyMessage}</p>

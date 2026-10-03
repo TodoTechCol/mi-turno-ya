@@ -47,48 +47,48 @@ export default function ServiceForm({ service, onSaved, onCancel }: Props) {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white rounded-xl border border-gray-100 p-4 space-y-3"
+      className="bg-white rounded-xl border border-pizarra-100 p-4 space-y-3"
     >
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">Nombre</label>
         <input
           {...register("name")}
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+          className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="Corte de cabello"
         />
         {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Descripción <span className="text-gray-400 text-xs">(opcional)</span>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">
+          Descripción <span className="text-pizarra-400 text-xs">(opcional)</span>
         </label>
         <textarea
           {...register("description")}
           rows={2}
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent resize-none"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Duración (min)</label>
+          <label className="block text-sm font-medium text-pizarra-700 mb-1">Duración (min)</label>
           <input
             type="number"
             {...register("duration_minutes")}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           />
           {errors.duration_minutes && (
             <p className="text-xs text-red-500 mt-1">{errors.duration_minutes.message}</p>
           )}
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+          <label className="block text-sm font-medium text-pizarra-700 mb-1">Precio</label>
           <input
             type="number"
             step="0.01"
             {...register("price")}
-            className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+            className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           />
           {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price.message}</p>}
         </div>
@@ -98,14 +98,14 @@ export default function ServiceForm({ service, onSaved, onCancel }: Props) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50"
+          className="px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50"
         >
           {isSubmitting ? "Guardando..." : "Guardar"}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+          className="px-4 py-2 border border-pizarra-200 text-pizarra-600 text-sm font-medium rounded-lg hover:bg-pizarra-50 transition-colors"
         >
           Cancelar
         </button>

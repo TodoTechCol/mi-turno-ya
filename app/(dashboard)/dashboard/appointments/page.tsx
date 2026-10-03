@@ -7,7 +7,7 @@ export default async function AllAppointmentsPage() {
 
   if (!ctx) {
     return (
-      <div className="text-center py-12 text-gray-400">
+      <div className="text-center py-12 text-pizarra-400">
         <p>No tenés un negocio asociado a tu cuenta.</p>
         <p className="text-sm mt-1">Contactá al administrador.</p>
       </div>
@@ -25,10 +25,10 @@ export default async function AllAppointmentsPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Todos los turnos</h1>
-        <p className="text-sm text-gray-400">{appointments.length} turno(s) en total</p>
+        <h1 className="text-2xl font-bold text-pizarra-900">Todos los turnos</h1>
+        <p className="text-sm text-pizarra-400">{appointments.length} turno(s) en total</p>
         {ctx.role === "professional" && (
-          <p className="text-xs text-cyan-600 font-medium mt-1">Mostrando tu agenda personal</p>
+          <p className="text-xs text-lila-600 font-medium mt-1">Mostrando tu agenda personal</p>
         )}
       </div>
 

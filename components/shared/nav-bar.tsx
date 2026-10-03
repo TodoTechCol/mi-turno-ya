@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Calendar, CalendarDays, Tag, Users, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import Logo from "./logo";
 
 interface Props {
   userEmail: string;
@@ -34,16 +35,11 @@ export default function NavBar({ userEmail, role }: Props) {
   }
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+    <header className="bg-white border-b border-pizarra-100 sticky top-0 z-10">
       <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
         {/* Brand */}
-        <Link href="/dashboard" className="flex items-center gap-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo-todotech.png"
-            alt="Todo Tech"
-            className="h-11 w-11 rounded-lg object-cover"
-          />
+        <Link href="/dashboard">
+          <Logo iconClassName="h-9 w-9" textClassName="text-lg hidden sm:inline" />
         </Link>
 
         {/* Nav links */}
@@ -55,8 +51,8 @@ export default function NavBar({ userEmail, role }: Props) {
               className={cn(
                 "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors",
                 pathname === href
-                  ? "bg-cyan-50 text-cyan-600"
-                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
+                  ? "bg-lila-50 text-lila-600"
+                  : "text-pizarra-500 hover:text-pizarra-900 hover:bg-pizarra-50"
               )}
             >
               <Icon className="w-4 h-4" />
@@ -67,10 +63,10 @@ export default function NavBar({ userEmail, role }: Props) {
 
         {/* User + logout */}
         <div className="flex items-center gap-3">
-          <span className="text-xs text-gray-400 hidden sm:block">{userEmail}</span>
+          <span className="text-xs text-pizarra-400 hidden sm:block">{userEmail}</span>
           <button
             onClick={handleLogout}
-            className="p-1.5 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="p-1.5 rounded-lg text-pizarra-400 hover:text-red-500 hover:bg-red-50 transition-colors"
             title="Cerrar sesión"
           >
             <LogOut className="w-4 h-4" />

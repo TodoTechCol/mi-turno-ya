@@ -9,7 +9,44 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-plus-jakarta)", "sans-serif"],
+        display: ["var(--font-outfit)", "sans-serif"],
+      },
       colors: {
+        // Paleta de marca — ver Brandbook V1 2026
+        lila: {
+          50: "#F6F4FE",
+          100: "#EDE9FC",
+          200: "#DAD2F7",
+          300: "#BCAFF0",
+          400: "#9C8BE6",
+          500: "#7C66DC",
+          600: "#6A53CF",
+          700: "#5842B8",
+          800: "#3F2F8C",
+          900: "#231A55",
+        },
+        pizarra: {
+          50: "#F8FAFC",
+          100: "#F1F5F9",
+          200: "#E2E8F0",
+          300: "#CBD5E1",
+          400: "#94A3B8",
+          500: "#64748B",
+          600: "#475569",
+          700: "#334155",
+          800: "#27324A",
+          900: "#1E293B",
+          950: "#0F172A",
+        },
+        cielo: "#4E8FE6",
+        status: {
+          success: "#157A3E",
+          warning: "#A8520A",
+          danger: "#C0262D",
+          info: "#2A66C9",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

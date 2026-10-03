@@ -45,26 +45,26 @@ export default function ProfessionalForm({ professional, onSaved, onCancel }: Pr
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white rounded-xl border border-gray-100 p-4 space-y-3"
+      className="bg-white rounded-xl border border-pizarra-100 p-4 space-y-3"
     >
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">Nombre</label>
         <input
           {...register("name")}
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+          className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="Nombre y apellido"
         />
         {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
-          Bio <span className="text-gray-400 text-xs">(opcional)</span>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">
+          Bio <span className="text-pizarra-400 text-xs">(opcional)</span>
         </label>
         <textarea
           {...register("bio")}
           rows={2}
-          className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none"
+          className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent resize-none"
           placeholder="Especialidad, experiencia..."
         />
       </div>
@@ -73,14 +73,14 @@ export default function ProfessionalForm({ professional, onSaved, onCancel }: Pr
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50"
+          className="px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50"
         >
           {isSubmitting ? "Guardando..." : "Guardar"}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 border border-gray-200 text-gray-600 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
+          className="px-4 py-2 border border-pizarra-200 text-pizarra-600 text-sm font-medium rounded-lg hover:bg-pizarra-50 transition-colors"
         >
           Cancelar
         </button>

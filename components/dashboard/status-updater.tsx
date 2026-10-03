@@ -39,10 +39,10 @@ export default function StatusUpdater({ appointmentId, currentStatus }: Props) {
   }
 
   const buttonStyles: Record<string, string> = {
-    confirmed: "bg-cyan-50 text-cyan-700 hover:bg-cyan-100",
-    completed: "bg-green-50 text-green-700 hover:bg-green-100",
-    cancelled: "bg-gray-50 text-gray-600 hover:bg-gray-100",
-    no_show: "bg-red-50 text-red-700 hover:bg-red-100",
+    confirmed: "bg-status-info/10 text-status-info hover:bg-status-info/20",
+    completed: "bg-status-success/10 text-status-success hover:bg-status-success/20",
+    cancelled: "bg-pizarra-50 text-pizarra-600 hover:bg-pizarra-100",
+    no_show: "bg-status-danger/10 text-status-danger hover:bg-status-danger/20",
   };
 
   return (
@@ -52,7 +52,7 @@ export default function StatusUpdater({ appointmentId, currentStatus }: Props) {
           key={status}
           onClick={() => handleUpdate(status)}
           disabled={loading}
-          className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 ${buttonStyles[status] ?? "bg-gray-50 text-gray-600 hover:bg-gray-100"}`}
+          className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors disabled:opacity-50 ${buttonStyles[status] ?? "bg-pizarra-50 text-pizarra-600 hover:bg-pizarra-100"}`}
         >
           {APPOINTMENT_STATUS_LABELS[status]}
         </button>

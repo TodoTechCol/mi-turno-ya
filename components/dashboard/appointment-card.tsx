@@ -19,16 +19,16 @@ export default function AppointmentCard({ appointment: apt }: Props) {
     <motion.div
       whileHover={{ y: -2, boxShadow: "0 8px 20px -6px rgba(0,0,0,0.12)" }}
       transition={{ duration: 0.15, ease: "easeOut" }}
-      className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm"
+      className="bg-white rounded-xl border border-pizarra-100 p-4 shadow-sm"
     >
       {/* Cabecera */}
       <div className="flex items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-1.5 text-sm font-semibold text-gray-900">
-            <Clock className="w-4 h-4 text-cyan-500" />
+          <div className="flex items-center gap-1.5 text-sm font-semibold text-pizarra-900">
+            <Clock className="w-4 h-4 text-lila-500" />
             {format(start, "HH:mm")} – {format(end, "HH:mm")}
           </div>
-          <p className="text-xs text-gray-400 mt-0.5">
+          <p className="text-xs text-pizarra-400 mt-0.5">
             {format(start, "EEEE d 'de' MMMM", { locale: es })}
           </p>
         </div>
@@ -36,9 +36,9 @@ export default function AppointmentCard({ appointment: apt }: Props) {
       </div>
 
       {/* Servicio + profesional */}
-      <div className="mt-3 pt-3 border-t border-gray-50">
-        <p className="font-medium text-gray-900 text-sm">{apt.service.name}</p>
-        <div className="flex gap-3 mt-1 text-xs text-gray-400">
+      <div className="mt-3 pt-3 border-t border-pizarra-50">
+        <p className="font-medium text-pizarra-900 text-sm">{apt.service.name}</p>
+        <div className="flex gap-3 mt-1 text-xs text-pizarra-400">
           <span>{formatDuration(apt.service.duration_minutes)}</span>
           <span>{formatCurrency(apt.service.price)}</span>
           <span>· {apt.professional.name}</span>
@@ -46,17 +46,17 @@ export default function AppointmentCard({ appointment: apt }: Props) {
       </div>
 
       {/* Cliente */}
-      <div className="mt-3 pt-3 border-t border-gray-50 space-y-1">
-        <div className="flex items-center gap-1.5 text-xs text-gray-600">
+      <div className="mt-3 pt-3 border-t border-pizarra-50 space-y-1">
+        <div className="flex items-center gap-1.5 text-xs text-pizarra-600">
           <User className="w-3.5 h-3.5" />
           {apt.client_name}
         </div>
-        <div className="flex items-center gap-1.5 text-xs text-gray-600">
+        <div className="flex items-center gap-1.5 text-xs text-pizarra-600">
           <Phone className="w-3.5 h-3.5" />
           {apt.client_phone}
         </div>
         {apt.notes && (
-          <p className="text-xs text-gray-400 italic mt-1">"{apt.notes}"</p>
+          <p className="text-xs text-pizarra-400 italic mt-1">"{apt.notes}"</p>
         )}
       </div>
 

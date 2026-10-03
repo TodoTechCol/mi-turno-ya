@@ -5,8 +5,8 @@
 const wrapper = (bodyHtml: string) => `
 <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f9fafb; padding: 32px 16px;">
   <div style="max-width: 480px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #f3f4f6;">
-    <div style="background-color: #030712; padding: 24px; text-align: center;">
-      <span style="color: #22d3ee; font-size: 18px; font-weight: 700; letter-spacing: -0.02em;">Mi Turno Ya</span>
+    <div style="background-color: #0F172A; padding: 24px; text-align: center;">
+      <span style="color: #9C8BE6; font-size: 18px; font-weight: 700; letter-spacing: -0.02em;">Mi turno ya</span>
     </div>
     <div style="padding: 28px 24px;">
       ${bodyHtml}
@@ -26,7 +26,7 @@ export function emailConfirmationEmail(params: { businessName: string; confirmUr
       <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
         Creaste una cuenta para <strong>${businessName}</strong> en Mi Turno Ya. Confirmá tu email para activarla y empezar a gestionar tus turnos.
       </p>
-      <a href="${confirmUrl}" style="display: inline-block; background-color: #0891b2; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
+      <a href="${confirmUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
         Confirmar mi email
       </a>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
@@ -50,7 +50,7 @@ export function invitationEmail(params: {
         <strong>${invitedByEmail}</strong> te invitó a formar parte del equipo de
         <strong>${organizationName}</strong> en Mi Turno Ya. Vas a poder ver y gestionar tus propios turnos desde tu panel.
       </p>
-      <a href="${acceptUrl}" style="display: inline-block; background-color: #0891b2; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
+      <a href="${acceptUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
         Crear mi contraseña y activar acceso
       </a>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">

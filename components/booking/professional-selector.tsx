@@ -21,7 +21,7 @@ export default function ProfessionalSelector({
 
   if (professionals.length === 0) {
     return (
-      <p className="text-center text-gray-400 text-sm py-8">
+      <p className="text-center text-pizarra-400 text-sm py-8">
         No hay profesionales disponibles.
       </p>
     );
@@ -38,12 +38,12 @@ export default function ProfessionalSelector({
             className={cn(
               "w-full text-left p-4 rounded-xl border transition-all flex items-center gap-3",
               isSelected
-                ? "border-cyan-500 bg-cyan-50"
-                : "border-gray-100 bg-white hover:border-cyan-200 hover:shadow-sm"
+                ? "border-lila-500 bg-lila-50"
+                : "border-pizarra-100 bg-white hover:border-lila-200 hover:shadow-sm"
             )}
           >
             {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-full bg-pizarra-100 flex items-center justify-center shrink-0">
               {pro.avatar_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -52,20 +52,20 @@ export default function ProfessionalSelector({
                   className="w-10 h-10 rounded-full object-cover"
                 />
               ) : (
-                <User className="w-5 h-5 text-gray-400" />
+                <User className="w-5 h-5 text-pizarra-400" />
               )}
             </div>
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 text-sm">{pro.name}</p>
+              <p className="font-medium text-pizarra-900 text-sm">{pro.name}</p>
               {pro.bio && (
-                <p className="text-xs text-gray-400 mt-0.5 truncate">{pro.bio}</p>
+                <p className="text-xs text-pizarra-400 mt-0.5 truncate">{pro.bio}</p>
               )}
             </div>
 
             {isSelected && (
-              <div className="w-5 h-5 rounded-full bg-cyan-500 flex items-center justify-center shrink-0">
+              <div className="w-5 h-5 rounded-full bg-lila-500 flex items-center justify-center shrink-0">
                 <Check className="w-3 h-3 text-white" />
               </div>
             )}

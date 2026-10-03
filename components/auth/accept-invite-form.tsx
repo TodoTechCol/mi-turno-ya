@@ -69,37 +69,37 @@ export default function AcceptInviteForm({ token, email }: Props) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4"
+      className="bg-white rounded-2xl shadow-sm border border-pizarra-100 p-6 space-y-4"
     >
       <input type="hidden" {...register("token")} />
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">Email</label>
         <input
           type="email"
           value={email}
           disabled
-          className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50 text-gray-500"
+          className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm bg-pizarra-50 text-pizarra-500"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">Contraseña</label>
         <input
           type="password"
           {...register("password")}
-          className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+          className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="••••••••"
         />
         {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>}
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">Confirmar contraseña</label>
+        <label className="block text-sm font-medium text-pizarra-700 mb-1">Confirmar contraseña</label>
         <input
           type="password"
           {...register("confirm_password")}
-          className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+          className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="••••••••"
         />
         {errors.confirm_password && (
@@ -111,7 +111,7 @@ export default function AcceptInviteForm({ token, email }: Props) {
         whileTap={{ scale: 0.98 }}
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? "Activando..." : "Activar mi acceso"}
       </motion.button>

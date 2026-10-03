@@ -48,14 +48,14 @@ export default function TimeSlotGrid({
   if (loading) {
     return (
       <div className="flex justify-center py-12">
-        <div className="w-8 h-8 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-lila-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   if (availableSlots.length === 0) {
     return (
-      <div className="text-center py-8 text-gray-400">
+      <div className="text-center py-8 text-pizarra-400">
         <p className="text-sm">No hay horarios disponibles para este día.</p>
         <p className="text-xs mt-1">Probá seleccionando otra fecha.</p>
       </div>
@@ -64,7 +64,7 @@ export default function TimeSlotGrid({
 
   return (
     <div>
-      <p className="text-xs text-gray-400 mb-3">
+      <p className="text-xs text-pizarra-400 mb-3">
         {availableSlots.length} horario(s) disponible(s)
       </p>
       <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
@@ -78,8 +78,8 @@ export default function TimeSlotGrid({
             className={cn(
               "py-2.5 rounded-xl text-sm font-medium border transition-all",
               selected === slot.time
-                ? "bg-cyan-600 border-cyan-600 text-white"
-                : "bg-white border-gray-100 text-gray-700 hover:border-cyan-300 hover:text-cyan-600"
+                ? "bg-lila-600 border-lila-600 text-white"
+                : "bg-white border-pizarra-100 text-pizarra-700 hover:border-lila-300 hover:text-lila-600"
             )}
           >
             {slot.time}

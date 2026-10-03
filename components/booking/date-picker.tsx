@@ -42,22 +42,22 @@ export default function DatePicker({ onSelect }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-4">
+    <div className="bg-white rounded-xl border border-pizarra-100 p-4">
       {/* Navegación de mes */}
       <div className="flex items-center justify-between mb-4">
         <button
           onClick={() => setCurrentMonth(addMonths(currentMonth, -1))}
           disabled={isSameDay(currentMonth, startOfMonth(today))}
-          className="p-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+          className="p-1 rounded-lg text-pizarra-400 hover:text-pizarra-700 hover:bg-pizarra-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <p className="text-sm font-medium text-gray-900 capitalize">
+        <p className="text-sm font-medium text-pizarra-900 capitalize">
           {format(currentMonth, "MMMM yyyy", { locale: es })}
         </p>
         <button
           onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-          className="p-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors"
+          className="p-1 rounded-lg text-pizarra-400 hover:text-pizarra-700 hover:bg-pizarra-50 transition-colors"
         >
           <ChevronRight className="w-4 h-4" />
         </button>
@@ -66,7 +66,7 @@ export default function DatePicker({ onSelect }: Props) {
       {/* Cabecera de días */}
       <div className="grid grid-cols-7 mb-2">
         {WEEKDAYS.map((d) => (
-          <div key={d} className="text-center text-xs font-medium text-gray-400 py-1">
+          <div key={d} className="text-center text-xs font-medium text-pizarra-400 py-1">
             {d}
           </div>
         ))}
@@ -91,10 +91,10 @@ export default function DatePicker({ onSelect }: Props) {
               disabled={isPast}
               className={cn(
                 "aspect-square flex items-center justify-center text-sm rounded-lg transition-colors",
-                isPast && "text-gray-300 cursor-not-allowed",
-                !isPast && !isSelected && "text-gray-700 hover:bg-cyan-50 hover:text-cyan-600",
-                isSelected && "bg-cyan-600 text-white font-semibold",
-                isToday && !isSelected && "font-bold text-cyan-600"
+                isPast && "text-pizarra-300 cursor-not-allowed",
+                !isPast && !isSelected && "text-pizarra-700 hover:bg-lila-50 hover:text-lila-600",
+                isSelected && "bg-lila-600 text-white font-semibold",
+                isToday && !isSelected && "font-bold text-lila-600"
               )}
             >
               {format(day, "d")}

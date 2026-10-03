@@ -67,22 +67,22 @@ export default function AuthCallbackPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm text-center bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+    <div className="min-h-screen flex items-center justify-center bg-pizarra-50 px-4">
+      <div className="w-full max-w-sm text-center bg-white rounded-2xl shadow-sm border border-pizarra-100 p-8">
         {status === "loading" ? (
           <>
-            <div className="w-10 h-10 border-2 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-            <p className="text-sm text-gray-500">Confirmando tu cuenta...</p>
+            <div className="w-10 h-10 border-2 border-lila-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm text-pizarra-500">Confirmando tu cuenta...</p>
           </>
         ) : (
           <>
-            <h1 className="text-lg font-semibold text-gray-900 mb-2">No pudimos confirmar el link</h1>
-            <p className="text-sm text-gray-500 mb-6">
+            <h1 className="text-lg font-semibold text-pizarra-900 mb-2">No pudimos confirmar el link</h1>
+            <p className="text-sm text-pizarra-500 mb-6">
               Puede que ya haya sido usado o que haya vencido. Iniciá sesión directamente o pedí uno nuevo.
             </p>
             <Link
               href="/auth/login"
-              className="inline-block px-4 py-2 bg-cyan-600 text-white text-sm font-medium rounded-lg hover:bg-cyan-700 transition-colors"
+              className="inline-block px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors"
             >
               Ir a iniciar sesión
             </Link>

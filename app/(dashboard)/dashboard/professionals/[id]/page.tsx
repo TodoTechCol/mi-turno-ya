@@ -18,7 +18,7 @@ export default async function ProfessionalDetailPage({ params }: Props) {
 
   if (!ctx || ctx.role !== "organization_admin") {
     return (
-      <div className="text-center py-12 text-gray-400">
+      <div className="text-center py-12 text-pizarra-400">
         <p>No tenés permiso para ver esta página.</p>
       </div>
     );
@@ -27,7 +27,7 @@ export default async function ProfessionalDetailPage({ params }: Props) {
   const professional = await getProfessionalByIdForOrg(id, ctx.organizationId);
   if (!professional) {
     return (
-      <div className="text-center py-12 text-gray-400">
+      <div className="text-center py-12 text-pizarra-400">
         <p>Profesional no encontrado.</p>
       </div>
     );
@@ -43,15 +43,15 @@ export default async function ProfessionalDetailPage({ params }: Props) {
     <div>
       <Link
         href="/dashboard/professionals"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-4"
+        className="inline-flex items-center gap-1 text-sm text-pizarra-500 hover:text-pizarra-700 mb-4"
       >
         <ChevronLeft className="w-4 h-4" />
         Volver a profesionales
       </Link>
 
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">{professional.name}</h1>
-        {professional.bio && <p className="text-sm text-gray-400 mt-1">{professional.bio}</p>}
+        <h1 className="text-2xl font-bold text-pizarra-900">{professional.name}</h1>
+        {professional.bio && <p className="text-sm text-pizarra-400 mt-1">{professional.bio}</p>}
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

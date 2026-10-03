@@ -112,22 +112,22 @@ export default function BookingWizard({
           {step !== "service" && step !== "confirm" && (
             <button
               onClick={handleBack}
-              className="p-1 -ml-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              className="p-1 -ml-1 rounded-lg text-pizarra-400 hover:text-pizarra-700 hover:bg-pizarra-100 transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
           )}
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-pizarra-900">
             {STEP_LABELS[step]}
           </h2>
         </div>
-        <p className="text-xs text-gray-400">{organization.name}</p>
+        <p className="text-xs text-pizarra-400">{organization.name}</p>
 
         {/* Barra de progreso */}
         {step !== "confirm" && (
-          <div className="mt-3 h-1 bg-gray-100 rounded-full overflow-hidden">
+          <div className="mt-3 h-1 bg-pizarra-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-cyan-600 rounded-full transition-all duration-300"
+              className="h-full bg-lila-600 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -192,8 +192,8 @@ export default function BookingWizard({
       )}
 
       {step === "confirm" && (
-        <div className="flex flex-col items-center py-12 text-gray-400">
-          <div className="w-10 h-10 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="flex flex-col items-center py-12 text-pizarra-400">
+          <div className="w-10 h-10 border-2 border-lila-500 border-t-transparent rounded-full animate-spin mb-4" />
           <p className="text-sm">Confirmando tu turno...</p>
         </div>
       )}
