@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
+import { Mail, Lock, ArrowRight } from "lucide-react";
 import HeroFloatCards from "@/components/auth/hero-float-cards";
 import MobileHeroBanner from "@/components/auth/mobile-hero-banner";
 
@@ -73,10 +74,10 @@ export default function LoginPage() {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.05, ease: "easeOut" }}
-            className="mb-6"
+            className="mb-7 text-center"
           >
-            <h1 className="text-xl font-semibold text-pizarra-900">Bienvenido de nuevo</h1>
-            <p className="text-sm text-pizarra-500 mt-1">
+            <h1 className="text-2xl font-display font-semibold text-pizarra-900">Bienvenido de nuevo</h1>
+            <p className="text-sm text-pizarra-500 mt-1.5">
               Ingresá para gestionar los turnos de tu negocio.
             </p>
           </motion.div>
@@ -93,36 +94,45 @@ export default function LoginPage() {
               <label className="block text-sm font-medium text-pizarra-700 mb-1">
                 Email
               </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-lila-500/15 focus:border-lila-500"
-                placeholder="tu@email.com"
-              />
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pizarra-400" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full pl-10 pr-3 py-2.5 border border-pizarra-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-lila-500/15 focus:border-lila-500"
+                  placeholder="tu@email.com"
+                />
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-pizarra-700 mb-1">
                 Contraseña
               </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-lila-500/15 focus:border-lila-500"
-                placeholder="••••••••"
-              />
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-pizarra-400" />
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full pl-10 pr-3 py-2.5 border border-pizarra-200 rounded-lg text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-lila-500/15 focus:border-lila-500"
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
             <motion.button
               whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-lila-700 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-lila-700 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
             >
               {loading ? "Ingresando..." : "Ingresar"}
+              {!loading && (
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              )}
             </motion.button>
           </motion.form>
 
