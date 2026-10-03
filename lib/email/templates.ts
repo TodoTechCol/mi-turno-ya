@@ -17,6 +17,25 @@ const wrapper = (bodyHtml: string) => `
   </div>
 </div>`;
 
+export function emailConfirmationEmail(params: { businessName: string; confirmUrl: string }) {
+  const { businessName, confirmUrl } = params;
+  return {
+    subject: "Confirmá tu email para activar tu cuenta",
+    html: wrapper(`
+      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">¡Ya casi!</h1>
+      <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
+        Creaste una cuenta para <strong>${businessName}</strong> en Mi Turno Ya. Confirmá tu email para activarla y empezar a gestionar tus turnos.
+      </p>
+      <a href="${confirmUrl}" style="display: inline-block; background-color: #0891b2; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
+        Confirmar mi email
+      </a>
+      <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
+        Si no creaste esta cuenta, podés ignorar este correo.
+      </p>
+    `),
+  };
+}
+
 export function invitationEmail(params: {
   organizationName: string;
   acceptUrl: string;

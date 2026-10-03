@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { acceptInvitationApiSchema } from "@/schemas/invitation.schema";
 import { acceptInvitation } from "@/services/invitations.service";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 // POST /api/invitations/accept — endpoint público (quien acepta todavía no
 // tiene sesión): valida el token server-side antes de crear nada.
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  if (!checkRateLimit(`invitations-accept:${ip}`, 10, 60 * 60 * 1000)) {
+    return NextResponse.json({ error: "Demasiados intentos. Probá de nuevo más tarde." }, { status: 429 });
+  }
+
   const body = await request.json();
   const parsed = acceptInvitationApiSchema.safeParse(body);
   if (!parsed.success) {

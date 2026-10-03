@@ -2,11 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { signupApiSchema } from "@/schemas/signup.schema";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { slugify, randomSuffix } from "@/lib/slug";
+import { sendEmail } from "@/lib/email/resend";
+import { emailConfirmationEmail } from "@/lib/email/templates";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 const MAX_SLUG_ATTEMPTS = 5;
 
-// POST /api/signup — registra un negocio nuevo: crea el usuario, su
-// organización y lo deja como organization_admin de esa organización.
+// POST /api/signup — registra un negocio nuevo: crea el usuario (SIN
+// confirmar todavía), su organización y lo deja como organization_admin de
+// esa organización. El usuario queda inactivo hasta que confirme su email
+// (ver /auth/callback) — así cualquiera que use un correo ajeno no puede
+// terminar de activar la cuenta.
 //
 // Corre enteramente con la service role key porque es, por
 // definición, la única operación que necesita "bootstrapear" una
@@ -16,6 +22,14 @@ const MAX_SLUG_ATTEMPTS = 5;
 // tiene ninguna policy de escritura). El usuario que se crea acá
 // nunca recibe más que su propia organización nueva.
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  if (!checkRateLimit(`signup:${ip}`, 5, 60 * 60 * 1000)) {
+    return NextResponse.json(
+      { error: "Demasiados intentos de registro. Probá de nuevo en un rato." },
+      { status: 429 }
+    );
+  }
+
   const body = await request.json();
   const parsed = signupApiSchema.safeParse(body);
   if (!parsed.success) {
@@ -28,22 +42,27 @@ export async function POST(request: NextRequest) {
   const { business_name, email, password } = parsed.data;
   const admin = createAdminClient();
 
-  // 1. Crear el usuario de auth
-  const { data: userData, error: userError } = await admin.auth.admin.createUser({
+  // 1. Crear el usuario SIN confirmar + obtener el link de confirmación en
+  // un solo paso. generateLink nunca manda el email solo — eso nos permite
+  // usar nuestro propio template de Resend en vez del de Supabase.
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+    type: "signup",
     email,
     password,
-    email_confirm: true,
+    options: { redirectTo: `${appUrl}/auth/callback` },
   });
 
-  if (userError || !userData.user) {
-    const alreadyExists = userError?.message?.toLowerCase().includes("already");
+  if (linkError || !linkData.user) {
+    const alreadyExists = linkError?.message?.toLowerCase().includes("already");
     return NextResponse.json(
       { error: alreadyExists ? "Ese email ya está registrado" : "No se pudo crear la cuenta" },
       { status: alreadyExists ? 409 : 500 }
     );
   }
 
-  const userId = userData.user.id;
+  const userId = linkData.user.id;
+  const confirmUrl = linkData.properties.action_link;
 
   // 2. Crear la organización, resolviendo colisiones de slug con un sufijo
   const baseSlug = slugify(business_name) || "negocio";
@@ -100,5 +119,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No se pudo completar el registro" }, { status: 500 });
   }
 
-  return NextResponse.json({ success: true }, { status: 201 });
+  // 4. Mandar el email de confirmación — best effort: si falla, la cuenta
+  // ya quedó creada igual, y el usuario puede intentar loguearse para
+  // disparar un nuevo intento más adelante (o contactar soporte).
+  const { subject, html } = emailConfirmationEmail({ businessName: business_name, confirmUrl });
+  const emailSent = await sendEmail({ to: email, subject, html });
+
+  return NextResponse.json({ success: true, emailSent }, { status: 201 });
 }

@@ -4,9 +4,18 @@ import { createAppointment, updateAppointmentStatus } from "@/services/appointme
 import { getServiceById } from "@/services/services.service";
 import { upsertCustomer } from "@/services/customers.service";
 import { notifyNewAppointment } from "@/services/notifications.service";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
-// POST /api/appointments — crear un turno
+// POST /api/appointments — crear un turno (endpoint público, anónimo)
 export async function POST(request: NextRequest) {
+  const ip = getClientIp(request);
+  if (!checkRateLimit(`appointments:${ip}`, 15, 10 * 60 * 1000)) {
+    return NextResponse.json(
+      { error: "Demasiadas reservas seguidas. Esperá unos minutos e intentá de nuevo." },
+      { status: 429 }
+    );
+  }
+
   const body = await request.json();
 
   const parsed = createAppointmentSchema.safeParse(body);
