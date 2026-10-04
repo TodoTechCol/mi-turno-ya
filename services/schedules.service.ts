@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getDayBoundsUTC } from "@/lib/timezone";
 import type { Schedule, ScheduleBlock } from "@/types/app.types";
 
@@ -45,6 +46,40 @@ export async function getSchedulesForProfessional(professionalId: string): Promi
     .from("schedules")
     .select("*")
     .eq("professional_id", professionalId);
+
+  if (error || !data) return [];
+  return data;
+}
+
+/**
+ * Horario semanal + próximos bloqueos de UN profesional puntual, para
+ * que él mismo los vea desde "Mi horario" en su propio panel. Via
+ * service role porque, a propósito, no existe ninguna policy que deje
+ * a un professional leer `schedules`/`schedule_blocks` directamente
+ * (las únicas lecturas públicas de esas tablas son las RPC acotadas de
+ * Fase 6, pensadas para la reserva anónima, no para esto) — quien
+ * llama ya validó antes que professionalId es el suyo propio.
+ */
+export async function getOwnWeekSchedule(professionalId: string): Promise<Schedule[]> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("schedules")
+    .select("*")
+    .eq("professional_id", professionalId);
+
+  if (error || !data) return [];
+  return data;
+}
+
+export async function getOwnUpcomingBlocks(professionalId: string): Promise<ScheduleBlock[]> {
+  const admin = createAdminClient();
+  const { data, error } = await admin
+    .from("schedule_blocks")
+    .select("*")
+    .eq("professional_id", professionalId)
+    .gte("end_datetime", new Date().toISOString())
+    .order("start_datetime", { ascending: true })
+    .limit(10);
 
   if (error || !data) return [];
   return data;

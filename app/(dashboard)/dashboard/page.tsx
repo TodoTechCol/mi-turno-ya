@@ -3,6 +3,7 @@ import { es } from "date-fns/locale";
 import { getAppointmentsForDashboard } from "@/services/appointments.service";
 import { getDashboardContext } from "@/lib/dashboard-context";
 import AppointmentList from "@/components/dashboard/appointment-list";
+import TodayStats from "@/components/dashboard/today-stats";
 
 export default async function DashboardPage() {
   const ctx = await getDashboardContext();
@@ -38,6 +39,8 @@ export default async function DashboardPage() {
           <p className="text-xs text-lila-600 font-medium mt-1">Mostrando tu agenda personal</p>
         )}
       </div>
+
+      <TodayStats appointments={appointments} />
 
       <AppointmentList
         appointments={appointments}

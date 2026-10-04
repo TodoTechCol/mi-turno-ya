@@ -66,8 +66,17 @@ export async function notifyNewAppointment(
       tasks.push(sendEmail({ to: input.client_email, subject, html }));
     }
 
-    const adminEmails = await getOrganizationAdminEmails(input.organization_id);
-    for (const adminEmail of adminEmails) {
+    // Admins del negocio + la profesional asignada (si tiene su propio
+    // login) — Set para no mandar el mismo email dos veces si una
+    // persona es ambas cosas a la vez.
+    const recipientEmails = new Set(await getOrganizationAdminEmails(input.organization_id));
+    if (professional?.user_id) {
+      const admin = createAdminClient();
+      const { data } = await admin.auth.admin.getUserById(professional.user_id);
+      if (data?.user?.email) recipientEmails.add(data.user.email);
+    }
+
+    for (const email of recipientEmails) {
       const { subject, html } = newAppointmentAdminNotificationEmail({
         organizationName: organization.name,
         clientName: input.client_name,
@@ -77,7 +86,7 @@ export async function notifyNewAppointment(
         dateLabel,
         timeLabel,
       });
-      tasks.push(sendEmail({ to: adminEmail, subject, html }));
+      tasks.push(sendEmail({ to: email, subject, html }));
     }
 
     await Promise.allSettled(tasks);

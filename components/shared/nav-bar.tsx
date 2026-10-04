@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Calendar, CalendarDays, Tag, Users, LogOut } from "lucide-react";
+import { Calendar, CalendarDays, Tag, Users, Clock, LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import Logo from "./logo";
@@ -22,10 +22,15 @@ const adminOnlyLinks = [
   { href: "/dashboard/professionals", label: "Profesionales", icon: Users },
 ];
 
+const professionalOnlyLinks = [
+  { href: "/dashboard/my-schedule", label: "Mi horario", icon: Clock },
+];
+
 export default function NavBar({ userEmail, role }: Props) {
   const pathname = usePathname();
   const router = useRouter();
-  const links = role === "organization_admin" ? [...baseLinks, ...adminOnlyLinks] : baseLinks;
+  const links =
+    role === "organization_admin" ? [...baseLinks, ...adminOnlyLinks] : [...baseLinks, ...professionalOnlyLinks];
 
   async function handleLogout() {
     const supabase = createClient();
@@ -66,7 +71,7 @@ export default function NavBar({ userEmail, role }: Props) {
           <span className="text-xs text-pizarra-400 hidden sm:block">{userEmail}</span>
           <button
             onClick={handleLogout}
-            className="p-1.5 rounded-lg text-pizarra-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+            className="p-1.5 rounded-lg text-pizarra-400 hover:text-status-danger hover:bg-status-danger/10 transition-colors"
             title="Cerrar sesión"
           >
             <LogOut className="w-4 h-4" />
