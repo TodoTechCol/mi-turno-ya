@@ -1,5 +1,5 @@
 import { fromZonedTime } from "date-fns-tz";
-import { addDays } from "date-fns";
+import { addDays, endOfMonth } from "date-fns";
 
 /**
  * Convierte "medianoche a medianoche" de una fecha (YYYY-MM-DD) EN LA ZONA
@@ -27,5 +27,23 @@ export function getWeekBoundsUTC(mondayDateStr: string, timezone: string) {
   return {
     start: fromZonedTime(`${mondayDateStr}T00:00:00.000`, timezone).toISOString(),
     end: fromZonedTime(`${sundayStr}T23:59:59.999`, timezone).toISOString(),
+  };
+}
+
+/**
+ * Límites UTC de un mes completo en la zona horaria de la organización,
+ * a partir de cualquier fecha "YYYY-MM-DD" de ese mes.
+ */
+export function getMonthBoundsUTC(anyDateInMonthStr: string, timezone: string) {
+  const [year, month] = anyDateInMonthStr.split("-");
+  const firstStr = `${year}-${month}-01`;
+  const last = endOfMonth(new Date(`${firstStr}T00:00:00`));
+  const lastStr = `${last.getFullYear()}-${String(last.getMonth() + 1).padStart(2, "0")}-${String(
+    last.getDate()
+  ).padStart(2, "0")}`;
+
+  return {
+    start: fromZonedTime(`${firstStr}T00:00:00.000`, timezone).toISOString(),
+    end: fromZonedTime(`${lastStr}T23:59:59.999`, timezone).toISOString(),
   };
 }

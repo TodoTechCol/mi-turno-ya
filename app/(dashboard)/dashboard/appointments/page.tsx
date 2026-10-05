@@ -1,19 +1,26 @@
-import Link from "next/link";
-import { startOfWeek, addDays, addWeeks, subWeeks, format } from "date-fns";
+import { startOfWeek, addDays, addWeeks, subWeeks, addMonths, subMonths, format } from "date-fns";
 import { es } from "date-fns/locale";
 import { formatInTimeZone } from "date-fns-tz";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getAppointmentsForDashboard, getAppointmentsForWeek } from "@/services/appointments.service";
+import {
+  getAppointmentsForDashboard,
+  getAppointmentsForWeek,
+  getAppointmentsForMonth,
+} from "@/services/appointments.service";
 import { getDashboardContext } from "@/lib/dashboard-context";
 import AppointmentList from "@/components/dashboard/appointment-list";
+import AppointmentsNav from "@/components/dashboard/appointments-nav";
+
+type View = "day" | "week" | "month" | "all";
 
 interface Props {
-  searchParams: Promise<{ week?: string }>;
+  searchParams: Promise<{ view?: string; date?: string }>;
 }
+
+const VIEWS: View[] = ["day", "week", "month", "all"];
 
 export default async function AllAppointmentsPage({ searchParams }: Props) {
   const ctx = await getDashboardContext();
-  const { week } = await searchParams;
+  const params = await searchParams;
 
   if (!ctx) {
     return (
@@ -24,72 +31,78 @@ export default async function AllAppointmentsPage({ searchParams }: Props) {
     );
   }
 
-  const showAll = week === "all";
-
-  // Lunes de la semana a mostrar: el de la URL, o el de "hoy" en la
-  // zona horaria del negocio por defecto.
+  const view: View = VIEWS.includes(params.view as View) ? (params.view as View) : "week";
   const todayStr = formatInTimeZone(new Date(), ctx.timezone, "yyyy-MM-dd");
-  const requestedMonday = week && week !== "all" ? new Date(`${week}T00:00:00`) : new Date(`${todayStr}T00:00:00`);
-  const monday = startOfWeek(requestedMonday, { weekStartsOn: 1 });
-  const mondayStr = format(monday, "yyyy-MM-dd");
-  const sunday = addDays(monday, 6);
+  const anchor = new Date(`${params.date || todayStr}T00:00:00`);
 
-  const prevWeekStr = format(subWeeks(monday, 1), "yyyy-MM-dd");
-  const nextWeekStr = format(addWeeks(monday, 1), "yyyy-MM-dd");
+  let appointments;
+  let heading: string;
+  let prevHref: string | null = null;
+  let nextHref: string | null = null;
+  let emptyMessage = "No hay turnos.";
 
-  const appointments = showAll
-    ? await getAppointmentsForDashboard(ctx.organizationId, ctx.timezone, undefined, ctx.professionalId ?? undefined)
-    : await getAppointmentsForWeek(ctx.organizationId, ctx.timezone, mondayStr, ctx.professionalId ?? undefined);
+  const BASE = "/dashboard/appointments";
+
+  if (view === "day") {
+    const dateStr = format(anchor, "yyyy-MM-dd");
+    appointments = await getAppointmentsForDashboard(ctx.organizationId, ctx.timezone, dateStr, ctx.professionalId ?? undefined);
+    heading = format(anchor, "EEEE d 'de' MMMM yyyy", { locale: es });
+    prevHref = `${BASE}?view=day&date=${format(addDays(anchor, -1), "yyyy-MM-dd")}`;
+    nextHref = `${BASE}?view=day&date=${format(addDays(anchor, 1), "yyyy-MM-dd")}`;
+    emptyMessage = "No hay turnos ese día.";
+  } else if (view === "month") {
+    appointments = await getAppointmentsForMonth(ctx.organizationId, ctx.timezone, format(anchor, "yyyy-MM-dd"), ctx.professionalId ?? undefined);
+    heading = format(anchor, "MMMM yyyy", { locale: es });
+    prevHref = `${BASE}?view=month&date=${format(subMonths(anchor, 1), "yyyy-MM-dd")}`;
+    nextHref = `${BASE}?view=month&date=${format(addMonths(anchor, 1), "yyyy-MM-dd")}`;
+    emptyMessage = "No hay turnos ese mes.";
+  } else if (view === "all") {
+    appointments = await getAppointmentsForDashboard(ctx.organizationId, ctx.timezone, undefined, ctx.professionalId ?? undefined);
+    heading = `${appointments.length} turno(s) en total`;
+    emptyMessage = "No hay turnos registrados.";
+  } else {
+    const monday = startOfWeek(anchor, { weekStartsOn: 1 });
+    const mondayStr = format(monday, "yyyy-MM-dd");
+    const sunday = addDays(monday, 6);
+    appointments = await getAppointmentsForWeek(ctx.organizationId, ctx.timezone, mondayStr, ctx.professionalId ?? undefined);
+    heading = `${format(monday, "d MMM", { locale: es })} – ${format(sunday, "d MMM yyyy", { locale: es })}`;
+    prevHref = `${BASE}?view=week&date=${format(subWeeks(monday, 1), "yyyy-MM-dd")}`;
+    nextHref = `${BASE}?view=week&date=${format(addWeeks(monday, 1), "yyyy-MM-dd")}`;
+    emptyMessage = "No hay turnos esta semana.";
+  }
 
   return (
     <div>
       <div className="mb-6 flex items-start justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold text-pizarra-900">Todos los turnos</h1>
+          <h1 className="text-2xl font-bold text-pizarra-900 capitalize">
+            {view === "all" ? "Todos los turnos" : heading}
+          </h1>
           <p className="text-sm text-pizarra-400">
-            {showAll
-              ? `${appointments.length} turno(s) en total`
-              : `${format(monday, "d MMM", { locale: es })} – ${format(sunday, "d MMM yyyy", { locale: es })} · ${appointments.length} turno(s)`}
+            {view === "all" ? "Sin filtro de fecha" : `${appointments.length} turno(s)`}
           </p>
           {ctx.role === "professional" && (
             <p className="text-xs text-lila-600 font-medium mt-1">Mostrando tu agenda personal</p>
           )}
         </div>
 
-        <div className="flex items-center gap-1.5">
-          {!showAll && (
-            <>
-              <Link
-                href={`/dashboard/appointments?week=${prevWeekStr}`}
-                className="p-1.5 rounded-lg border border-pizarra-200 text-pizarra-500 hover:bg-pizarra-50 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </Link>
-              <Link
-                href={`/dashboard/appointments?week=${nextWeekStr}`}
-                className="p-1.5 rounded-lg border border-pizarra-200 text-pizarra-500 hover:bg-pizarra-50 transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </Link>
-            </>
-          )}
-          <Link
-            href={showAll ? "/dashboard/appointments" : "/dashboard/appointments?week=all"}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
-              showAll
-                ? "bg-lila-50 text-lila-600 border-lila-200"
-                : "border-pizarra-200 text-pizarra-500 hover:bg-pizarra-50"
-            }`}
-          >
-            {showAll ? "Ver por semana" : "Ver todos"}
-          </Link>
-        </div>
+        <AppointmentsNav
+          view={view}
+          prevHref={prevHref}
+          nextHref={nextHref}
+          switchHrefs={{
+            day: `${BASE}?view=day&date=${todayStr}`,
+            week: `${BASE}?view=week&date=${todayStr}`,
+            month: `${BASE}?view=month&date=${todayStr}`,
+            all: `${BASE}?view=all`,
+          }}
+        />
       </div>
 
       <AppointmentList
         appointments={appointments}
         organizationId={ctx.organizationId}
-        emptyMessage={showAll ? "No hay turnos registrados." : "No hay turnos esta semana."}
+        emptyMessage={emptyMessage}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { getDayBoundsUTC, getWeekBoundsUTC } from "@/lib/timezone";
+import { getDayBoundsUTC, getWeekBoundsUTC, getMonthBoundsUTC } from "@/lib/timezone";
 import type { Appointment, AppointmentWithDetails, AppointmentStatus } from "@/types/app.types";
 import { APPOINTMENT_NEXT_STATUSES } from "@/types/app.types";
 import type { Database } from "@/types/database.types";
@@ -72,6 +72,36 @@ export async function getAppointmentsForWeek(
 ): Promise<AppointmentWithDetails[]> {
   const supabase = await createClient();
   const { start, end } = getWeekBoundsUTC(mondayDateStr, timezone);
+
+  let query = supabase
+    .from("appointments")
+    .select(
+      `*,
+       professional:professionals(id, name, avatar_url),
+       service:services(id, name, duration_minutes, price)`
+    )
+    .eq("organization_id", organizationId)
+    .gte("start_datetime", start)
+    .lte("start_datetime", end)
+    .order("start_datetime", { ascending: true });
+
+  if (professionalId) {
+    query = query.eq("professional_id", professionalId);
+  }
+
+  const { data, error } = await query;
+  if (error || !data) return [];
+  return data as unknown as AppointmentWithDetails[];
+}
+
+export async function getAppointmentsForMonth(
+  organizationId: string,
+  timezone: string,
+  anyDateInMonthStr: string,
+  professionalId?: string
+): Promise<AppointmentWithDetails[]> {
+  const supabase = await createClient();
+  const { start, end } = getMonthBoundsUTC(anyDateInMonthStr, timezone);
 
   let query = supabase
     .from("appointments")
