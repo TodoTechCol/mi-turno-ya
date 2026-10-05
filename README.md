@@ -1,4 +1,4 @@
-# Mi Turno Ya 🪒
+# Mi Turno Ya 
 
 Plataforma de reservas de turnos online — MVP para barbería, preparada para SaaS multi-empresa.
 
