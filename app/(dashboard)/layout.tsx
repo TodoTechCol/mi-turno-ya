@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getDashboardContext } from "@/lib/dashboard-context";
 import NavBar from "@/components/shared/nav-bar";
 import PageTransition from "@/components/shared/page-transition";
+import PendingApproval from "./pending-approval";
 
 export default async function DashboardLayout({
   children,
@@ -15,6 +16,10 @@ export default async function DashboardLayout({
   if (!user) redirect("/auth/login");
 
   const ctx = await getDashboardContext();
+
+  if (ctx && !ctx.organizationActive) {
+    return <PendingApproval organizationName={ctx.organizationName} />;
+  }
 
   return (
     <div className="min-h-screen bg-pizarra-50">

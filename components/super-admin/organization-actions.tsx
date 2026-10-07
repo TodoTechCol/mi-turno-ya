@@ -3,15 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Power, Trash2 } from "lucide-react";
+import { Power, Trash2, CheckCircle2 } from "lucide-react";
 
 interface Props {
   organizationId: string;
   isActive: boolean;
+  isPending?: boolean;
   organizationName: string;
 }
 
-export default function OrganizationActions({ organizationId, isActive, organizationName }: Props) {
+export default function OrganizationActions({ organizationId, isActive, isPending, organizationName }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [confirmingDelete, setConfirmingDelete] = useState(false);
@@ -26,7 +27,7 @@ export default function OrganizationActions({ organizationId, isActive, organiza
         body: JSON.stringify({ is_active: !isActive }),
       });
       if (!res.ok) throw new Error();
-      toast.success(isActive ? "Organización desactivada" : "Organización activada");
+      toast.success(isActive ? "Organización desactivada" : isPending ? "Organización aprobada" : "Organización activada");
       router.refresh();
     } catch {
       toast.error("No se pudo actualizar la organización");
@@ -93,10 +94,14 @@ export default function OrganizationActions({ organizationId, isActive, organiza
       <button
         onClick={toggleActive}
         disabled={loading}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium bg-pizarra-50 text-pizarra-600 hover:bg-pizarra-100 transition-colors disabled:opacity-50"
+        className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 ${
+          isPending
+            ? "bg-status-success/10 text-status-success hover:bg-status-success/20"
+            : "bg-pizarra-50 text-pizarra-600 hover:bg-pizarra-100"
+        }`}
       >
-        <Power className="w-4 h-4" />
-        {isActive ? "Desactivar" : "Activar"}
+        {isPending ? <CheckCircle2 className="w-4 h-4" /> : <Power className="w-4 h-4" />}
+        {isActive ? "Desactivar" : isPending ? "Aprobar" : "Activar"}
       </button>
       <button
         onClick={() => setConfirmingDelete(true)}

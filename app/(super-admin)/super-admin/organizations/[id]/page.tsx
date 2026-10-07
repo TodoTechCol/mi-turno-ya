@@ -43,15 +43,24 @@ export default async function OrganizationDetailPage({ params }: Props) {
             <h1 className="text-2xl font-bold text-pizarra-900">{org.name}</h1>
             <span
               className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                org.is_active ? "bg-status-success/10 text-status-success" : "bg-pizarra-100 text-pizarra-500"
+                org.is_active
+                  ? "bg-status-success/10 text-status-success"
+                  : !org.approved_at
+                    ? "bg-status-warning/10 text-status-warning"
+                    : "bg-pizarra-100 text-pizarra-500"
               }`}
             >
-              {org.is_active ? "Activa" : "Inactiva"}
+              {org.is_active ? "Activa" : !org.approved_at ? "Pendiente de aprobación" : "Inactiva"}
             </span>
           </div>
           <p className="text-sm text-pizarra-400 mt-0.5">/{org.slug}</p>
         </div>
-        <OrganizationActions organizationId={org.id} isActive={org.is_active} organizationName={org.name} />
+        <OrganizationActions
+          organizationId={org.id}
+          isActive={org.is_active}
+          isPending={!org.is_active && !org.approved_at}
+          organizationName={org.name}
+        />
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5 mb-6">
@@ -88,6 +97,14 @@ export default async function OrganizationDetailPage({ params }: Props) {
               <dt className="text-pizarra-400">Registrada</dt>
               <dd className="text-pizarra-700 text-right">
                 {format(new Date(org.created_at), "d MMM yyyy, HH:mm", { locale: es })}
+              </dd>
+            </div>
+            <div className="flex justify-between gap-4">
+              <dt className="text-pizarra-400">Aprobada</dt>
+              <dd className="text-pizarra-700 text-right">
+                {org.approved_at
+                  ? format(new Date(org.approved_at), "d MMM yyyy, HH:mm", { locale: es })
+                  : "Todavía no"}
               </dd>
             </div>
           </dl>

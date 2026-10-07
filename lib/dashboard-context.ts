@@ -4,6 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 export interface DashboardContext {
   userId: string;
   organizationId: string;
+  organizationName: string;
+  organizationActive: boolean;
   timezone: string;
   role: "organization_admin" | "professional";
   professionalId: string | null;
@@ -37,7 +39,7 @@ export async function getDashboardContext(): Promise<DashboardContext | null> {
 
   const { data: organization } = await supabase
     .from("organizations")
-    .select("timezone")
+    .select("name, timezone, is_active")
     .eq("id", orgMember.organization_id)
     .single();
 
@@ -55,6 +57,8 @@ export async function getDashboardContext(): Promise<DashboardContext | null> {
   return {
     userId: user.id,
     organizationId: orgMember.organization_id,
+    organizationName: organization?.name ?? "",
+    organizationActive: organization?.is_active ?? false,
     timezone: organization?.timezone ?? "America/Argentina/Buenos_Aires",
     role: orgMember.role,
     professionalId,

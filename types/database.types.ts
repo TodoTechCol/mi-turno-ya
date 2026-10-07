@@ -20,13 +20,16 @@ export interface Database {
           logo_url: string | null;
           timezone: string;
           is_active: boolean;
+          approved_at: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: Omit<
           Database["public"]["Tables"]["organizations"]["Row"],
-          "id" | "created_at" | "updated_at"
-        >;
+          "id" | "created_at" | "updated_at" | "approved_at"
+        > & {
+          approved_at?: string | null;
+        };
         Update: Partial<Database["public"]["Tables"]["organizations"]["Insert"]>;
         Relationships: [];
       };

@@ -5,6 +5,7 @@ import { slugify, randomSuffix } from "@/lib/slug";
 import { sendEmail } from "@/lib/email/resend";
 import { emailConfirmationEmail } from "@/lib/email/templates";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { notifyPendingOrganization } from "@/services/admin-organizations.service";
 
 const MAX_SLUG_ATTEMPTS = 5;
 
@@ -81,7 +82,9 @@ export async function POST(request: NextRequest) {
         address: null,
         logo_url: null,
         timezone: "America/Argentina/Buenos_Aires",
-        is_active: true,
+        // Pendiente de aprobación — un platform_admin la activa desde
+        // /super-admin antes de que el dueño pueda usar el dashboard.
+        is_active: false,
       })
       .select("id")
       .single();
@@ -124,6 +127,11 @@ export async function POST(request: NextRequest) {
   // disparar un nuevo intento más adelante (o contactar soporte).
   const { subject, html } = emailConfirmationEmail({ businessName: business_name, confirmUrl });
   const emailSent = await sendEmail({ to: email, subject, html });
+
+  // 5. Avisar a los platform_admin que hay una organización nueva
+  // esperando aprobación — best effort, igual que el resto de los
+  // emails de este flujo: nunca debe tumbar el signup en sí.
+  await notifyPendingOrganization(organizationId, business_name);
 
   return NextResponse.json({ success: true, emailSent }, { status: 201 });
 }

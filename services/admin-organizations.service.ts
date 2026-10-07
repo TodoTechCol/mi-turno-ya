@@ -1,6 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/email/resend";
-import { passwordResetEmail } from "@/lib/email/templates";
+import { passwordResetEmail, pendingOrganizationEmail, organizationApprovedEmail } from "@/lib/email/templates";
 import type { Organization } from "@/types/app.types";
 
 export interface OrganizationAdminSummary {
@@ -95,10 +95,90 @@ export async function sendPasswordReset(email: string): Promise<boolean> {
   return sendEmail({ to: email, subject, html });
 }
 
+/**
+ * Emails de todos los platform_admin — para avisarles de una
+ * organización nueva pendiente de aprobación.
+ */
+async function getPlatformAdminEmails(): Promise<string[]> {
+  const admin = createAdminClient();
+  const { data: rows } = await admin.from("platform_admins").select("user_id");
+  if (!rows || rows.length === 0) return [];
+
+  const emails: string[] = [];
+  for (const row of rows) {
+    const { data } = await admin.auth.admin.getUserById(row.user_id);
+    if (data?.user?.email) emails.push(data.user.email);
+  }
+  return emails;
+}
+
+/**
+ * Aviso a todos los platform_admin de que hay una organización nueva
+ * esperando aprobación — se dispara al final del signup. Best effort:
+ * nunca debe poder tumbar el registro en sí si el email falla.
+ */
+export async function notifyPendingOrganization(
+  organizationId: string,
+  organizationName: string
+): Promise<void> {
+  try {
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const reviewUrl = `${appUrl}/super-admin/organizations/${organizationId}`;
+    const emails = await getPlatformAdminEmails();
+
+    const { subject, html } = pendingOrganizationEmail({ organizationName, reviewUrl });
+    await Promise.allSettled(emails.map((email) => sendEmail({ to: email, subject, html })));
+  } catch (err) {
+    console.error("[notifications] No se pudo avisar de la organización pendiente", err);
+  }
+}
+
+/**
+ * Activar/desactivar una organización. La primera vez que se activa
+ * (approved_at todavía null) se considera una aprobación real: se
+ * marca la fecha y se le avisa por email al/los organization_admin de
+ * que ya puede usar la plataforma. Desactivaciones posteriores (o
+ * reactivaciones de una org que ya había sido aprobada antes) no
+ * disparan ese email de bienvenida — ya lo recibió una vez.
+ */
 export async function setOrganizationActive(id: string, isActive: boolean): Promise<boolean> {
   const admin = createAdminClient();
-  const { error } = await admin.from("organizations").update({ is_active: isActive }).eq("id", id);
-  return !error;
+
+  const { data: current } = await admin
+    .from("organizations")
+    .select("name, approved_at")
+    .eq("id", id)
+    .single();
+
+  const isFirstApproval = isActive && current && !current.approved_at;
+
+  const { error } = await admin
+    .from("organizations")
+    .update({
+      is_active: isActive,
+      ...(isFirstApproval ? { approved_at: new Date().toISOString() } : {}),
+    })
+    .eq("id", id);
+
+  if (error) return false;
+
+  if (isFirstApproval && current) {
+    const { data: members } = await admin
+      .from("organization_members")
+      .select("user_id")
+      .eq("organization_id", id)
+      .eq("role", "organization_admin");
+
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const { subject, html } = organizationApprovedEmail({ organizationName: current.name, appUrl });
+
+    for (const member of members || []) {
+      const { data } = await admin.auth.admin.getUserById(member.user_id);
+      if (data?.user?.email) await sendEmail({ to: data.user.email, subject, html });
+    }
+  }
+
+  return true;
 }
 
 /**

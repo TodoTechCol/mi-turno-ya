@@ -24,7 +24,7 @@ export function emailConfirmationEmail(params: { businessName: string; confirmUr
     html: wrapper(`
       <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">¡Ya casi!</h1>
       <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
-        Creaste una cuenta para <strong>${businessName}</strong> en Mi Turno Ya. Confirmá tu email para activarla y empezar a gestionar tus turnos.
+        Creaste una cuenta para <strong>${businessName}</strong> en Mi Turno Ya. Confirmá tu email para activarla — después, nuestro equipo revisa el negocio y te avisa por correo apenas quede aprobado.
       </p>
       <a href="${confirmUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
         Confirmar mi email
@@ -32,6 +32,38 @@ export function emailConfirmationEmail(params: { businessName: string; confirmUr
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
         Si no creaste esta cuenta, podés ignorar este correo.
       </p>
+    `),
+  };
+}
+
+export function pendingOrganizationEmail(params: { organizationName: string; reviewUrl: string }) {
+  const { organizationName, reviewUrl } = params;
+  return {
+    subject: `Nueva organización pendiente de aprobación: ${organizationName}`,
+    html: wrapper(`
+      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">Hay un negocio nuevo esperando revisión</h1>
+      <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
+        <strong>${organizationName}</strong> se acaba de registrar en Mi Turno Ya y está pendiente de aprobación.
+      </p>
+      <a href="${reviewUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
+        Revisar en el panel
+      </a>
+    `),
+  };
+}
+
+export function organizationApprovedEmail(params: { organizationName: string; appUrl: string }) {
+  const { organizationName, appUrl } = params;
+  return {
+    subject: "¡Tu cuenta fue aprobada!",
+    html: wrapper(`
+      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">Ya podés empezar</h1>
+      <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
+        Revisamos <strong>${organizationName}</strong> y quedó aprobada. Ya podés entrar a tu panel y gestionar tus turnos.
+      </p>
+      <a href="${appUrl}/auth/login" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
+        Ir a mi panel
+      </a>
     `),
   };
 }
