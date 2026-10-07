@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { Calendar, CalendarDays, Tag, Users, Clock, LogOut } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { usePathname } from "next/navigation";
+import { Calendar, CalendarDays, Tag, Users, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Logo from "./logo";
+import LogoutButton from "./logout-button";
 
 interface Props {
   userEmail: string;
@@ -28,16 +28,8 @@ const professionalOnlyLinks = [
 
 export default function NavBar({ userEmail, role }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
   const links =
     role === "organization_admin" ? [...baseLinks, ...adminOnlyLinks] : [...baseLinks, ...professionalOnlyLinks];
-
-  async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/auth/login");
-    router.refresh();
-  }
 
   return (
     <header className="bg-white border-b border-pizarra-100 sticky top-0 z-10">
@@ -69,13 +61,7 @@ export default function NavBar({ userEmail, role }: Props) {
         {/* User + logout */}
         <div className="flex items-center gap-3">
           <span className="text-xs text-pizarra-400 hidden sm:block">{userEmail}</span>
-          <button
-            onClick={handleLogout}
-            className="p-1.5 rounded-lg text-pizarra-400 hover:text-status-danger hover:bg-status-danger/10 transition-colors"
-            title="Cerrar sesión"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
+          <LogoutButton />
         </div>
       </div>
     </header>
