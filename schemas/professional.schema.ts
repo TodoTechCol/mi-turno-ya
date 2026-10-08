@@ -3,6 +3,10 @@ import { z } from "zod";
 export const professionalSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres").max(100),
   bio: z.string().max(500).optional().or(z.literal("")),
+  // Sin .uuid() a propósito: viene de un <select> nativo, cuyo valor
+  // "sin asignar" es "" (no null) — se normaliza a null antes de mandar
+  // al API, que es donde realmente importa que sea un uuid válido o nada.
+  branch_id: z.string().optional().nullable(),
 });
 
 export type ProfessionalFormValues = z.infer<typeof professionalSchema>;

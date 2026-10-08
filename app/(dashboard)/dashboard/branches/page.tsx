@@ -1,9 +1,8 @@
 import { getDashboardContext } from "@/lib/dashboard-context";
-import { getAllServicesForOrganization } from "@/services/services.service";
 import { getAllBranchesForOrganization } from "@/services/branches.service";
-import ServiceManager from "@/components/dashboard/service-manager";
+import BranchManager from "@/components/dashboard/branch-manager";
 
-export default async function ServicesPage() {
+export default async function BranchesPage() {
   const ctx = await getDashboardContext();
 
   if (!ctx) {
@@ -18,24 +17,21 @@ export default async function ServicesPage() {
   if (ctx.role !== "organization_admin") {
     return (
       <div className="text-center py-12 text-pizarra-400">
-        <p>No tenés permiso para gestionar servicios.</p>
+        <p>No tenés permiso para gestionar sedes.</p>
       </div>
     );
   }
 
-  const [services, branches] = await Promise.all([
-    getAllServicesForOrganization(ctx.organizationId),
-    getAllBranchesForOrganization(ctx.organizationId),
-  ]);
+  const branches = await getAllBranchesForOrganization(ctx.organizationId);
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-pizarra-900">Servicios</h1>
-        <p className="text-sm text-pizarra-400">{services.length} servicio(s)</p>
+        <h1 className="text-2xl font-bold text-pizarra-900">Sedes</h1>
+        <p className="text-sm text-pizarra-400">{branches.length} sede(s)</p>
       </div>
 
-      <ServiceManager services={services} branches={branches} />
+      <BranchManager branches={branches} />
     </div>
   );
 }

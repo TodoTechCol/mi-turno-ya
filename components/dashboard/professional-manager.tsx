@@ -4,16 +4,17 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Plus, Pencil, Power, User, CalendarClock, Mail, X, Send } from "lucide-react";
-import type { Professional, OrganizationInvitation } from "@/types/app.types";
+import { Plus, Pencil, Power, User, CalendarClock, Mail, X, Send, MapPin } from "lucide-react";
+import type { Professional, OrganizationInvitation, Branch } from "@/types/app.types";
 import ProfessionalForm from "./professional-form";
 
 interface Props {
   professionals: Professional[];
   invitations: OrganizationInvitation[];
+  branches: Branch[];
 }
 
-export default function ProfessionalManager({ professionals, invitations }: Props) {
+export default function ProfessionalManager({ professionals, invitations, branches }: Props) {
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Professional | null>(null);
   const [invitingId, setInvitingId] = useState<string | null>(null);
@@ -21,6 +22,10 @@ export default function ProfessionalManager({ professionals, invitations }: Prop
 
   function invitationFor(professionalId: string) {
     return invitations.find((inv) => inv.professional_id === professionalId);
+  }
+
+  function branchNameFor(branchId: string | null) {
+    return branches.find((b) => b.id === branchId)?.name ?? null;
   }
 
   function openCreate() {
@@ -104,7 +109,7 @@ export default function ProfessionalManager({ professionals, invitations }: Prop
 
       {showForm && (
         <div className="mb-4">
-          <ProfessionalForm professional={editing} onSaved={handleSaved} onCancel={closeForm} />
+          <ProfessionalForm professional={editing} branches={branches} onSaved={handleSaved} onCancel={closeForm} />
         </div>
       )}
 
@@ -132,6 +137,12 @@ export default function ProfessionalManager({ professionals, invitations }: Prop
                       <p className="font-medium text-pizarra-900 text-sm">{professional.name}</p>
                       {professional.bio && (
                         <p className="text-xs text-pizarra-400 mt-0.5 line-clamp-1">{professional.bio}</p>
+                      )}
+                      {branches.length > 0 && (
+                        <p className="flex items-center gap-1 text-xs text-lila-600 mt-0.5">
+                          <MapPin className="w-3 h-3" />
+                          {branchNameFor(professional.branch_id) ?? "Sin sede asignada"}
+                        </p>
                       )}
                     </div>
                   </div>

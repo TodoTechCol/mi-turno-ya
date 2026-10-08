@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Calendar, CalendarDays, Tag, Users, Clock } from "lucide-react";
+import { Calendar, CalendarDays, Tag, Users, Clock, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Logo from "./logo";
 import LogoutButton from "./logout-button";
@@ -20,6 +20,7 @@ const baseLinks = [
 const adminOnlyLinks = [
   { href: "/dashboard/services", label: "Servicios", icon: Tag },
   { href: "/dashboard/professionals", label: "Profesionales", icon: Users },
+  { href: "/dashboard/branches", label: "Sedes", icon: MapPin },
 ];
 
 const professionalOnlyLinks = [

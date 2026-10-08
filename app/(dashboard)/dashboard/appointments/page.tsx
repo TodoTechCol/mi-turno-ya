@@ -6,14 +6,16 @@ import {
   getAppointmentsForWeek,
   getAppointmentsForMonth,
 } from "@/services/appointments.service";
+import { getAllBranchesForOrganization } from "@/services/branches.service";
 import { getDashboardContext } from "@/lib/dashboard-context";
 import AppointmentList from "@/components/dashboard/appointment-list";
 import AppointmentsNav from "@/components/dashboard/appointments-nav";
+import BranchFilter from "@/components/dashboard/branch-filter";
 
 type View = "day" | "week" | "month" | "all";
 
 interface Props {
-  searchParams: Promise<{ view?: string; date?: string }>;
+  searchParams: Promise<{ view?: string; date?: string; branch?: string }>;
 }
 
 const VIEWS: View[] = ["day", "week", "month", "all"];
@@ -34,6 +36,9 @@ export default async function AllAppointmentsPage({ searchParams }: Props) {
   const view: View = VIEWS.includes(params.view as View) ? (params.view as View) : "week";
   const todayStr = formatInTimeZone(new Date(), ctx.timezone, "yyyy-MM-dd");
   const anchor = new Date(`${params.date || todayStr}T00:00:00`);
+  const branchFilter = params.branch || "";
+  const branchParam = branchFilter ? `&branch=${branchFilter}` : "";
+  const branches = await getAllBranchesForOrganization(ctx.organizationId);
 
   let appointments;
   let heading: string;
@@ -47,18 +52,18 @@ export default async function AllAppointmentsPage({ searchParams }: Props) {
     const dateStr = format(anchor, "yyyy-MM-dd");
     appointments = await getAppointmentsForDashboard(ctx.organizationId, ctx.timezone, dateStr, ctx.professionalId ?? undefined);
     heading = format(anchor, "EEEE d 'de' MMMM yyyy", { locale: es });
-    prevHref = `${BASE}?view=day&date=${format(addDays(anchor, -1), "yyyy-MM-dd")}`;
-    nextHref = `${BASE}?view=day&date=${format(addDays(anchor, 1), "yyyy-MM-dd")}`;
+    prevHref = `${BASE}?view=day&date=${format(addDays(anchor, -1), "yyyy-MM-dd")}${branchParam}`;
+    nextHref = `${BASE}?view=day&date=${format(addDays(anchor, 1), "yyyy-MM-dd")}${branchParam}`;
     emptyMessage = "No hay turnos ese día.";
   } else if (view === "month") {
     appointments = await getAppointmentsForMonth(ctx.organizationId, ctx.timezone, format(anchor, "yyyy-MM-dd"), ctx.professionalId ?? undefined);
     heading = format(anchor, "MMMM yyyy", { locale: es });
-    prevHref = `${BASE}?view=month&date=${format(subMonths(anchor, 1), "yyyy-MM-dd")}`;
-    nextHref = `${BASE}?view=month&date=${format(addMonths(anchor, 1), "yyyy-MM-dd")}`;
+    prevHref = `${BASE}?view=month&date=${format(subMonths(anchor, 1), "yyyy-MM-dd")}${branchParam}`;
+    nextHref = `${BASE}?view=month&date=${format(addMonths(anchor, 1), "yyyy-MM-dd")}${branchParam}`;
     emptyMessage = "No hay turnos ese mes.";
   } else if (view === "all") {
     appointments = await getAppointmentsForDashboard(ctx.organizationId, ctx.timezone, undefined, ctx.professionalId ?? undefined);
-    heading = `${appointments.length} turno(s) en total`;
+    heading = "";
     emptyMessage = "No hay turnos registrados.";
   } else {
     const monday = startOfWeek(anchor, { weekStartsOn: 1 });
@@ -66,10 +71,19 @@ export default async function AllAppointmentsPage({ searchParams }: Props) {
     const sunday = addDays(monday, 6);
     appointments = await getAppointmentsForWeek(ctx.organizationId, ctx.timezone, mondayStr, ctx.professionalId ?? undefined);
     heading = `${format(monday, "d MMM", { locale: es })} – ${format(sunday, "d MMM yyyy", { locale: es })}`;
-    prevHref = `${BASE}?view=week&date=${format(subWeeks(monday, 1), "yyyy-MM-dd")}`;
-    nextHref = `${BASE}?view=week&date=${format(addWeeks(monday, 1), "yyyy-MM-dd")}`;
+    prevHref = `${BASE}?view=week&date=${format(subWeeks(monday, 1), "yyyy-MM-dd")}${branchParam}`;
+    nextHref = `${BASE}?view=week&date=${format(addWeeks(monday, 1), "yyyy-MM-dd")}${branchParam}`;
     emptyMessage = "No hay turnos esta semana.";
   }
+
+  if (branchFilter) {
+    appointments = appointments.filter((a) => a.branch_id === branchFilter);
+  }
+  if (view === "all") {
+    heading = `${appointments.length} turno(s) en total`;
+  }
+
+  const currentUrlNoBranch = `${BASE}?view=${view}${view !== "all" ? `&date=${format(anchor, "yyyy-MM-dd")}` : ""}`;
 
   return (
     <div>
@@ -86,17 +100,20 @@ export default async function AllAppointmentsPage({ searchParams }: Props) {
           )}
         </div>
 
-        <AppointmentsNav
-          view={view}
-          prevHref={prevHref}
-          nextHref={nextHref}
-          switchHrefs={{
-            day: `${BASE}?view=day&date=${todayStr}`,
-            week: `${BASE}?view=week&date=${todayStr}`,
-            month: `${BASE}?view=month&date=${todayStr}`,
-            all: `${BASE}?view=all`,
-          }}
-        />
+        <div className="flex items-center gap-2 flex-wrap">
+          <BranchFilter branches={branches} selectedId={branchFilter} baseUrl={currentUrlNoBranch} />
+          <AppointmentsNav
+            view={view}
+            prevHref={prevHref}
+            nextHref={nextHref}
+            switchHrefs={{
+              day: `${BASE}?view=day&date=${todayStr}${branchParam}`,
+              week: `${BASE}?view=week&date=${todayStr}${branchParam}`,
+              month: `${BASE}?view=month&date=${todayStr}${branchParam}`,
+              all: `${BASE}?view=all${branchParam}`,
+            }}
+          />
+        </div>
       </div>
 
       <AppointmentList

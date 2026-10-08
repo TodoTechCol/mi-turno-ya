@@ -139,7 +139,7 @@ export async function createAppointment(
   // la fila insertada (RETURNING) hace fallar toda la operación por RLS.
   const { error } = await supabase.from("appointments").insert({
     organization_id: input.organization_id,
-    branch_id: null,
+    branch_id: input.branch_id || null,
     customer_id: customerId,
     professional_id: input.professional_id,
     service_id: input.service_id,

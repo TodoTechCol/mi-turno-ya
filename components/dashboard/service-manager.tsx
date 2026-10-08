@@ -3,16 +3,20 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Plus, Pencil, Power } from "lucide-react";
-import type { Service } from "@/types/app.types";
+import { Plus, Pencil, Power, MapPin } from "lucide-react";
+import type { Service, Branch } from "@/types/app.types";
 import { formatCurrency, formatDuration } from "@/lib/utils";
 import ServiceForm from "./service-form";
 
 interface Props {
   services: Service[];
+  branches: Branch[];
 }
 
-export default function ServiceManager({ services }: Props) {
+export default function ServiceManager({ services, branches }: Props) {
+  function branchNameFor(branchId: string | null) {
+    return branches.find((b) => b.id === branchId)?.name ?? null;
+  }
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<Service | null>(null);
   const router = useRouter();
@@ -66,7 +70,7 @@ export default function ServiceManager({ services }: Props) {
 
       {showForm && (
         <div className="mb-4">
-          <ServiceForm service={editing} onSaved={handleSaved} onCancel={closeForm} />
+          <ServiceForm service={editing} branches={branches} onSaved={handleSaved} onCancel={closeForm} />
         </div>
       )}
 
@@ -100,6 +104,12 @@ export default function ServiceManager({ services }: Props) {
                 <span>{formatDuration(service.duration_minutes)}</span>
                 <span className="font-medium text-lila-600">{formatCurrency(service.price)}</span>
               </div>
+              {branches.length > 0 && (
+                <p className="flex items-center gap-1 text-xs text-pizarra-400 mt-1">
+                  <MapPin className="w-3 h-3" />
+                  {branchNameFor(service.branch_id) ?? "Todas las sedes"}
+                </p>
+              )}
               <div className="flex gap-1.5 mt-3">
                 <button
                   onClick={() => openEdit(service)}

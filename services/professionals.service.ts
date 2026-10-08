@@ -81,7 +81,7 @@ export async function createProfessional(
     .from("professionals")
     .insert({
       organization_id: organizationId,
-      branch_id: null,
+      branch_id: input.branch_id || null,
       user_id: null,
       name: input.name,
       bio: input.bio || null,
@@ -121,6 +121,7 @@ export async function updateProfessional(
     .update({
       ...(input.name !== undefined && { name: input.name }),
       ...(input.bio !== undefined && { bio: input.bio || null }),
+      ...(input.branch_id !== undefined && { branch_id: input.branch_id || null }),
       ...(input.is_active !== undefined && { is_active: input.is_active }),
     })
     .eq("id", id);

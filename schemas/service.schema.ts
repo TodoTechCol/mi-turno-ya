@@ -5,6 +5,9 @@ export const serviceSchema = z.object({
   description: z.string().max(500).optional().or(z.literal("")),
   duration_minutes: z.coerce.number().int().positive("La duración debe ser mayor a 0"),
   price: z.coerce.number().nonnegative("El precio no puede ser negativo"),
+  // Sin .uuid(): viene de un <select> nativo ("" = disponible en todas
+  // las sedes), se normaliza a null antes de mandar al API.
+  branch_id: z.string().optional().nullable(),
 });
 
 export type ServiceFormValues = z.infer<typeof serviceSchema>;

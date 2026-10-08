@@ -4,6 +4,7 @@ export const createAppointmentSchema = z.object({
   organization_id: z.string().uuid(),
   professional_id: z.string().uuid(),
   service_id: z.string().uuid(),
+  branch_id: z.string().uuid().optional(),
   client_name: z.string().min(2).max(100),
   client_phone: z.string().min(8).max(20),
   client_email: z.string().email().optional().or(z.literal("")),

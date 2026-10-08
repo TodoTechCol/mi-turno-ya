@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import type { Organization, Service, Professional } from "@/types/app.types";
+import type { Organization, Service, Professional, Branch } from "@/types/app.types";
+import BranchSelector from "./branch-selector";
 import ServiceSelector from "./service-selector";
 import ProfessionalSelector from "./professional-selector";
 import DatePicker from "./date-picker";
@@ -17,12 +18,14 @@ interface Props {
   organization: Organization;
   services: Service[];
   professionals: Professional[];
+  branches: Branch[];
   initialServiceId: string | null;
 }
 
-type Step = "service" | "professional" | "date" | "time" | "client" | "confirm";
+type Step = "branch" | "service" | "professional" | "date" | "time" | "client" | "confirm";
 
 const STEP_LABELS: Record<Step, string> = {
+  branch: "Sede",
   service: "Servicio",
   professional: "Profesional",
   date: "Fecha",
@@ -31,25 +34,44 @@ const STEP_LABELS: Record<Step, string> = {
   confirm: "Confirmando...",
 };
 
-const STEPS: Step[] = ["service", "professional", "date", "time", "client"];
-
 export default function BookingWizard({
   organization,
   services,
   professionals,
+  branches,
   initialServiceId,
 }: Props) {
   const router = useRouter();
 
-  const [step, setStep] = useState<Step>(initialServiceId ? "professional" : "service");
+  // El paso de sede solo existe si hay más de una — un negocio de una
+  // sola ubicación no ve ningún cambio respecto a como funcionaba antes.
+  const hasMultipleBranches = branches.length > 1;
+  const STEPS: Step[] = hasMultipleBranches
+    ? ["branch", "service", "professional", "date", "time", "client"]
+    : ["service", "professional", "date", "time", "client"];
+
+  const [step, setStep] = useState<Step>(
+    initialServiceId ? "professional" : hasMultipleBranches ? "branch" : "service"
+  );
+  const [branchId, setBranchId] = useState<string | null>(hasMultipleBranches ? null : branches[0]?.id ?? null);
   const [serviceId, setServiceId] = useState<string | null>(initialServiceId);
   const [professionalId, setProfessionalId] = useState<string | null>(null);
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  const selectedService = services.find((s) => s.id === serviceId) ?? null;
-  const selectedProfessional = professionals.find((p) => p.id === professionalId) ?? null;
+  // Un servicio/profesional sin sede asignada está disponible en
+  // todas — solo se filtra cuando SÍ tiene una sede puntual distinta
+  // a la elegida.
+  const filteredServices = branchId
+    ? services.filter((s) => !s.branch_id || s.branch_id === branchId)
+    : services;
+  const filteredProfessionals = branchId
+    ? professionals.filter((p) => !p.branch_id || p.branch_id === branchId)
+    : professionals;
+
+  const selectedService = filteredServices.find((s) => s.id === serviceId) ?? null;
+  const selectedProfessional = filteredProfessionals.find((p) => p.id === professionalId) ?? null;
 
   const currentStepIndex = STEPS.indexOf(step);
   const progress = ((currentStepIndex + 1) / STEPS.length) * 100;
@@ -74,6 +96,7 @@ export default function BookingWizard({
         organization_id: organization.id,
         professional_id: professionalId,
         service_id: serviceId,
+        branch_id: branchId || undefined,
         client_name: clientData.client_name,
         client_phone: clientData.client_phone,
         client_email: clientData.client_email || undefined,
@@ -109,7 +132,7 @@ export default function BookingWizard({
       {/* Header con progreso */}
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-1">
-          {step !== "service" && step !== "confirm" && (
+          {step !== STEPS[0] && step !== "confirm" && (
             <button
               onClick={handleBack}
               className="p-1 -ml-1 rounded-lg text-pizarra-400 hover:text-pizarra-700 hover:bg-pizarra-100 transition-colors"
@@ -135,9 +158,20 @@ export default function BookingWizard({
       </div>
 
       {/* Pasos */}
+      {step === "branch" && (
+        <BranchSelector
+          branches={branches}
+          selectedId={branchId}
+          onSelect={(id) => {
+            setBranchId(id);
+            setStep("service");
+          }}
+        />
+      )}
+
       {step === "service" && (
         <ServiceSelector
-          services={services}
+          services={filteredServices}
           selectedId={serviceId}
           onSelect={(id) => {
             setServiceId(id);
@@ -148,7 +182,7 @@ export default function BookingWizard({
 
       {step === "professional" && selectedService && (
         <ProfessionalSelector
-          professionals={professionals}
+          professionals={filteredProfessionals}
           serviceId={selectedService.id}
           organizationId={organization.id}
           selectedId={professionalId}

@@ -4,15 +4,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { serviceSchema, type ServiceFormValues } from "@/schemas/service.schema";
-import type { Service } from "@/types/app.types";
+import type { Service, Branch } from "@/types/app.types";
 
 interface Props {
   service: Service | null;
+  branches: Branch[];
   onSaved: () => void;
   onCancel: () => void;
 }
 
-export default function ServiceForm({ service, onSaved, onCancel }: Props) {
+export default function ServiceForm({ service, branches, onSaved, onCancel }: Props) {
   const {
     register,
     handleSubmit,
@@ -25,16 +26,18 @@ export default function ServiceForm({ service, onSaved, onCancel }: Props) {
           description: service.description ?? "",
           duration_minutes: service.duration_minutes,
           price: service.price,
+          branch_id: service.branch_id,
         }
-      : { name: "", description: "", duration_minutes: 30, price: 0 },
+      : { name: "", description: "", duration_minutes: 30, price: 0, branch_id: null },
   });
 
   async function onSubmit(data: ServiceFormValues) {
     try {
+      const payload = { ...data, branch_id: data.branch_id || null };
       const res = await fetch(service ? `/api/services/${service.id}` : "/api/services", {
         method: service ? "PATCH" : "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error();
       toast.success(service ? "Servicio actualizado" : "Servicio creado");
@@ -93,6 +96,23 @@ export default function ServiceForm({ service, onSaved, onCancel }: Props) {
           {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price.message}</p>}
         </div>
       </div>
+
+      {branches.length > 0 && (
+        <div>
+          <label className="block text-sm font-medium text-pizarra-700 mb-1">Sede</label>
+          <select
+            {...register("branch_id")}
+            className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
+          >
+            <option value="">Disponible en todas las sedes</option>
+            {branches.map((b) => (
+              <option key={b.id} value={b.id}>
+                Solo en {b.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <div className="flex gap-2 pt-1">
         <button

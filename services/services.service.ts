@@ -61,7 +61,7 @@ export async function createService(
     .from("services")
     .insert({
       organization_id: organizationId,
-      branch_id: null,
+      branch_id: input.branch_id || null,
       name: input.name,
       description: input.description || null,
       duration_minutes: input.duration_minutes,
@@ -87,6 +87,7 @@ export async function updateService(
       ...(input.description !== undefined && { description: input.description || null }),
       ...(input.duration_minutes !== undefined && { duration_minutes: input.duration_minutes }),
       ...(input.price !== undefined && { price: input.price }),
+      ...(input.branch_id !== undefined && { branch_id: input.branch_id || null }),
       ...(input.is_active !== undefined && { is_active: input.is_active }),
     })
     .eq("id", id);

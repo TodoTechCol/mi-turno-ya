@@ -161,6 +161,8 @@ export interface Database {
           name: string;
           address: string | null;
           phone: string | null;
+          sector: string | null;
+          opening_hours: string | null;
           is_active: boolean;
           created_at: string;
           updated_at: string;
@@ -262,6 +264,10 @@ export interface Database {
           organization_name: string;
           expires_at: string;
         }[];
+      };
+      public_list_branches: {
+        Args: { p_organization_id: string };
+        Returns: Database["public"]["Tables"]["branches"]["Row"][];
       };
     };
     Enums: Record<string, never>;

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getOrganizationBySlug } from "@/services/organizations.service";
 import { getServicesByOrganization } from "@/services/services.service";
 import { getProfessionalsByOrganization } from "@/services/professionals.service";
+import { getBranchesByOrganization } from "@/services/branches.service";
 import BookingWizard from "@/components/booking/booking-wizard";
 
 interface Props {
@@ -16,9 +17,10 @@ export default async function BookingPage({ params, searchParams }: Props) {
   const organization = await getOrganizationBySlug(slug);
   if (!organization) notFound();
 
-  const [services, professionals] = await Promise.all([
+  const [services, professionals, branches] = await Promise.all([
     getServicesByOrganization(organization.id),
     getProfessionalsByOrganization(organization.id),
+    getBranchesByOrganization(organization.id),
   ]);
 
   return (
@@ -28,6 +30,7 @@ export default async function BookingPage({ params, searchParams }: Props) {
           organization={organization}
           services={services}
           professionals={professionals}
+          branches={branches}
           initialServiceId={sp.service ?? null}
         />
       </div>
