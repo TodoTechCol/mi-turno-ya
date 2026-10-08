@@ -9,30 +9,50 @@ import { Mail } from "lucide-react";
 import { signupSchema, type SignupFormValues } from "@/schemas/signup.schema";
 import { toast } from "sonner";
 import Logo from "@/components/shared/logo";
+import LogoPicker from "@/components/shared/logo-picker";
+import { getInitials } from "@/lib/utils";
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [sentTo, setSentTo] = useState<string | null>(null);
+  const [logoFile, setLogoFile] = useState<File | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
   });
 
+  const businessName = watch("business_name");
+
+  function handleLogoSelect(file: File) {
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
+    setLogoFile(file);
+    setLogoPreview(URL.createObjectURL(file));
+  }
+
+  function handleLogoClear() {
+    if (logoPreview) URL.revokeObjectURL(logoPreview);
+    setLogoFile(null);
+    setLogoPreview(null);
+  }
+
   async function onSubmit(data: SignupFormValues) {
     setLoading(true);
     try {
+      const formData = new FormData();
+      formData.append("business_name", data.business_name);
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+      if (logoFile) formData.append("logo", logoFile);
+
       const res = await fetch("/api/signup", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          business_name: data.business_name,
-          email: data.email,
-          password: data.password,
-        }),
+        body: formData,
       });
 
       if (!res.ok) {
@@ -123,6 +143,18 @@ export default function SignupPage() {
                 onSubmit={handleSubmit(onSubmit)}
                 className="bg-white rounded-2xl shadow-sm border border-pizarra-100 p-6 space-y-4"
               >
+                <div>
+                  <label className="block text-sm font-medium text-pizarra-700 mb-2">
+                    Logo del negocio
+                  </label>
+                  <LogoPicker
+                    previewUrl={logoPreview}
+                    fallbackText={businessName ? getInitials(businessName) : "?"}
+                    onSelect={handleLogoSelect}
+                    onClear={handleLogoClear}
+                  />
+                </div>
+
                 <div>
                   <label className="block text-sm font-medium text-pizarra-700 mb-1">
                     Nombre del negocio

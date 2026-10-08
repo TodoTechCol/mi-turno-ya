@@ -181,7 +181,17 @@ export default function BookingWizard({
             {STEP_LABELS[step]}
           </h2>
         </div>
-        <p className="text-xs text-pizarra-400">{organization.name}</p>
+        <div className="flex items-center gap-1.5">
+          {organization.logo_url ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={organization.logo_url}
+              alt={organization.name}
+              className="w-4 h-4 rounded object-cover"
+            />
+          ) : null}
+          <p className="text-xs text-pizarra-400">{organization.name}</p>
+        </div>
 
         {/* Barra de progreso */}
         {step !== "confirm" && (

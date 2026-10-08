@@ -28,6 +28,7 @@ export interface Database {
           Database["public"]["Tables"]["organizations"]["Row"],
           "id" | "created_at" | "updated_at" | "approved_at"
         > & {
+          id?: string;
           approved_at?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["organizations"]["Insert"]>;
