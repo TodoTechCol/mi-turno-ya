@@ -17,6 +17,20 @@ export async function getServicesByOrganization(organizationId: string): Promise
   return [...data].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+export async function getServicesByProfessional(
+  organizationId: string,
+  professionalId: string
+): Promise<Service[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("public_list_services_for_professional", {
+    p_organization_id: organizationId,
+    p_professional_id: professionalId,
+  });
+
+  if (error || !data) return [];
+  return [...data].sort((a, b) => a.name.localeCompare(b.name));
+}
+
 /**
  * Solo para uso interno server-side (API routes de confianza) que ya
  * conocen el id exacto — ver professionals.service.ts para el porqué

@@ -4,8 +4,6 @@ import { User, Check } from "lucide-react";
 
 interface Props {
   professionals: Professional[];
-  serviceId: string;
-  organizationId: string;
   selectedId: string | null;
   onSelect: (id: string) => void;
 }
@@ -15,10 +13,6 @@ export default function ProfessionalSelector({
   selectedId,
   onSelect,
 }: Props) {
-  // Filtrado por servicio se puede hacer aquí o en el server.
-  // Por simplicidad de MVP mostramos todos los activos y dejamos
-  // que la API de disponibilidad valide el slot.
-
   if (professionals.length === 0) {
     return (
       <p className="text-center text-pizarra-400 text-sm py-8">

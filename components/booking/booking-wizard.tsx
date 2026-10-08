@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { Organization, Service, Professional, Branch } from "@/types/app.types";
@@ -11,7 +11,7 @@ import DatePicker from "./date-picker";
 import TimeSlotGrid from "./time-slot-grid";
 import ClientForm from "./client-form";
 import type { ClientFormValues } from "@/schemas/booking.schema";
-import { format, addMinutes } from "date-fns";
+import { format } from "date-fns";
 import { ChevronLeft } from "lucide-react";
 
 interface Props {
@@ -22,12 +22,12 @@ interface Props {
   initialServiceId: string | null;
 }
 
-type Step = "branch" | "service" | "professional" | "date" | "time" | "client" | "confirm";
+type Step = "branch" | "professional" | "service" | "date" | "time" | "client" | "confirm";
 
 const STEP_LABELS: Record<Step, string> = {
   branch: "Sede",
-  service: "Servicio",
   professional: "Profesional",
+  service: "Servicio",
   date: "Fecha",
   time: "Horario",
   client: "Tus datos",
@@ -43,44 +43,71 @@ export default function BookingWizard({
 }: Props) {
   const router = useRouter();
 
-  // El paso de sede solo existe si hay más de una — un negocio de una
-  // sola ubicación no ve ningún cambio respecto a como funcionaba antes.
-  // Si además ya venimos de un link directo a UN servicio puntual (desde
-  // la portada) y ese servicio pertenece a una sede específica, tampoco
-  // hace falta preguntar: se infiere solo (antes esto se saltaba
-  // directo a "profesional" SIN resolver la sede en absoluto, bug real
-  // reportado por el usuario).
+  // El paso de sede solo existe si hay más de una. Si además ya venimos
+  // de un link directo a UN servicio puntual y ese servicio pertenece a
+  // una sede específica, tampoco hace falta preguntar: se infiere sola.
   const hasMultipleBranches = branches.length > 1;
   const initialService = services.find((s) => s.id === initialServiceId) ?? null;
   const needsBranchStep = hasMultipleBranches && !(initialServiceId && initialService?.branch_id);
 
   const STEPS: Step[] = needsBranchStep
-    ? ["branch", "service", "professional", "date", "time", "client"]
-    : ["service", "professional", "date", "time", "client"];
+    ? ["branch", "professional", "service", "date", "time", "client"]
+    : ["professional", "service", "date", "time", "client"];
 
-  const [step, setStep] = useState<Step>(
-    needsBranchStep ? "branch" : initialServiceId ? "professional" : "service"
-  );
+  const [step, setStep] = useState<Step>(needsBranchStep ? "branch" : "professional");
   const [branchId, setBranchId] = useState<string | null>(
     initialService?.branch_id || (needsBranchStep ? null : branches[0]?.id ?? null)
   );
-  const [serviceId, setServiceId] = useState<string | null>(initialServiceId);
   const [professionalId, setProfessionalId] = useState<string | null>(null);
+  const [serviceId, setServiceId] = useState<string | null>(initialServiceId);
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
-  // Un servicio/profesional sin sede asignada está disponible en
-  // todas — solo se filtra cuando SÍ tiene una sede puntual distinta
-  // a la elegida.
-  const filteredServices = branchId
+  // Servicios que el profesional elegido realmente ofrece — se piden
+  // apenas se elige profesional (Sede → Profesional → Servicio). Si el
+  // profesional no tiene ningún servicio vinculado todavía (un alta
+  // nueva a la que el admin se olvidó de asociarle servicios), se cae
+  // al catálogo completo en vez de dejar al cliente sin poder reservar.
+  const [professionalServices, setProfessionalServices] = useState<Service[] | null>(null);
+  const [loadingServices, setLoadingServices] = useState(false);
+
+  useEffect(() => {
+    if (!professionalId || initialServiceId) return;
+    setLoadingServices(true);
+    setProfessionalServices(null);
+
+    const params = new URLSearchParams({
+      organization_id: organization.id,
+      professional_id: professionalId,
+    });
+
+    fetch(`/api/public/services-for-professional?${params}`)
+      .then((r) => r.json())
+      .then((data) => setProfessionalServices(data.services ?? []))
+      .catch(() => setProfessionalServices([]))
+      .finally(() => setLoadingServices(false));
+  }, [professionalId, initialServiceId, organization.id]);
+
+  // Un servicio/profesional sin sede asignada está disponible en todas
+  // — solo se filtra cuando SÍ tiene una sede puntual distinta a la elegida.
+  const branchFilteredServices = branchId
     ? services.filter((s) => !s.branch_id || s.branch_id === branchId)
     : services;
   const filteredProfessionals = branchId
     ? professionals.filter((p) => !p.branch_id || p.branch_id === branchId)
     : professionals;
 
-  const selectedService = filteredServices.find((s) => s.id === serviceId) ?? null;
+  // Lo que efectivamente se muestra en el paso "Servicio": lo vinculado
+  // al profesional (filtrado también por sede), o el catálogo completo
+  // de la sede si ese profesional no tiene ningún vínculo cargado.
+  const linkedIds = new Set((professionalServices ?? []).map((s) => s.id));
+  const servicesForStep =
+    professionalServices && professionalServices.length > 0
+      ? branchFilteredServices.filter((s) => linkedIds.has(s.id))
+      : branchFilteredServices;
+
+  const selectedService = servicesForStep.find((s) => s.id === serviceId) ?? services.find((s) => s.id === serviceId) ?? null;
   const selectedProfessional = filteredProfessionals.find((p) => p.id === professionalId) ?? null;
 
   const currentStepIndex = STEPS.indexOf(step);
@@ -174,34 +201,37 @@ export default function BookingWizard({
           selectedId={branchId}
           onSelect={(id) => {
             setBranchId(id);
-            setStep(initialServiceId ? "professional" : "service");
-          }}
-        />
-      )}
-
-      {step === "service" && (
-        <ServiceSelector
-          services={filteredServices}
-          selectedId={serviceId}
-          onSelect={(id) => {
-            setServiceId(id);
             setStep("professional");
           }}
         />
       )}
 
-      {step === "professional" && selectedService && (
+      {step === "professional" && (
         <ProfessionalSelector
           professionals={filteredProfessionals}
-          serviceId={selectedService.id}
-          organizationId={organization.id}
           selectedId={professionalId}
           onSelect={(id) => {
             setProfessionalId(id);
-            setStep("date");
+            setStep(initialServiceId ? "date" : "service");
           }}
         />
       )}
+
+      {step === "service" &&
+        (loadingServices ? (
+          <div className="flex justify-center py-12">
+            <div className="w-8 h-8 border-2 border-lila-500 border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : (
+          <ServiceSelector
+            services={servicesForStep}
+            selectedId={serviceId}
+            onSelect={(id) => {
+              setServiceId(id);
+              setStep("date");
+            }}
+          />
+        ))}
 
       {step === "date" && (
         <DatePicker

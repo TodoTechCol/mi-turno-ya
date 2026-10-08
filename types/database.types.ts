@@ -269,6 +269,10 @@ export interface Database {
         Args: { p_organization_id: string };
         Returns: Database["public"]["Tables"]["branches"]["Row"][];
       };
+      public_list_services_for_professional: {
+        Args: { p_organization_id: string; p_professional_id: string };
+        Returns: Database["public"]["Tables"]["services"]["Row"][];
+      };
     };
     Enums: Record<string, never>;
   };
