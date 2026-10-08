@@ -45,15 +45,25 @@ export default function BookingWizard({
 
   // El paso de sede solo existe si hay más de una — un negocio de una
   // sola ubicación no ve ningún cambio respecto a como funcionaba antes.
+  // Si además ya venimos de un link directo a UN servicio puntual (desde
+  // la portada) y ese servicio pertenece a una sede específica, tampoco
+  // hace falta preguntar: se infiere solo (antes esto se saltaba
+  // directo a "profesional" SIN resolver la sede en absoluto, bug real
+  // reportado por el usuario).
   const hasMultipleBranches = branches.length > 1;
-  const STEPS: Step[] = hasMultipleBranches
+  const initialService = services.find((s) => s.id === initialServiceId) ?? null;
+  const needsBranchStep = hasMultipleBranches && !(initialServiceId && initialService?.branch_id);
+
+  const STEPS: Step[] = needsBranchStep
     ? ["branch", "service", "professional", "date", "time", "client"]
     : ["service", "professional", "date", "time", "client"];
 
   const [step, setStep] = useState<Step>(
-    initialServiceId ? "professional" : hasMultipleBranches ? "branch" : "service"
+    needsBranchStep ? "branch" : initialServiceId ? "professional" : "service"
   );
-  const [branchId, setBranchId] = useState<string | null>(hasMultipleBranches ? null : branches[0]?.id ?? null);
+  const [branchId, setBranchId] = useState<string | null>(
+    initialService?.branch_id || (needsBranchStep ? null : branches[0]?.id ?? null)
+  );
   const [serviceId, setServiceId] = useState<string | null>(initialServiceId);
   const [professionalId, setProfessionalId] = useState<string | null>(null);
   const [date, setDate] = useState<Date | null>(null);
@@ -164,7 +174,7 @@ export default function BookingWizard({
           selectedId={branchId}
           onSelect={(id) => {
             setBranchId(id);
-            setStep("service");
+            setStep(initialServiceId ? "professional" : "service");
           }}
         />
       )}
