@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
     professional_id: searchParams.get("professional_id"),
     service_id: searchParams.get("service_id"),
     date: searchParams.get("date"),
+    exclude_appointment_id: searchParams.get("exclude_appointment_id") ?? undefined,
   });
 
   if (!parsed.success) {
@@ -23,7 +24,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const { professional_id, service_id, date } = parsed.data;
+  const { professional_id, service_id, date, exclude_appointment_id } = parsed.data;
 
   // Obtener duración del servicio
   const service = await getServiceById(service_id);
@@ -46,11 +47,15 @@ export async function GET(request: NextRequest) {
   const dayOfWeek = new Date(`${date}T12:00:00Z`).getUTCDay();
 
   // Obtener horario laboral, citas y bloques en paralelo
-  const [schedule, appointments, blocks] = await Promise.all([
+  const [schedule, appointmentsRaw, blocks] = await Promise.all([
     getScheduleForDay(professional_id, dayOfWeek),
     getAppointmentsForProfessionalOnDate(professional_id, date, timezone),
     getScheduleBlocksForDay(professional_id, date, timezone),
   ]);
+
+  const appointments = exclude_appointment_id
+    ? appointmentsRaw.filter((a) => a.id !== exclude_appointment_id)
+    : appointmentsRaw;
 
   const slots = generateAvailableSlots(
     date,

@@ -24,6 +24,10 @@ export const availabilityQuerySchema = z.object({
   professional_id: z.string().uuid(),
   service_id: z.string().uuid(),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Fecha inválida (YYYY-MM-DD)"),
+  // Al reprogramar, excluye el propio turno de la cuenta de horarios
+  // ocupados — si no, el cliente vería su propio horario actual como
+  // "ocupado" y no podría reprogramar dentro de su mismo día.
+  exclude_appointment_id: z.string().uuid().optional(),
 });
 
 export type AvailabilityQuery = z.infer<typeof availabilityQuerySchema>;

@@ -134,6 +134,7 @@ export interface Database {
           end_datetime: string;
           status: "pending" | "confirmed" | "completed" | "cancelled" | "no_show";
           notes: string | null;
+          manage_token: string;
           created_at: string;
           updated_at: string;
         };
@@ -254,7 +255,11 @@ export interface Database {
       };
       public_list_busy_slots: {
         Args: { p_professional_id: string; p_range_start: string; p_range_end: string };
-        Returns: { start_datetime: string; end_datetime: string }[];
+        Returns: { id: string; start_datetime: string; end_datetime: string }[];
+      };
+      public_get_appointment_by_token: {
+        Args: { p_token: string };
+        Returns: Database["public"]["Tables"]["appointments"]["Row"][];
       };
       public_get_invitation_by_token: {
         Args: { p_token: string };

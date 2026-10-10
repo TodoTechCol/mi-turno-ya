@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { createClient } from "@/lib/supabase/server";
 import { getDayBoundsUTC, getWeekBoundsUTC, getMonthBoundsUTC } from "@/lib/timezone";
 import type { Appointment, AppointmentWithDetails, AppointmentStatus } from "@/types/app.types";
@@ -18,7 +19,7 @@ export async function getAppointmentsForProfessionalOnDate(
   professionalId: string,
   dateStr: string,
   timezone: string
-): Promise<Pick<Appointment, "start_datetime" | "end_datetime">[]> {
+): Promise<Pick<Appointment, "id" | "start_datetime" | "end_datetime">[]> {
   const supabase = await createClient();
   const { start, end } = getDayBoundsUTC(dateStr, timezone);
 
@@ -124,19 +125,24 @@ export async function getAppointmentsForMonth(
   return data as unknown as AppointmentWithDetails[];
 }
 
+/**
+ * Devuelve el manage_token del turno creado (null si falló). Se
+ * genera en código — igual patrón que organization_invitations.token
+ * — en vez de pedirlo de vuelta con .select(): quien reserva es
+ * anónimo y no tiene permiso de lectura sobre appointments, así que
+ * un RETURNING haría fallar la operación por RLS.
+ */
 export async function createAppointment(
   input: CreateAppointmentInput,
   durationMinutes: number,
   customerId: string | null
-): Promise<boolean> {
+): Promise<string | null> {
   const supabase = await createClient();
 
   const startDt = new Date(input.start_datetime);
   const endDt = addMinutes(startDt, durationMinutes);
+  const manageToken = crypto.randomBytes(32).toString("hex");
 
-  // Sin .select() a propósito: quien reserva es anónimo y no tiene
-  // permiso de lectura sobre appointments, así que pedir de vuelta
-  // la fila insertada (RETURNING) hace fallar toda la operación por RLS.
   const { error } = await supabase.from("appointments").insert({
     organization_id: input.organization_id,
     branch_id: input.branch_id || null,
@@ -150,9 +156,10 @@ export async function createAppointment(
     end_datetime: endDt.toISOString(),
     status: "pending",
     notes: input.notes || null,
+    manage_token: manageToken,
   });
 
-  return !error;
+  return error ? null : manageToken;
 }
 
 export type UpdateStatusResult =

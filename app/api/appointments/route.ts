@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
     input.client_email
   );
 
-  const created = await createAppointment(input, service.duration_minutes, customerId);
-  if (!created) {
+  const manageToken = await createAppointment(input, service.duration_minutes, customerId);
+  if (!manageToken) {
     return NextResponse.json(
       { error: "No se pudo crear el turno. Puede que el horario ya no esté disponible." },
       { status: 409 }
@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
   // Se espera (no "fire and forget") porque en un entorno serverless la
   // función puede cortarse apenas se devuelve la respuesta — pero nunca
   // puede fallar la reserva en sí (notifyNewAppointment nunca lanza).
-  await notifyNewAppointment(input, service);
+  await notifyNewAppointment(input, service, manageToken);
 
   return NextResponse.json({ success: true }, { status: 201 });
 }

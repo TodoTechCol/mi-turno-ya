@@ -10,6 +10,7 @@ interface Props {
   serviceId: string;
   date: Date;
   onSelect: (time: string) => void;
+  excludeAppointmentId?: string;
 }
 
 export default function TimeSlotGrid({
@@ -17,6 +18,7 @@ export default function TimeSlotGrid({
   serviceId,
   date,
   onSelect,
+  excludeAppointmentId,
 }: Props) {
   const [slots, setSlots] = useState<TimeSlot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ export default function TimeSlotGrid({
       service_id: serviceId,
       date: dateStr,
     });
+    if (excludeAppointmentId) params.set("exclude_appointment_id", excludeAppointmentId);
 
     fetch(`/api/availability?${params}`)
       .then((r) => r.json())
@@ -41,7 +44,7 @@ export default function TimeSlotGrid({
       })
       .catch(() => setSlots([]))
       .finally(() => setLoading(false));
-  }, [professionalId, serviceId, dateStr]);
+  }, [professionalId, serviceId, dateStr, excludeAppointmentId]);
 
   const availableSlots = slots.filter((s) => s.available);
 
