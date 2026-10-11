@@ -24,7 +24,7 @@ export default function LandingHero() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight max-w-3xl mx-auto"
         >
-          La agenda online para tu negocio de turnos
+          Dejá que tus clientes reserven solos
         </motion.h1>
 
         <motion.p

@@ -58,10 +58,10 @@ export default function LandingFeatures() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center max-w-xl mx-auto mb-14">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-pizarra-900">
-            Todo lo que necesitás para llenar tu agenda
+            Funcionalidades pensadas para tu día a día
           </h2>
           <p className="mt-3 text-pizarra-500">
-            Sin planillas, sin cuadernos, sin perder turnos por no atender el teléfono a tiempo.
+            Cada reserva, cambio y cancelación queda organizada sola, en un solo lugar.
           </p>
         </div>
 

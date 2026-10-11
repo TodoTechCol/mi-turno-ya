@@ -52,7 +52,7 @@ export default function LandingPricing() {
               <span className="font-display text-4xl font-semibold text-pizarra-900">$0</span>
               <span className="text-sm text-pizarra-400">/mes</span>
             </div>
-            <p className="mt-2 text-sm text-pizarra-500">Perfecto para empezar y probar sin riesgo.</p>
+            <p className="mt-2 text-sm text-pizarra-500">Ideal para arrancar y ver cómo funciona, sin compromiso.</p>
 
             <ul className="mt-6 space-y-3">
               {BASICO.map(({ label, included }) => (
@@ -80,7 +80,7 @@ export default function LandingPricing() {
               <span className="text-sm text-pizarra-400">USD/mes</span>
             </div>
             <p className="relative mt-2 text-sm text-pizarra-300">
-              Todo lo que necesitás para llenar tu agenda todos los días.
+              Para cuando tu negocio ya no entra en los límites del plan gratis.
             </p>
 
             <ul className="relative mt-6 space-y-3">
