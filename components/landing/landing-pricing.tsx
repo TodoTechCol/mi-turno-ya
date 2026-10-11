@@ -76,7 +76,7 @@ export default function LandingPricing() {
             </span>
             <h3 className="relative font-semibold text-white">Premium</h3>
             <div className="relative mt-3 flex items-baseline gap-1">
-              <span className="font-display text-4xl font-semibold text-white">$13.99</span>
+              <span className="font-display text-4xl font-semibold text-white">$14.99</span>
               <span className="text-sm text-pizarra-400">USD/mes</span>
             </div>
             <p className="relative mt-2 text-sm text-pizarra-300">
