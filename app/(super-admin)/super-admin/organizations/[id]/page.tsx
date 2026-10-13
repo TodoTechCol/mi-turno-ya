@@ -6,6 +6,7 @@ import { ArrowLeft, Users, Tag, CalendarDays, Building2, Contact } from "lucide-
 import { getOrganizationDetail } from "@/services/admin-organizations.service";
 import OrganizationActions from "@/components/super-admin/organization-actions";
 import AdminResetPassword from "@/components/super-admin/admin-reset-password";
+import PlanSelector from "@/components/super-admin/plan-selector";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -55,12 +56,15 @@ export default async function OrganizationDetailPage({ params }: Props) {
           </div>
           <p className="text-sm text-pizarra-400 mt-0.5">/{org.slug}</p>
         </div>
-        <OrganizationActions
-          organizationId={org.id}
-          isActive={org.is_active}
-          isPending={!org.is_active && !org.approved_at}
-          organizationName={org.name}
-        />
+        <div className="flex flex-col items-end gap-2">
+          <PlanSelector organizationId={org.id} plan={org.plan} />
+          <OrganizationActions
+            organizationId={org.id}
+            isActive={org.is_active}
+            isPending={!org.is_active && !org.approved_at}
+            organizationName={org.name}
+          />
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-5 mb-6">

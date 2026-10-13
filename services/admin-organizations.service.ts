@@ -182,6 +182,18 @@ export async function setOrganizationActive(id: string, isActive: boolean): Prom
 }
 
 /**
+ * Cambia el plan de una organización — hoy es siempre una acción
+ * manual del platform_admin (ver FAQ de la landing: todavía no hay
+ * upgrade automático ni cobro real). Puramente informativo: no hay
+ * ningún límite de uso que se haga cumplir en código según el plan.
+ */
+export async function setOrganizationPlan(id: string, plan: "basico" | "premium"): Promise<boolean> {
+  const admin = createAdminClient();
+  const { error } = await admin.from("organizations").update({ plan }).eq("id", id);
+  return !error;
+}
+
+/**
  * Elimina la organización. Todas las tablas que cuelgan de
  * organization_id tienen ON DELETE CASCADE, así que el DELETE sobre
  * organizations se lleva turnos, profesionales, servicios, horarios,

@@ -9,6 +9,18 @@ function statusOf(org: { is_active: boolean; approved_at: string | null }) {
   return { label: "Inactiva", className: "text-pizarra-400" };
 }
 
+function PlanBadge({ plan }: { plan: "basico" | "premium" }) {
+  return (
+    <span
+      className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+        plan === "premium" ? "bg-lila-50 text-lila-600" : "bg-pizarra-100 text-pizarra-500"
+      }`}
+    >
+      {plan === "premium" ? "Premium" : "Básico"}
+    </span>
+  );
+}
+
 export default async function SuperAdminPage() {
   const organizations = await getAllOrganizations();
   const pendingCount = organizations.filter((o) => !o.is_active && !o.approved_at).length;
@@ -41,6 +53,7 @@ export default async function SuperAdminPage() {
               <tr>
                 <th className="text-left px-4 py-3 font-medium">Nombre</th>
                 <th className="text-left px-4 py-3 font-medium">Slug</th>
+                <th className="text-left px-4 py-3 font-medium">Plan</th>
                 <th className="text-left px-4 py-3 font-medium">Estado</th>
                 <th className="text-left px-4 py-3 font-medium">Creada</th>
               </tr>
@@ -59,6 +72,9 @@ export default async function SuperAdminPage() {
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-pizarra-500">{org.slug}</td>
+                    <td className="px-4 py-3">
+                      <PlanBadge plan={org.plan} />
+                    </td>
                     <td className="px-4 py-3">
                       <span className={`font-medium ${status.className}`}>{status.label}</span>
                     </td>

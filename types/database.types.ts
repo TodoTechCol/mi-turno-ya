@@ -21,15 +21,17 @@ export interface Database {
           timezone: string;
           is_active: boolean;
           approved_at: string | null;
+          plan: "basico" | "premium";
           created_at: string;
           updated_at: string;
         };
         Insert: Omit<
           Database["public"]["Tables"]["organizations"]["Row"],
-          "id" | "created_at" | "updated_at" | "approved_at"
+          "id" | "created_at" | "updated_at" | "approved_at" | "plan"
         > & {
           id?: string;
           approved_at?: string | null;
+          plan?: "basico" | "premium";
         };
         Update: Partial<Database["public"]["Tables"]["organizations"]["Insert"]>;
         Relationships: [];
