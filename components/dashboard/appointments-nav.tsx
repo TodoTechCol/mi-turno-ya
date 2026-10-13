@@ -2,16 +2,23 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-type View = "day" | "week" | "month" | "all";
+type View = "day" | "week" | "month" | "all" | "pros";
 
-const VIEW_LABELS: Record<View, string> = { day: "Día", week: "Semana", month: "Mes", all: "Todos" };
-const VIEWS: View[] = ["day", "week", "month", "all"];
+const VIEW_LABELS: Record<View, string> = {
+  day: "Día",
+  week: "Semana",
+  month: "Mes",
+  all: "Todos",
+  pros: "Por profesional",
+};
+const BASE_VIEWS: View[] = ["day", "week", "month", "all"];
 
 interface Props {
   view: View;
   prevHref: string | null;
   nextHref: string | null;
   switchHrefs: Record<View, string>;
+  showPros?: boolean;
 }
 
 /**
@@ -22,7 +29,8 @@ interface Props {
  * aplicaba la transición). router.push + router.refresh es el camino
  * confiable para este patrón.
  */
-export default function AppointmentsNav({ view, prevHref, nextHref, switchHrefs }: Props) {
+export default function AppointmentsNav({ view, prevHref, nextHref, switchHrefs, showPros }: Props) {
+  const VIEWS: View[] = showPros ? [...BASE_VIEWS, "pros"] : BASE_VIEWS;
   // Navegación "dura" (recarga completa) a propósito: el router
   // cliente de Next en esta versión se queda pegado en la URL
   // anterior cuando solo cambian searchParams (confirmado: el server

@@ -36,6 +36,53 @@ export async function getScheduleBlocksForDay(
 }
 
 /**
+ * Horario de un día puntual para TODOS los profesionales de la
+ * organización de una sola vez — usado por la vista "Por profesional"
+ * del panel admin (evita N llamadas, una por profesional). Mismo
+ * cliente autenticado que el resto de lecturas admin: schedules_admin_write
+ * cubre también el SELECT.
+ */
+export async function getSchedulesForOrganizationDay(
+  organizationId: string,
+  dayOfWeek: number
+): Promise<Schedule[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("schedules")
+    .select("*")
+    .eq("organization_id", organizationId)
+    .eq("day_of_week", dayOfWeek)
+    .eq("is_active", true);
+
+  if (error || !data) return [];
+  return data;
+}
+
+/**
+ * Bloqueos (vacaciones, descansos, etc.) de toda la organización que
+ * se superponen con un día puntual — mismo criterio que la función
+ * anterior, una sola consulta para todos los profesionales.
+ */
+export async function getScheduleBlocksForOrganizationDay(
+  organizationId: string,
+  dateStr: string,
+  timezone: string
+): Promise<ScheduleBlock[]> {
+  const supabase = await createClient();
+  const { start, end } = getDayBoundsUTC(dateStr, timezone);
+
+  const { data, error } = await supabase
+    .from("schedule_blocks")
+    .select("*")
+    .eq("organization_id", organizationId)
+    .lte("start_datetime", end)
+    .gte("end_datetime", start);
+
+  if (error || !data) return [];
+  return data;
+}
+
+/**
  * Gestión del organization_admin sobre el horario semanal de un
  * profesional — cliente autenticado normal, schedules_admin_write
  * es la que autoriza.

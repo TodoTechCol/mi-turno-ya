@@ -4,8 +4,10 @@ import { getDayBoundsUTC, getWeekBoundsUTC, getMonthBoundsUTC } from "@/lib/time
 import type { Appointment, AppointmentWithDetails, AppointmentStatus } from "@/types/app.types";
 import { APPOINTMENT_NEXT_STATUSES } from "@/types/app.types";
 import type { Database } from "@/types/database.types";
-import type { CreateAppointmentInput } from "@/schemas/appointment.schema";
+import type { CreateAppointmentInput, ManualAppointmentInput } from "@/schemas/appointment.schema";
 import { addMinutes } from "date-fns";
+
+type DbClient = Awaited<ReturnType<typeof createClient>>;
 
 /**
  * Turnos ya ocupados de un profesional, para el chequeo de
@@ -199,6 +201,146 @@ export async function updateAppointmentStatus(
   const { error } = await supabase
     .from("appointments")
     .update(updatePayload)
+    .eq("id", appointmentId);
+
+  return error ? { success: false, reason: "db_error" } : { success: true };
+}
+
+/**
+ * Chequeo de superposición compartido entre el alta manual y el
+ * reagendado desde el panel admin — mismo criterio que
+ * appointment-management.service.ts (status != cancelled, rangos
+ * que se cruzan), pero acá con el cliente autenticado normal (RLS)
+ * en vez de la service role key, porque corre dentro de una sesión
+ * de organization_admin real.
+ */
+async function hasConflictingAppointment(
+  supabase: DbClient,
+  professionalId: string,
+  excludeAppointmentId: string | null,
+  startISO: string,
+  endISO: string
+): Promise<boolean> {
+  let query = supabase
+    .from("appointments")
+    .select("id")
+    .eq("professional_id", professionalId)
+    .neq("status", "cancelled")
+    .lte("start_datetime", endISO)
+    .gte("end_datetime", startISO);
+
+  if (excludeAppointmentId) {
+    query = query.neq("id", excludeAppointmentId);
+  }
+
+  const { data } = await query;
+  return (data?.length ?? 0) > 0;
+}
+
+export type ManualAppointmentResult =
+  | { success: true; manageToken: string }
+  | { success: false; reason: "slot_taken" | "db_error" };
+
+/**
+ * Turno cargado a mano por el organization_admin (walk-in) desde la
+ * vista "Por profesional" del panel. A diferencia de createAppointment
+ * (reserva pública, siempre "pending"), este arranca en "confirmed":
+ * quien lo carga es el propio negocio, no hace falta un paso de
+ * revisión aparte.
+ */
+export async function createManualAppointment(
+  organizationId: string,
+  input: ManualAppointmentInput,
+  durationMinutes: number,
+  customerId: string | null
+): Promise<ManualAppointmentResult> {
+  const supabase = await createClient();
+
+  const startDt = new Date(input.start_datetime);
+  const endDt = addMinutes(startDt, durationMinutes);
+
+  const conflict = await hasConflictingAppointment(
+    supabase,
+    input.professional_id,
+    null,
+    startDt.toISOString(),
+    endDt.toISOString()
+  );
+  if (conflict) return { success: false, reason: "slot_taken" };
+
+  const manageToken = crypto.randomBytes(32).toString("hex");
+
+  const { error } = await supabase.from("appointments").insert({
+    organization_id: organizationId,
+    branch_id: input.branch_id || null,
+    customer_id: customerId,
+    professional_id: input.professional_id,
+    service_id: input.service_id,
+    client_name: input.client_name,
+    client_phone: input.client_phone,
+    client_email: input.client_email || null,
+    start_datetime: startDt.toISOString(),
+    end_datetime: endDt.toISOString(),
+    status: "confirmed",
+    notes: input.notes || null,
+    manage_token: manageToken,
+  });
+
+  return error ? { success: false, reason: "db_error" } : { success: true, manageToken };
+}
+
+export type AdminRescheduleResult =
+  | { success: true }
+  | { success: false; reason: "not_found" | "not_manageable" | "slot_taken" | "db_error" };
+
+const RESCHEDULABLE: AppointmentStatus[] = ["pending", "confirmed"];
+
+/**
+ * Reagendar desde el panel admin (distinto del reagendado por token
+ * que usa el cliente desde /manage/[token]): acá el admin ya está
+ * autenticado y puede tocar cualquier turno de su organización, así
+ * que no hace falta un token — la policy appointments_organization_update
+ * (RLS) es la que autoriza.
+ */
+export async function rescheduleAppointmentByAdmin(
+  appointmentId: string,
+  newStartISO: string
+): Promise<AdminRescheduleResult> {
+  const supabase = await createClient();
+
+  const { data: appointment } = await supabase
+    .from("appointments")
+    .select("id, status, professional_id, service_id")
+    .eq("id", appointmentId)
+    .maybeSingle();
+
+  if (!appointment) return { success: false, reason: "not_found" };
+  if (!RESCHEDULABLE.includes(appointment.status)) {
+    return { success: false, reason: "not_manageable" };
+  }
+
+  const { data: service } = await supabase
+    .from("services")
+    .select("duration_minutes")
+    .eq("id", appointment.service_id)
+    .maybeSingle();
+  if (!service) return { success: false, reason: "db_error" };
+
+  const newStart = new Date(newStartISO);
+  const newEnd = addMinutes(newStart, service.duration_minutes);
+
+  const conflict = await hasConflictingAppointment(
+    supabase,
+    appointment.professional_id,
+    appointment.id,
+    newStart.toISOString(),
+    newEnd.toISOString()
+  );
+  if (conflict) return { success: false, reason: "slot_taken" };
+
+  const { error } = await supabase
+    .from("appointments")
+    .update({ start_datetime: newStart.toISOString(), end_datetime: newEnd.toISOString() })
     .eq("id", appointmentId);
 
   return error ? { success: false, reason: "db_error" } : { success: true };

@@ -73,7 +73,8 @@ function formatDateTimeLabels(start: Date, timezone: string) {
 export async function notifyNewAppointment(
   input: CreateAppointmentInput,
   service: Service,
-  manageToken: string
+  manageToken: string,
+  notifyAdmins = true
 ): Promise<void> {
   try {
     const organization = await getOrganizationById(input.organization_id);
@@ -114,18 +115,22 @@ export async function notifyNewAppointment(
       tasks.push(sendEmail({ to: input.client_email, subject, html }));
     }
 
-    const recipientEmails = await getRecipientEmails(input.organization_id, professional?.user_id ?? null);
-    for (const email of recipientEmails) {
-      const { subject, html } = newAppointmentAdminNotificationEmail({
-        organizationName: organization.name,
-        clientName: input.client_name,
-        clientPhone: input.client_phone,
-        professionalName: professional?.name ?? "Profesional",
-        serviceName: service.name,
-        dateLabel,
-        timeLabel,
-      });
-      tasks.push(sendEmail({ to: email, subject, html }));
+    // Si lo cargó el propio admin a mano (walk-in), no tiene sentido
+    // avisarle de un turno que acaba de escribir él mismo.
+    if (notifyAdmins) {
+      const recipientEmails = await getRecipientEmails(input.organization_id, professional?.user_id ?? null);
+      for (const email of recipientEmails) {
+        const { subject, html } = newAppointmentAdminNotificationEmail({
+          organizationName: organization.name,
+          clientName: input.client_name,
+          clientPhone: input.client_phone,
+          professionalName: professional?.name ?? "Profesional",
+          serviceName: service.name,
+          dateLabel,
+          timeLabel,
+        });
+        tasks.push(sendEmail({ to: email, subject, html }));
+      }
     }
 
     await Promise.allSettled(tasks);
