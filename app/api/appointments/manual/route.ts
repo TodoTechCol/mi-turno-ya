@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { manualAppointmentSchema } from "@/schemas/appointment.schema";
 import { createManualAppointment } from "@/services/appointments.service";
 import { getServiceById } from "@/services/services.service";
+import { getOrganizationById } from "@/services/organizations.service";
 import { upsertCustomer } from "@/services/customers.service";
 import { notifyNewAppointment } from "@/services/notifications.service";
 import { getDashboardContext } from "@/lib/dashboard-context";
+import { hasReachedMonthlyAppointmentLimit, BASICO_MAX_APPOINTMENTS_PER_MONTH } from "@/services/plan-limits.service";
 
 // POST /api/appointments/manual — turno cargado a mano por el
 // organization_admin desde la vista "Por profesional" (walk-in o
@@ -25,6 +27,20 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.data;
+
+  const organization = await getOrganizationById(ctx.organizationId);
+  if (!organization) {
+    return NextResponse.json({ error: "Negocio no encontrado" }, { status: 404 });
+  }
+
+  if (await hasReachedMonthlyAppointmentLimit(organization.id, organization.plan, organization.timezone)) {
+    return NextResponse.json(
+      {
+        error: `Alcanzaste el límite de ${BASICO_MAX_APPOINTMENTS_PER_MONTH} reservas de este mes del plan Básico. Pasá a Premium para seguir cargando turnos.`,
+      },
+      { status: 403 }
+    );
+  }
 
   const service = await getServiceById(input.service_id);
   if (!service) {

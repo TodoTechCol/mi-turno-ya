@@ -9,6 +9,7 @@ import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { notifyPendingOrganization } from "@/services/admin-organizations.service";
 import { validateLogoFile } from "@/lib/logo-validation";
 import { uploadOrganizationLogo } from "@/services/storage.service";
+import { canUploadCustomLogo } from "@/services/plan-limits.service";
 
 const MAX_SLUG_ATTEMPTS = 5;
 
@@ -107,6 +108,9 @@ export async function POST(request: NextRequest) {
         // Pendiente de aprobación — un platform_admin la activa desde
         // /super-admin antes de que el dueño pueda usar el dashboard.
         is_active: false,
+        // Todo negocio nuevo arranca en Básico — el pase a Premium es
+        // manual, vía Super Admin (no hay cobro real todavía).
+        plan: "basico",
       })
       .select("id")
       .single();
@@ -146,12 +150,19 @@ export async function POST(request: NextRequest) {
 
   // 3.5. Subir el logo si vino — también best effort: el logo es
   // opcional (ver AC), así que una falla acá no debe tumbar el
-  // registro. Si falla, el dueño siempre puede subirlo después desde
-  // "Mi negocio".
+  // registro. Toda cuenta nueva arranca en plan Básico, que no
+  // incluye logo propio (ver landing) — se avisa en la respuesta en
+  // vez de fallar en silencio, y el dueño puede subirlo más adelante
+  // si pasa a Premium.
+  let logoSkippedByPlan = false;
   if (hasLogo) {
-    const logoUrl = await uploadOrganizationLogo(organizationId, logoFile as File);
-    if (logoUrl) {
-      await admin.from("organizations").update({ logo_url: logoUrl }).eq("id", organizationId);
+    if (!canUploadCustomLogo("basico")) {
+      logoSkippedByPlan = true;
+    } else {
+      const logoUrl = await uploadOrganizationLogo(organizationId, logoFile as File);
+      if (logoUrl) {
+        await admin.from("organizations").update({ logo_url: logoUrl }).eq("id", organizationId);
+      }
     }
   }
 
@@ -166,5 +177,5 @@ export async function POST(request: NextRequest) {
   // emails de este flujo: nunca debe tumbar el signup en sí.
   await notifyPendingOrganization(organizationId, business_name);
 
-  return NextResponse.json({ success: true, emailSent }, { status: 201 });
+  return NextResponse.json({ success: true, emailSent, logoSkippedByPlan }, { status: 201 });
 }

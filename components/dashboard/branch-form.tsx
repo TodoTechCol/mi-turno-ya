@@ -37,11 +37,14 @@ export default function BranchForm({ branch, onSaved, onCancel }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error ?? "No se pudo guardar la sede");
+      }
       toast.success(branch ? "Sede actualizada" : "Sede creada");
       onSaved();
-    } catch {
-      toast.error("No se pudo guardar la sede");
+    } catch (e: unknown) {
+      toast.error(e instanceof Error ? e.message : "No se pudo guardar la sede");
     }
   }
 

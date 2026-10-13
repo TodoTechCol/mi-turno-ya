@@ -13,6 +13,10 @@ interface Props {
   onClear?: () => void;
   loading?: boolean;
   disabled?: boolean;
+  /** Bloquea SOLO subir/cambiar (ej. plan sin logo propio) — quitar el
+   * logo que ya tenga sigue permitido, nunca se le saca retroactivamente. */
+  uploadLocked?: boolean;
+  uploadLockedMessage?: string;
 }
 
 /**
@@ -29,10 +33,13 @@ export default function LogoPicker({
   onClear,
   loading,
   disabled,
+  uploadLocked,
+  uploadLockedMessage,
 }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [processing, setProcessing] = useState(false);
   const busy = processing || !!loading;
+  const uploadDisabled = disabled || busy || uploadLocked;
 
   async function handleFile(file: File) {
     const error = validateLogoFile(file);
@@ -57,7 +64,7 @@ export default function LogoPicker({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          disabled={disabled || busy}
+          disabled={uploadDisabled}
           className="w-20 h-20 rounded-2xl overflow-hidden bg-lila-50 border border-pizarra-100 flex items-center justify-center hover:border-lila-300 transition-colors disabled:opacity-60"
         >
           {previewUrl ? (
@@ -89,13 +96,17 @@ export default function LogoPicker({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          disabled={disabled || busy}
-          className="flex items-center gap-1.5 text-sm font-medium text-lila-600 hover:text-lila-700 disabled:opacity-60"
+          disabled={uploadDisabled}
+          className="flex items-center gap-1.5 text-sm font-medium text-lila-600 hover:text-lila-700 disabled:opacity-60 disabled:text-pizarra-400"
         >
           <Camera className="w-4 h-4" />
           {previewUrl ? "Cambiar logo" : "Subir logo"}
         </button>
-        <p className="text-xs text-pizarra-400 mt-0.5">PNG o JPG, máx. 2 MB. Opcional.</p>
+        <p className="text-xs text-pizarra-400 mt-0.5">
+          {uploadLocked
+            ? uploadLockedMessage ?? "Exclusivo del plan Premium."
+            : "PNG o JPG, máx. 2 MB. Opcional."}
+        </p>
       </div>
 
       <input

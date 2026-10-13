@@ -60,6 +60,11 @@ export default function SignupPage() {
         throw new Error(err.error ?? "No se pudo crear la cuenta");
       }
 
+      const result = await res.json();
+      if (result.logoSkippedByPlan) {
+        toast("Tu cuenta arranca en el plan Básico, que no incluye logo propio — podés subirlo si pasás a Premium.");
+      }
+
       // La cuenta y la organización ya quedaron creadas, pero sin confirmar
       // todavía — recién con el link del email se activa el login.
       setSentTo(data.email);

@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { createAppointmentSchema, updateAppointmentStatusSchema } from "@/schemas/appointment.schema";
 import { createAppointment, updateAppointmentStatus } from "@/services/appointments.service";
 import { getServiceById } from "@/services/services.service";
+import { getOrganizationById } from "@/services/organizations.service";
 import { upsertCustomer } from "@/services/customers.service";
 import { notifyNewAppointment } from "@/services/notifications.service";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { hasReachedMonthlyAppointmentLimit, BASICO_MAX_APPOINTMENTS_PER_MONTH } from "@/services/plan-limits.service";
 
 // POST /api/appointments — crear un turno (endpoint público, anónimo)
 export async function POST(request: NextRequest) {
@@ -27,6 +29,20 @@ export async function POST(request: NextRequest) {
   }
 
   const input = parsed.data;
+
+  const organization = await getOrganizationById(input.organization_id);
+  if (!organization) {
+    return NextResponse.json({ error: "Negocio no encontrado" }, { status: 404 });
+  }
+
+  if (await hasReachedMonthlyAppointmentLimit(organization.id, organization.plan, organization.timezone)) {
+    return NextResponse.json(
+      {
+        error: `Este negocio alcanzó el límite de ${BASICO_MAX_APPOINTMENTS_PER_MONTH} reservas de este mes. Contactalo directamente para coordinar tu turno.`,
+      },
+      { status: 403 }
+    );
+  }
 
   // Obtener duración del servicio para calcular end_datetime
   const service = await getServiceById(input.service_id);

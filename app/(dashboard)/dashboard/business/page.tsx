@@ -1,5 +1,6 @@
 import { getDashboardContext } from "@/lib/dashboard-context";
 import { getOrganizationById } from "@/services/organizations.service";
+import { canUploadCustomLogo } from "@/services/plan-limits.service";
 import BusinessLogoManager from "@/components/dashboard/business-logo-manager";
 
 export default async function BusinessPage() {
@@ -36,6 +37,7 @@ export default async function BusinessPage() {
         <BusinessLogoManager
           organizationName={ctx.organizationName}
           initialLogoUrl={organization?.logo_url ?? null}
+          canUpload={canUploadCustomLogo(organization?.plan ?? "basico")}
         />
         <p className="text-xs text-pizarra-400 mt-4">
           Aparece en tu página de reserva y en la pantalla donde tus clientes eligen el turno.

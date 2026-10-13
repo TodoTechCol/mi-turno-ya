@@ -8,9 +8,10 @@ import { getInitials } from "@/lib/utils";
 interface Props {
   organizationName: string;
   initialLogoUrl: string | null;
+  canUpload: boolean;
 }
 
-export default function BusinessLogoManager({ organizationName, initialLogoUrl }: Props) {
+export default function BusinessLogoManager({ organizationName, initialLogoUrl, canUpload }: Props) {
   const [logoUrl, setLogoUrl] = useState(initialLogoUrl);
   const [loading, setLoading] = useState(false);
 
@@ -64,6 +65,8 @@ export default function BusinessLogoManager({ organizationName, initialLogoUrl }
       onSelect={handleSelect}
       onClear={handleClear}
       loading={loading}
+      uploadLocked={!canUpload}
+      uploadLockedMessage="Subir o cambiar tu logo es exclusivo del plan Premium."
     />
   );
 }
