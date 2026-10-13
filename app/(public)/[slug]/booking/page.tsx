@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { getOrganizationBySlug } from "@/services/organizations.service";
 import { getServicesByOrganization } from "@/services/services.service";
 import { getProfessionalsByOrganization } from "@/services/professionals.service";
@@ -9,6 +10,10 @@ interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ service?: string }>;
 }
+
+// Flujo de varios pasos sin contenido propio que indexar — la página
+// que sí vale la pena rankear es /[slug].
+export const metadata: Metadata = { robots: { index: false, follow: true } };
 
 export default async function BookingPage({ params, searchParams }: Props) {
   const { slug } = await params;

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { MapPin, Phone, Scissors, CalendarCheck } from "lucide-react";
 import { getOrganizationBySlug } from "@/services/organizations.service";
 import { getServicesByOrganization } from "@/services/services.service";
@@ -7,6 +8,31 @@ import { formatCurrency } from "@/lib/utils";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.miturnoya.org";
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const organization = await getOrganizationBySlug(slug);
+  if (!organization) return {};
+
+  const title = `${organization.name} — Reservá tu turno online`;
+  const description =
+    organization.description ||
+    `Reservá tu turno en ${organization.name} online, 24/7, sin llamadas. Elegí servicio, profesional y horario en segundos.`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical: `${APP_URL}/${slug}` },
+    openGraph: {
+      title,
+      description,
+      url: `${APP_URL}/${slug}`,
+      images: organization.logo_url ? [{ url: organization.logo_url }] : undefined,
+    },
+  };
 }
 
 export default async function OrganizationPublicPage({ params }: Props) {
@@ -21,8 +47,22 @@ export default async function OrganizationPublicPage({ params }: Props) {
   const services = await getServicesByOrganization(organization.id);
   const fromPrice = services.length > 0 ? Math.min(...services.map((s) => s.price)) : null;
 
+  // Ayuda a que Google entienda que es un negocio local real (no
+  // garantiza ranking, pero es la base técnica para que lo intente).
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: organization.name,
+    url: `${APP_URL}/${slug}`,
+    ...(organization.description && { description: organization.description }),
+    ...(organization.logo_url && { image: organization.logo_url }),
+    ...(organization.address && { address: { "@type": "PostalAddress", streetAddress: organization.address } }),
+    ...(organization.phone && { telephone: organization.phone }),
+  };
+
   return (
     <div className="min-h-screen bg-pizarra-50 flex items-center justify-center px-4 py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="w-full max-w-md text-center">
         <div className="bg-white rounded-2xl border border-pizarra-100 shadow-sm p-8">
           {organization.logo_url ? (

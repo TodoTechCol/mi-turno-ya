@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { formatInTimeZone } from "date-fns-tz";
 import { es } from "date-fns/locale";
 import { getAppointmentByToken } from "@/services/appointment-management.service";
@@ -7,6 +8,10 @@ import AppointmentManagePanel from "@/components/manage/appointment-manage-panel
 interface Props {
   params: Promise<{ token: string }>;
 }
+
+// Link privado por cliente (viene del email de confirmación) — robots.ts
+// ya bloquea /manage/*, esto es la segunda capa por si algo lo linkea.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function ManageAppointmentPage({ params }: Props) {
   const { token } = await params;

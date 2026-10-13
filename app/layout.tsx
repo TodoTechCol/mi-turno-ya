@@ -18,9 +18,44 @@ const plusJakarta = Plus_Jakarta_Sans({
   display: "swap",
 });
 
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.miturnoya.org";
+const DESCRIPTION =
+  "Agenda online para barberías, peluquerías, spas y consultorios. Tus clientes reservan 24/7, reprograman o cancelan solos, y vos gestionás todo desde un panel simple.";
+
 export const metadata: Metadata = {
-  title: "Mi Turno Ya",
-  description: "Reservá tu turno en segundos",
+  metadataBase: new URL(APP_URL),
+  title: {
+    default: "Mi Turno Ya — Agenda y reservas online para tu negocio",
+    template: "%s — Mi Turno Ya",
+  },
+  description: DESCRIPTION,
+  keywords: [
+    "reservas online",
+    "agenda de turnos",
+    "software para barberías",
+    "software para peluquerías",
+    "sistema de citas online",
+    "reservar turno online",
+  ],
+  icons: {
+    icon: "/logo-mi-turno-ya-icon.png",
+    apple: "/logo-mi-turno-ya-icon.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    siteName: "Mi Turno Ya",
+    title: "Mi Turno Ya — Agenda y reservas online para tu negocio",
+    description: DESCRIPTION,
+    url: APP_URL,
+    images: [{ url: "/logo-mi-turno-ya-full.png", width: 1200, height: 630, alt: "Mi Turno Ya" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mi Turno Ya — Agenda y reservas online para tu negocio",
+    description: DESCRIPTION,
+    images: ["/logo-mi-turno-ya-full.png"],
+  },
 };
 
 export default function RootLayout({

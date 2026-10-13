@@ -1,10 +1,13 @@
 import Link from "next/link";
+import type { Metadata } from "next";
 import { CheckCircle2, Calendar, ArrowLeft } from "lucide-react";
 
 interface Props {
   params: Promise<{ slug: string }>;
   searchParams: Promise<{ date?: string; time?: string; service?: string }>;
 }
+
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function ConfirmationPage({ params, searchParams }: Props) {
   const { slug } = await params;
