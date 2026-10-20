@@ -2,6 +2,7 @@ import { getDashboardContext } from "@/lib/dashboard-context";
 import { getOrganizationById } from "@/services/organizations.service";
 import { canUploadCustomLogo } from "@/services/plan-limits.service";
 import BusinessLogoManager from "@/components/dashboard/business-logo-manager";
+import GoogleReviewSettings from "@/components/dashboard/google-review-settings";
 
 export default async function BusinessPage() {
   const ctx = await getDashboardContext();
@@ -42,6 +43,11 @@ export default async function BusinessPage() {
         <p className="text-xs text-pizarra-400 mt-4">
           Aparece en tu página de reserva y en la pantalla donde tus clientes eligen el turno.
         </p>
+      </div>
+
+      <div className="bg-white rounded-xl border border-pizarra-100 p-6 mt-5">
+        <h2 className="text-sm font-medium text-pizarra-700 mb-3">Reseñas</h2>
+        <GoogleReviewSettings initialUrl={organization?.google_review_url ?? null} />
       </div>
     </div>
   );

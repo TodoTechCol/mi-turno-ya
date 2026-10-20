@@ -22,16 +22,18 @@ export interface Database {
           is_active: boolean;
           approved_at: string | null;
           plan: "basico" | "premium";
+          google_review_url: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: Omit<
           Database["public"]["Tables"]["organizations"]["Row"],
-          "id" | "created_at" | "updated_at" | "approved_at" | "plan"
+          "id" | "created_at" | "updated_at" | "approved_at" | "plan" | "google_review_url"
         > & {
           id?: string;
           approved_at?: string | null;
           plan?: "basico" | "premium";
+          google_review_url?: string | null;
         };
         Update: Partial<Database["public"]["Tables"]["organizations"]["Insert"]>;
         Relationships: [];

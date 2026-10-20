@@ -7,6 +7,7 @@ import {
   newAppointmentAdminNotificationEmail,
   appointmentCancelledAdminNotificationEmail,
   appointmentRescheduledAdminNotificationEmail,
+  appointmentReviewRequestEmail,
 } from "@/lib/email/templates";
 import { buildGoogleCalendarUrl, buildWhatsAppUrl } from "@/lib/calendar-links";
 import { getOrganizationById } from "./organizations.service";
@@ -219,5 +220,42 @@ export async function notifyAppointmentRescheduled(
     await Promise.allSettled(tasks);
   } catch (err) {
     console.error("[notifications] No se pudo avisar la reprogramación del turno", err);
+  }
+}
+
+/**
+ * Pide reseña en Google al cliente cuando el negocio marca su turno
+ * como "Completado" — mismo momento en que el turno realmente pasó,
+ * no hay sistema de tareas programadas en este proyecto, así que
+ * engancharse al cambio de estado es el disparador natural. No manda
+ * nada si el cliente no dejó email o si el negocio todavía no cargó
+ * su link de reseñas (plan Básico incluido, no es un límite de plan).
+ */
+export async function notifyAppointmentCompleted(appointmentId: string): Promise<void> {
+  try {
+    const admin = createAdminClient();
+    const { data: appointment } = await admin
+      .from("appointments")
+      .select("client_name, client_email, organization_id, professional_id")
+      .eq("id", appointmentId)
+      .maybeSingle();
+
+    if (!appointment || !appointment.client_email) return;
+
+    const organization = await getOrganizationById(appointment.organization_id);
+    if (!organization || !organization.google_review_url) return;
+
+    const professional = await getProfessionalById(appointment.professional_id);
+
+    const { subject, html } = appointmentReviewRequestEmail({
+      clientName: appointment.client_name,
+      organizationName: organization.name,
+      professionalName: professional?.name ?? "nuestro equipo",
+      reviewUrl: organization.google_review_url,
+    });
+
+    await sendEmail({ to: appointment.client_email, subject, html });
+  } catch (err) {
+    console.error("[notifications] No se pudo enviar el pedido de reseña", err);
   }
 }

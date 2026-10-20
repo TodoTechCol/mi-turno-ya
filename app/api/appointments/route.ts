@@ -4,7 +4,7 @@ import { createAppointment, updateAppointmentStatus } from "@/services/appointme
 import { getServiceById } from "@/services/services.service";
 import { getOrganizationById } from "@/services/organizations.service";
 import { upsertCustomer } from "@/services/customers.service";
-import { notifyNewAppointment } from "@/services/notifications.service";
+import { notifyNewAppointment, notifyAppointmentCompleted } from "@/services/notifications.service";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { hasReachedMonthlyAppointmentLimit, BASICO_MAX_APPOINTMENTS_PER_MONTH } from "@/services/plan-limits.service";
 
@@ -97,6 +97,13 @@ export async function PATCH(request: NextRequest) {
     };
     const statusCode = result.reason === "not_found" ? 404 : result.reason === "invalid_transition" ? 400 : 500;
     return NextResponse.json({ error: messages[result.reason] }, { status: statusCode });
+  }
+
+  // Pedido de reseña al cliente — best effort, nunca tumba la
+  // respuesta aunque el negocio no tenga link de Google configurado
+  // o el envío falle (notifyAppointmentCompleted nunca lanza).
+  if (status === "completed") {
+    await notifyAppointmentCompleted(appointment_id);
   }
 
   return NextResponse.json({ success: true });

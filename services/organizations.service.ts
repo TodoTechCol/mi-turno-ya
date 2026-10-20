@@ -36,3 +36,18 @@ export async function getAllOrganizations(): Promise<Organization[]> {
   if (error || !data) return [];
   return data;
 }
+
+/**
+ * Gestión del organization_admin sobre su propio link de reseñas de
+ * Google — cliente autenticado normal, organizations_admin_write es
+ * la que autoriza.
+ */
+export async function updateGoogleReviewUrl(organizationId: string, url: string | null): Promise<boolean> {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("organizations")
+    .update({ google_review_url: url })
+    .eq("id", organizationId);
+
+  return !error;
+}

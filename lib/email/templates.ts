@@ -248,6 +248,34 @@ export function appointmentConfirmationEmail(params: {
   };
 }
 
+export function appointmentReviewRequestEmail(params: {
+  clientName: string;
+  organizationName: string;
+  professionalName: string;
+  reviewUrl: string;
+}) {
+  const { clientName, organizationName, professionalName, reviewUrl } = params;
+  return {
+    subject: `¿Cómo estuvo tu turno en ${organizationName}?`,
+    html: wrapper(`
+      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px; text-align: center;">¡Gracias por venir, ${clientName}!</h1>
+      <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px; text-align: center;">
+        Esperamos que hayas salido conforme con ${professionalName} en <strong>${organizationName}</strong>.
+        Si tenés un minuto, nos ayudaría muchísimo que dejes tu reseña en Google — le sirve a otros clientes a
+        encontrarnos y a ${organizationName} a seguir creciendo.
+      </p>
+      <div style="text-align: center;">
+        <a href="${reviewUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 24px; border-radius: 8px;">
+          ⭐ Dejar mi reseña en Google
+        </a>
+      </div>
+      <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0; text-align: center;">
+        Si preferís no hacerlo, podés ignorar este correo sin problema.
+      </p>
+    `),
+  };
+}
+
 export function appointmentCancelledAdminNotificationEmail(params: {
   organizationName: string;
   clientName: string;
