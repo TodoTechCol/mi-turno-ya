@@ -24,7 +24,7 @@ export default function LandingHero() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight max-w-3xl mx-auto"
         >
-          Dejá que tus clientes reserven solos
+          Tu negocio, en orden. Tus clientes, felices.
         </motion.h1>
 
         <motion.p
@@ -33,8 +33,7 @@ export default function LandingHero() {
           transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
           className="mt-5 text-base md:text-lg text-pizarra-300 max-w-xl mx-auto"
         >
-          Reservas 24/7, varias sedes y profesionales, y tus clientes pueden reprogramar o
-          cancelar solos — sin que atiendas el teléfono.
+          Cuidamos lo más valioso que tenés: tu tiempo.
         </motion.p>
 
         <motion.div
