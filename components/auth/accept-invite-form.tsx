@@ -91,7 +91,7 @@ export default function AcceptInviteForm({ token, email }: Props) {
           className="w-full px-3 py-2.5 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="••••••••"
         />
-        {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>}
+        {errors.password && <p className="text-xs text-status-danger mt-1">{errors.password.message}</p>}
       </div>
 
       <div>
@@ -103,7 +103,7 @@ export default function AcceptInviteForm({ token, email }: Props) {
           placeholder="••••••••"
         />
         {errors.confirm_password && (
-          <p className="text-xs text-red-500 mt-1">{errors.confirm_password.message}</p>
+          <p className="text-xs text-status-danger mt-1">{errors.confirm_password.message}</p>
         )}
       </div>
 

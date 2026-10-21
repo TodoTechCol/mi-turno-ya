@@ -60,7 +60,7 @@ export default function BranchForm({ branch, onSaved, onCancel }: Props) {
           className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="Sede Centro"
         />
-        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+        {errors.name && <p className="text-xs text-status-danger mt-1">{errors.name.message}</p>}
       </div>
 
       <div>

@@ -56,7 +56,7 @@ export default function ClientForm({
         {/* Nombre */}
         <div>
           <label className="block text-sm font-medium text-pizarra-700 mb-1">
-            Nombre completo <span className="text-red-500">*</span>
+            Nombre completo <span className="text-status-danger">*</span>
           </label>
           <input
             {...register("client_name")}
@@ -64,14 +64,14 @@ export default function ClientForm({
             placeholder="Tu nombre"
           />
           {errors.client_name && (
-            <p className="text-xs text-red-500 mt-1">{errors.client_name.message}</p>
+            <p className="text-xs text-status-danger mt-1">{errors.client_name.message}</p>
           )}
         </div>
 
         {/* Teléfono */}
         <div>
           <label className="block text-sm font-medium text-pizarra-700 mb-1">
-            Teléfono <span className="text-red-500">*</span>
+            Teléfono <span className="text-status-danger">*</span>
           </label>
           <input
             {...register("client_phone")}
@@ -80,7 +80,7 @@ export default function ClientForm({
             placeholder="11 1234-5678"
           />
           {errors.client_phone && (
-            <p className="text-xs text-red-500 mt-1">{errors.client_phone.message}</p>
+            <p className="text-xs text-status-danger mt-1">{errors.client_phone.message}</p>
           )}
         </div>
 
@@ -96,7 +96,7 @@ export default function ClientForm({
             placeholder="tu@email.com"
           />
           {errors.client_email && (
-            <p className="text-xs text-red-500 mt-1">{errors.client_email.message}</p>
+            <p className="text-xs text-status-danger mt-1">{errors.client_email.message}</p>
           )}
         </div>
 
@@ -112,7 +112,7 @@ export default function ClientForm({
             placeholder="Alguna indicación para el profesional..."
           />
           {errors.notes && (
-            <p className="text-xs text-red-500 mt-1">{errors.notes.message}</p>
+            <p className="text-xs text-status-danger mt-1">{errors.notes.message}</p>
           )}
         </div>
 

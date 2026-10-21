@@ -59,7 +59,7 @@ export default function ServiceForm({ service, branches, onSaved, onCancel }: Pr
           className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="Corte de cabello"
         />
-        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+        {errors.name && <p className="text-xs text-status-danger mt-1">{errors.name.message}</p>}
       </div>
 
       <div>
@@ -82,7 +82,7 @@ export default function ServiceForm({ service, branches, onSaved, onCancel }: Pr
             className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           />
           {errors.duration_minutes && (
-            <p className="text-xs text-red-500 mt-1">{errors.duration_minutes.message}</p>
+            <p className="text-xs text-status-danger mt-1">{errors.duration_minutes.message}</p>
           )}
         </div>
         <div>
@@ -93,7 +93,7 @@ export default function ServiceForm({ service, branches, onSaved, onCancel }: Pr
             {...register("price")}
             className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           />
-          {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price.message}</p>}
+          {errors.price && <p className="text-xs text-status-danger mt-1">{errors.price.message}</p>}
         </div>
       </div>
 

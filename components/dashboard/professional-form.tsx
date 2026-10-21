@@ -56,7 +56,7 @@ export default function ProfessionalForm({ professional, branches, onSaved, onCa
           className="w-full px-3 py-2 border border-pizarra-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-lila-500 focus:border-transparent"
           placeholder="Nombre y apellido"
         />
-        {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name.message}</p>}
+        {errors.name && <p className="text-xs text-status-danger mt-1">{errors.name.message}</p>}
       </div>
 
       <div>
