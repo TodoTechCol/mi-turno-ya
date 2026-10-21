@@ -15,10 +15,10 @@ const FAQS = [
   },
   {
     question: "¿Puedo tener más de una sede?",
-    answer: "Sí. En el plan Básico puedes tener 1 sede; en Premium, todas las que necesites.",
+    answer: "Sí. En el plan Básico puedes tener 1 sede; en Pro, todas las que necesites.",
   },
   {
-    question: "¿Cómo paso del plan Básico a Premium?",
+    question: "¿Cómo paso del plan Básico a Pro?",
     answer: "Todavía no hay upgrade automático desde el panel — contáctanos y lo activamos en tu cuenta.",
   },
   {

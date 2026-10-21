@@ -27,7 +27,8 @@ const PREMIUM: PlanFeature[] = [
   { label: "0% comisión de ventas", included: true },
   { label: "Todo lo del plan Básico", included: true },
   { label: "Logo y marca propia del negocio", included: true },
-  { label: "Reportes por sede", included: true },
+  { label: "Reportes del negocio por sede", included: true },
+  { label: "Balance de ingresos diario", included: true },
   { label: "Soporte prioritario", included: true },
 ];
 
@@ -37,10 +38,10 @@ export default function LandingPricing() {
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center max-w-xl mx-auto mb-14">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-pizarra-900">
-            Precios simples, sin comisión
+            Un precio imperdible
           </h2>
           <p className="mt-3 text-pizarra-500">
-            Empieza gratis. Pasa a Premium cuando tu negocio lo necesite.
+            Para ayudarte a que tu tiempo lo ocupes en el negocio y puedas crecer.
           </p>
         </div>
 
@@ -74,9 +75,9 @@ export default function LandingPricing() {
             <span className="relative inline-block bg-lila-600 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3">
               Más elegido
             </span>
-            <h3 className="relative font-semibold text-white">Premium</h3>
+            <h3 className="relative font-semibold text-white">Pro</h3>
             <div className="relative mt-3 flex items-baseline gap-1">
-              <span className="font-display text-4xl font-semibold text-white">$14.99</span>
+              <span className="font-display text-4xl font-semibold text-white">$12.90</span>
               <span className="text-sm text-pizarra-400">USD/mes</span>
             </div>
             <p className="relative mt-2 text-sm text-pizarra-300">
@@ -93,7 +94,7 @@ export default function LandingPricing() {
               href="/auth/signup"
               className="relative mt-7 block text-center py-2.5 bg-lila-600 text-white font-medium rounded-lg hover:bg-lila-700 transition-colors"
             >
-              Empezar con Premium
+              Empezar con Pro
             </Link>
           </div>
         </div>
