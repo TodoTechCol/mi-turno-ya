@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, CalendarCheck, RefreshCw, Wallet } from "lucide-react";
+import { ArrowRight, CalendarCheck, Wallet, LayoutDashboard } from "lucide-react";
 
 export default function LandingHero() {
   return (
@@ -68,7 +68,7 @@ export default function LandingHero() {
           {[
             { icon: CalendarCheck, label: "Reservas 24/7" },
             { icon: Wallet, label: "Registro de ingresos" },
-            { icon: RefreshCw, label: "Reprogramar sin llamar" },
+            { icon: LayoutDashboard, label: "Administra tu negocio" },
           ].map(({ icon: Icon, label }) => (
             <div
               key={label}
