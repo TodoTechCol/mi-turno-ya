@@ -25,7 +25,7 @@ const STEPS = [
 
 export default function LandingHowItWorks() {
   return (
-    <section className="py-20">
+    <section id="como-funciona" className="py-20">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center max-w-xl mx-auto mb-14">
           <h2 className="font-display text-3xl md:text-4xl font-semibold text-pizarra-900">Cómo funciona</h2>

@@ -11,10 +11,13 @@ export default function LandingHeader() {
 
         <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-pizarra-600">
           <a href="#funcionalidades" className="hover:text-pizarra-900 transition-colors">
-            Funcionalidades
+            Funciones
           </a>
           <a href="#precios" className="hover:text-pizarra-900 transition-colors">
-            Precios
+            Planes
+          </a>
+          <a href="#como-funciona" className="hover:text-pizarra-900 transition-colors">
+            ¿Cómo funciona?
           </a>
           <a href="#faq" className="hover:text-pizarra-900 transition-colors">
             Preguntas frecuentes
