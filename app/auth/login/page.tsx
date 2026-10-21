@@ -25,7 +25,7 @@ export default function LoginPage() {
 
     if (error) {
       if (error.code === "email_not_confirmed") {
-        toast.error("Todavía no confirmaste tu email. Revisá tu bandeja de entrada.");
+        toast.error("Todavía no confirmaste tu email. Revisa tu bandeja de entrada.");
       } else {
         toast.error("Email o contraseña incorrectos");
       }
@@ -60,7 +60,7 @@ export default function LoginPage() {
           </div>
           <h2 className="font-display text-2xl font-semibold text-white mb-2">Tu tiempo manda.</h2>
           <p className="text-pizarra-400 text-sm max-w-xs">
-            Te agendás, te recuerdan y te atienden sin esperar.
+            Te agendas, te recuerdan y te atienden sin esperar.
           </p>
         </motion.div>
       </div>
@@ -78,7 +78,7 @@ export default function LoginPage() {
           >
             <h1 className="text-2xl font-display font-semibold text-pizarra-900">Bienvenido de nuevo</h1>
             <p className="text-sm text-pizarra-500 mt-1.5">
-              Ingresá para gestionar los turnos de tu negocio.
+              Ingresa para gestionar los turnos de tu negocio.
             </p>
           </motion.div>
 
@@ -137,9 +137,9 @@ export default function LoginPage() {
           </motion.form>
 
           <p className="text-center text-sm text-pizarra-500 mt-6">
-            ¿No tenés cuenta?{" "}
+            ¿No tienes cuenta?{" "}
             <Link href="/auth/signup" className="text-lila-600 font-medium hover:underline">
-              Creá tu negocio
+              Crea tu negocio
             </Link>
           </p>
         </div>

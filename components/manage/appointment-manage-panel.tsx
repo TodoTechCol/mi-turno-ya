@@ -172,7 +172,7 @@ export default function AppointmentManagePanel({
 
       {mode === "confirm-cancel" && (
         <div className="mt-5 bg-status-danger/5 border border-status-danger/20 rounded-xl p-4">
-          <p className="text-sm text-pizarra-700 mb-3">¿Seguro que querés cancelar este turno?</p>
+          <p className="text-sm text-pizarra-700 mb-3">¿Seguro que quieres cancelar este turno?</p>
           <div className="flex gap-2">
             <button
               onClick={handleCancel}

@@ -16,7 +16,7 @@ export default async function BranchDetailPage({ params }: Props) {
   if (!ctx || ctx.role !== "organization_admin") {
     return (
       <div className="text-center py-12 text-pizarra-400">
-        <p>No tenés permiso para ver esta página.</p>
+        <p>No tienes permiso para ver esta página.</p>
       </div>
     );
   }

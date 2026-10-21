@@ -78,7 +78,7 @@ export default function AuthCallbackPage() {
           <>
             <h1 className="text-lg font-semibold text-pizarra-900 mb-2">No pudimos confirmar el link</h1>
             <p className="text-sm text-pizarra-500 mb-6">
-              Puede que ya haya sido usado o que haya vencido. Iniciá sesión directamente o pedí uno nuevo.
+              Puede que ya haya sido usado o que haya vencido. Inicia sesión directamente o pide uno nuevo.
             </p>
             <Link
               href="/auth/login"

@@ -7,12 +7,12 @@ export const clientFormSchema = z.object({
     .max(100, "El nombre es demasiado largo"),
   client_phone: z
     .string()
-    .min(8, "Ingresá un teléfono válido")
+    .min(8, "Ingresa un teléfono válido")
     .max(20, "El teléfono es demasiado largo")
     .regex(/^[\d\s\+\-\(\)]+$/, "Solo se permiten números y símbolos de teléfono"),
   client_email: z
     .string()
-    .email("Ingresá un email válido")
+    .email("Ingresa un email válido")
     .optional()
     .or(z.literal("")),
   notes: z.string().max(500, "Las notas no pueden superar 500 caracteres").optional(),

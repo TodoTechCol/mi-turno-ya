@@ -60,7 +60,7 @@ export default function TimeSlotGrid({
     return (
       <div className="text-center py-8 text-pizarra-400">
         <p className="text-sm">No hay horarios disponibles para este día.</p>
-        <p className="text-xs mt-1">Probá seleccionando otra fecha.</p>
+        <p className="text-xs mt-1">Prueba seleccionando otra fecha.</p>
       </div>
     );
   }

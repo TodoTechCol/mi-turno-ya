@@ -57,7 +57,7 @@ export const MANAGE_ACTION_ERROR_MESSAGES: Record<ManageActionReason, string> = 
   not_found: "No encontramos ese turno",
   not_manageable: "Este turno ya no se puede modificar",
   already_past: "Este turno ya pasó",
-  slot_taken: "Ese horario ya no está disponible, elegí otro",
+  slot_taken: "Ese horario ya no está disponible, elige otro",
   db_error: "No se pudo completar la acción",
 };
 

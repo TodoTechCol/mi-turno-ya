@@ -18,32 +18,32 @@ const FEATURES = [
   {
     icon: MapPin,
     title: "Multi-sede",
-    description: "Gestioná varias sucursales, cada una con sus propios profesionales, servicios y horarios.",
+    description: "Gestiona varias sucursales, cada una con sus propios profesionales, servicios y horarios.",
   },
   {
     icon: Users,
     title: "Profesionales y servicios",
-    description: "Cargá tu equipo, qué servicio ofrece cada uno y su horario de atención.",
+    description: "Carga tu equipo, qué servicio ofrece cada uno y su horario de atención.",
   },
   {
     icon: RefreshCw,
     title: "Reprogramar y cancelar solos",
-    description: "Cada cliente recibe un link propio para cambiar o cancelar su turno sin que vos hagas nada.",
+    description: "Cada cliente recibe un link propio para cambiar o cancelar su turno sin que tú hagas nada.",
   },
   {
     icon: Mail,
     title: "Notificaciones automáticas",
-    description: "Vos y tu cliente reciben un email apenas se reserva, cancela o reprograma un turno.",
+    description: "Tú y tu cliente reciben un email apenas se reserva, cancela o reprograma un turno.",
   },
   {
     icon: ImagePlus,
     title: "Tu marca, tu logo",
-    description: "Subí el logo de tu negocio para que tus clientes lo reconozcan en la página de reserva.",
+    description: "Sube el logo de tu negocio para que tus clientes lo reconozcan en la página de reserva.",
   },
   {
     icon: BarChart3,
     title: "Panel con reportes",
-    description: "Mirá tus turnos por día, semana o mes, y el rendimiento de cada sede.",
+    description: "Mira tus turnos por día, semana o mes, y el rendimiento de cada sede.",
   },
   {
     icon: ShieldCheck,

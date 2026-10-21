@@ -59,7 +59,7 @@ export default function OrganizationActions({ organizationId, isActive, isPendin
       <div className="bg-status-danger/5 border border-status-danger/20 rounded-xl p-4 w-80">
         <p className="text-sm text-pizarra-700 mb-2">
           Esto borra <strong>todo</strong> lo de "{organizationName}" (turnos, profesionales, servicios) sin
-          vuelta atrás. Escribí el nombre exacto para confirmar:
+          vuelta atrás. Escribe el nombre exacto para confirmar:
         </p>
         <input
           value={confirmText}

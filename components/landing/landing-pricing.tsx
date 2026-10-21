@@ -40,7 +40,7 @@ export default function LandingPricing() {
             Precios simples, sin comisión
           </h2>
           <p className="mt-3 text-pizarra-500">
-            Empezá gratis. Pasá a Premium cuando tu negocio lo necesite.
+            Empieza gratis. Pasa a Premium cuando tu negocio lo necesite.
           </p>
         </div>
 

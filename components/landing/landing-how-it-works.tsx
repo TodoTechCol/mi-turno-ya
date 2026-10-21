@@ -3,23 +3,23 @@ import { UserPlus, Users2, Link2, LayoutDashboard } from "lucide-react";
 const STEPS = [
   {
     icon: UserPlus,
-    title: "Creá tu cuenta",
-    description: "Registrá tu negocio en minutos. Queda pendiente de una revisión rápida antes de activarse.",
+    title: "Crea tu cuenta",
+    description: "Registra tu negocio en minutos. Queda pendiente de una revisión rápida antes de activarse.",
   },
   {
     icon: Users2,
-    title: "Cargá tu equipo",
-    description: "Agregá tus profesionales, servicios, horarios y sedes.",
+    title: "Carga tu equipo",
+    description: "Agrega tus profesionales, servicios, horarios y sedes.",
   },
   {
     icon: Link2,
-    title: "Compartí tu link",
+    title: "Comparte tu link",
     description: "Tu página de reserva queda lista en miturnoya.org/tu-negocio.",
   },
   {
     icon: LayoutDashboard,
-    title: "Gestioná todo",
-    description: "Mirá y administrá tus turnos del día, la semana o el mes desde tu panel.",
+    title: "Gestiona todo",
+    description: "Mira y administra tus turnos del día, la semana o el mes desde tu panel.",
   },
 ];
 

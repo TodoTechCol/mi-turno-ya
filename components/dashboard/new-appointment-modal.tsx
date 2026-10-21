@@ -74,7 +74,7 @@ export default function NewAppointmentModal({
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!serviceId) {
-      toast.error("Elegí un servicio");
+      toast.error("Elige un servicio");
       return;
     }
     setSubmitting(true);

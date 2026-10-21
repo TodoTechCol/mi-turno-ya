@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
   if (await hasReachedMonthlyAppointmentLimit(organization.id, organization.plan, organization.timezone)) {
     return NextResponse.json(
       {
-        error: `Alcanzaste el límite de ${BASICO_MAX_APPOINTMENTS_PER_MONTH} reservas de este mes del plan Básico. Pasá a Premium para seguir cargando turnos.`,
+        error: `Alcanzaste el límite de ${BASICO_MAX_APPOINTMENTS_PER_MONTH} reservas de este mes del plan Básico. Pasa a Premium para seguir cargando turnos.`,
       },
       { status: 403 }
     );

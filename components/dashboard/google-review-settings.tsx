@@ -55,11 +55,11 @@ export default function GoogleReviewSettings({ initialUrl }: Props) {
 
       <p className="text-xs text-pizarra-400 mt-3 leading-relaxed">
         <Star className="w-3.5 h-3.5 inline -mt-0.5 mr-0.5 text-lila-500" />
-        Cuando marqués un turno como <strong>Completado</strong>, si el cliente dejó su email, le va a llegar
-        automáticamente un correo pidiéndole que deje su reseña acá.
+        Cuando marques un turno como <strong>Completado</strong>, si el cliente dejó su email, le va a llegar
+        automáticamente un correo pidiéndole que deje su reseña aquí.
       </p>
       <p className="text-xs text-pizarra-400 mt-1.5">
-        ¿Todavía no tenés este link? Necesitás un perfil de negocio en Google (gratis). Entrá a{" "}
+        ¿Todavía no tienes este link? Necesitas un perfil de negocio en Google (gratis). Entra a{" "}
         <a
           href="https://business.google.com"
           target="_blank"
@@ -69,7 +69,7 @@ export default function GoogleReviewSettings({ initialUrl }: Props) {
           business.google.com
           <ExternalLink className="w-3 h-3" />
         </a>{" "}
-        , creá tu ficha (o reclamá la que ya exista), y desde ahí buscá la opción "Pedir reseñas" para copiar tu link.
+        , crea tu ficha (o reclama la que ya exista), y desde ahí busca la opción "Pedir reseñas" para copiar tu link.
       </p>
     </form>
   );

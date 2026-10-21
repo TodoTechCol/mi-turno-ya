@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 const FAQS = [
   {
     question: "¿Necesito tarjeta para el plan gratis?",
-    answer: "No. El plan Básico es gratis y no vence — podés usarlo todo el tiempo que quieras.",
+    answer: "No. El plan Básico es gratis y no vence — puedes usarlo todo el tiempo que quieras.",
   },
   {
     question: "¿Mis clientes necesitan instalar una app?",
@@ -15,16 +15,16 @@ const FAQS = [
   },
   {
     question: "¿Puedo tener más de una sede?",
-    answer: "Sí. En el plan Básico podés tener 1 sede; en Premium, todas las que necesites.",
+    answer: "Sí. En el plan Básico puedes tener 1 sede; en Premium, todas las que necesites.",
   },
   {
     question: "¿Cómo paso del plan Básico a Premium?",
-    answer: "Todavía no hay upgrade automático desde el panel — contactanos y lo activamos en tu cuenta.",
+    answer: "Todavía no hay upgrade automático desde el panel — contáctanos y lo activamos en tu cuenta.",
   },
   {
     question: "¿Qué pasa si un cliente quiere cambiar su turno?",
     answer:
-      "Cada confirmación de turno incluye un link donde el cliente puede reprogramar o cancelar por su cuenta, sin que vos tengas que hacer nada.",
+      "Cada confirmación de turno incluye un link donde el cliente puede reprogramar o cancelar por su cuenta, sin que tú tengas que hacer nada.",
   },
   {
     question: "¿Cuánto tarda en activarse mi cuenta?",

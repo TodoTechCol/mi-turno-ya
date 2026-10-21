@@ -11,8 +11,8 @@ export default async function DashboardPage() {
   if (!ctx) {
     return (
       <div className="text-center py-12 text-pizarra-400">
-        <p>No tenés un negocio asociado a tu cuenta.</p>
-        <p className="text-sm mt-1">Contactá al administrador.</p>
+        <p>No tienes un negocio asociado a tu cuenta.</p>
+        <p className="text-sm mt-1">Contacta al administrador.</p>
       </div>
     );
   }

@@ -20,7 +20,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.miturnoya.org";
 const DESCRIPTION =
-  "Agenda online para barberías, peluquerías, spas y consultorios. Tus clientes reservan 24/7, reprograman o cancelan solos, y vos gestionás todo desde un panel simple.";
+  "Agenda online para barberías, peluquerías, spas y consultorios. Tus clientes reservan 24/7, reprograman o cancelan solos, y tú gestionas todo desde un panel simple.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),

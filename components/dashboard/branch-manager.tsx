@@ -72,7 +72,7 @@ export default function BranchManager({ branches }: Props) {
 
       {branches.length === 0 ? (
         <p className="text-center text-pizarra-400 text-sm py-12">
-          Todavía no cargaste sedes. Si tu negocio tiene una sola ubicación, no hace falta — podés
+          Todavía no cargaste sedes. Si tu negocio tiene una sola ubicación, no hace falta — puedes
           seguir usando profesionales y servicios exactamente igual que hasta ahora.
         </p>
       ) : (

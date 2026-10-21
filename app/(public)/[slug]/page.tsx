@@ -17,10 +17,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const organization = await getOrganizationBySlug(slug);
   if (!organization) return {};
 
-  const title = `${organization.name} — Reservá tu turno online`;
+  const title = `${organization.name} — Reserva tu turno online`;
   const description =
     organization.description ||
-    `Reservá tu turno en ${organization.name} online, 24/7, sin llamadas. Elegí servicio, profesional y horario en segundos.`;
+    `Reserva tu turno en ${organization.name} online, 24/7, sin llamadas. Elige servicio, profesional y horario en segundos.`;
 
   return {
     title,

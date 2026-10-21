@@ -20,17 +20,17 @@ const wrapper = (bodyHtml: string) => `
 export function emailConfirmationEmail(params: { businessName: string; confirmUrl: string }) {
   const { businessName, confirmUrl } = params;
   return {
-    subject: "Confirmá tu email para activar tu cuenta",
+    subject: "Confirma tu email para activar tu cuenta",
     html: wrapper(`
       <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">¡Ya casi!</h1>
       <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
-        Creaste una cuenta para <strong>${businessName}</strong> en Mi Turno Ya. Confirmá tu email para activarla — después, nuestro equipo revisa el negocio y te avisa por correo apenas quede aprobado.
+        Creaste una cuenta para <strong>${businessName}</strong> en Mi Turno Ya. Confirma tu email para activarla — después, nuestro equipo revisa el negocio y te avisa por correo apenas quede aprobado.
       </p>
       <a href="${confirmUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
         Confirmar mi email
       </a>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
-        Si no creaste esta cuenta, podés ignorar este correo.
+        Si no creaste esta cuenta, puedes ignorar este correo.
       </p>
     `),
   };
@@ -57,9 +57,9 @@ export function organizationApprovedEmail(params: { organizationName: string; ap
   return {
     subject: "¡Tu cuenta fue aprobada!",
     html: wrapper(`
-      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">Ya podés empezar</h1>
+      <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">Ya puedes empezar</h1>
       <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
-        Revisamos <strong>${organizationName}</strong> y quedó aprobada. Ya podés entrar a tu panel y gestionar tus turnos.
+        Revisamos <strong>${organizationName}</strong> y quedó aprobada. Ya puedes entrar a tu panel y gestionar tus turnos.
       </p>
       <a href="${appUrl}/auth/login" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
         Ir a mi panel
@@ -71,17 +71,17 @@ export function organizationApprovedEmail(params: { organizationName: string; ap
 export function passwordResetEmail(params: { resetUrl: string }) {
   const { resetUrl } = params;
   return {
-    subject: "Restablecé tu contraseña — Mi Turno Ya",
+    subject: "Restablece tu contraseña — Mi Turno Ya",
     html: wrapper(`
       <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px;">Restablecer contraseña</h1>
       <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px;">
-        Un administrador de Mi Turno Ya inició un restablecimiento de contraseña para tu cuenta. Si lo pediste vos, hacé click abajo para elegir una nueva.
+        Un administrador de Mi Turno Ya inició un restablecimiento de contraseña para tu cuenta. Si fuiste tú quien lo pidió, haz clic abajo para elegir una nueva.
       </p>
       <a href="${resetUrl}" style="display: inline-block; background-color: #6A53CF; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
         Elegir nueva contraseña
       </a>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
-        Si no esperabas este correo, podés ignorarlo — tu contraseña actual sigue funcionando.
+        Si no esperabas este correo, puedes ignorarlo — tu contraseña actual sigue funcionando.
       </p>
     `),
   };
@@ -105,7 +105,7 @@ export function invitationEmail(params: {
         Crear mi contraseña y activar acceso
       </a>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
-        Este link vence en 7 días. Si no esperabas esta invitación, podés ignorar este correo.
+        Este link vence en 7 días. Si no esperabas esta invitación, puedes ignorar este correo.
       </p>
     `),
   };
@@ -163,7 +163,7 @@ export function appointmentConfirmationEmail(params: {
 
       <h1 style="color: #111827; font-size: 19px; margin: 0 0 8px; text-align: center;">¡Tu cita está asegurada, ${clientName}!</h1>
       <p style="color: #6b7280; font-size: 14px; line-height: 1.6; margin: 0 0 20px; text-align: center;">
-        Registramos tu reserva en <strong>${organizationName}</strong>. Acá tenés todos los detalles.
+        Registramos tu reserva en <strong>${organizationName}</strong>. Aquí tienes todos los detalles.
       </p>
 
       <div style="border: 1px solid #f3f4f6; border-radius: 12px; overflow: hidden; margin-bottom: 20px;">
@@ -205,7 +205,7 @@ export function appointmentConfirmationEmail(params: {
       ${
         whatsappUrl
           ? `<div style="background-color: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 20px;">
-               <p style="color: #111827; font-size: 14px; font-weight: 600; margin: 0 0 4px;">¿Tenés alguna consulta?</p>
+               <p style="color: #111827; font-size: 14px; font-weight: 600; margin: 0 0 4px;">¿Tienes alguna consulta?</p>
                <p style="color: #6b7280; font-size: 13px; margin: 0 0 14px;">Comunicate directo por WhatsApp con el negocio.</p>
                <a href="${whatsappUrl}" style="display: inline-block; background-color: #25D366; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 10px 20px; border-radius: 8px;">
                  Contactar por WhatsApp
@@ -231,7 +231,7 @@ export function appointmentConfirmationEmail(params: {
       </table>
 
       <div style="background-color: #f9fafb; border-radius: 10px; padding: 14px 16px; text-align: center; margin-bottom: 20px;">
-        <span style="color: #6b7280; font-size: 13px;">¿Necesitás cambiar algo? </span>
+        <span style="color: #6b7280; font-size: 13px;">¿Necesitas cambiar algo? </span>
         <a href="${manageUrl}" style="color: #6A53CF; text-decoration: none; font-size: 13px; font-weight: 600;">Reprogramar</a>
         <span style="color: #d1d5db;"> · </span>
         <a href="${manageUrl}" style="color: #dc2626; text-decoration: none; font-size: 13px; font-weight: 600;">Cancelar turno</a>
@@ -240,8 +240,8 @@ export function appointmentConfirmationEmail(params: {
       <div style="font-size: 12px; color: #6b7280; line-height: 1.6;">
         <p style="margin: 0 0 4px;">ℹ️ Recordatorios:</p>
         <ul style="margin: 0; padding-left: 18px;">
-          <li>Llegá unos minutos antes para aprovechar toda la duración de tu turno.</li>
-          <li>Podés reprogramar o cancelar cuando quieras desde los links de arriba.</li>
+          <li>Llega unos minutos antes para aprovechar toda la duración de tu turno.</li>
+          <li>Puedes reprogramar o cancelar cuando quieras desde los links de arriba.</li>
         </ul>
       </div>
     `),
@@ -261,7 +261,7 @@ export function appointmentReviewRequestEmail(params: {
       <h1 style="color: #111827; font-size: 18px; margin: 0 0 12px; text-align: center;">¡Gracias por venir, ${clientName}!</h1>
       <p style="color: #4b5563; font-size: 14px; line-height: 1.6; margin: 0 0 20px; text-align: center;">
         Esperamos que hayas salido conforme con ${professionalName} en <strong>${organizationName}</strong>.
-        Si tenés un minuto, nos ayudaría muchísimo que dejes tu reseña en Google — le sirve a otros clientes a
+        Si tienes un minuto, nos ayudaría muchísimo que dejes tu reseña en Google — le sirve a otros clientes a
         encontrarnos y a ${organizationName} a seguir creciendo.
       </p>
       <div style="text-align: center;">
@@ -270,7 +270,7 @@ export function appointmentReviewRequestEmail(params: {
         </a>
       </div>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0; text-align: center;">
-        Si preferís no hacerlo, podés ignorar este correo sin problema.
+        Si prefieres no hacerlo, puedes ignorar este correo sin problema.
       </p>
     `),
   };
@@ -359,7 +359,7 @@ export function appointmentRescheduledAdminNotificationEmail(params: {
         </tr>
       </table>
       <p style="color: #9ca3af; font-size: 12px; margin: 20px 0 0;">
-        El turno volvió a quedar "pendiente" — revisalo y confirmalo de nuevo desde tu panel.
+        El turno volvió a quedar "pendiente" — revísalo y confírmalo de nuevo desde tu panel.
       </p>
     `),
   };

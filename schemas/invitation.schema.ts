@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const inviteProfessionalSchema = z.object({
   professional_id: z.string().uuid(),
-  email: z.string().email("Ingresá un email válido"),
+  email: z.string().email("Ingresa un email válido"),
 });
 
 export type InviteProfessionalInput = z.infer<typeof inviteProfessionalSchema>;

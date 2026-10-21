@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
   if (!checkRateLimit(`appointments:${ip}`, 15, 10 * 60 * 1000)) {
     return NextResponse.json(
-      { error: "Demasiadas reservas seguidas. Esperá unos minutos e intentá de nuevo." },
+      { error: "Demasiadas reservas seguidas. Espera unos minutos e intenta de nuevo." },
       { status: 429 }
     );
   }
@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
   if (await hasReachedMonthlyAppointmentLimit(organization.id, organization.plan, organization.timezone)) {
     return NextResponse.json(
       {
-        error: `Este negocio alcanzó el límite de ${BASICO_MAX_APPOINTMENTS_PER_MONTH} reservas de este mes. Contactalo directamente para coordinar tu turno.`,
+        error: `Este negocio alcanzó el límite de ${BASICO_MAX_APPOINTMENTS_PER_MONTH} reservas de este mes. Contáctalo directamente para coordinar tu turno.`,
       },
       { status: 403 }
     );

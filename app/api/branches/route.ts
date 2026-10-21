@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   if (organization && (await hasReachedBranchLimit(ctx.organizationId, organization.plan))) {
     return NextResponse.json(
       {
-        error: `El plan Básico incluye ${BASICO_MAX_BRANCHES} sede. Pasá a Premium para agregar más.`,
+        error: `El plan Básico incluye ${BASICO_MAX_BRANCHES} sede. Pasa a Premium para agregar más.`,
       },
       { status: 403 }
     );

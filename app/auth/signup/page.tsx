@@ -62,7 +62,7 @@ export default function SignupPage() {
 
       const result = await res.json();
       if (result.logoSkippedByPlan) {
-        toast("Tu cuenta arranca en el plan Básico, que no incluye logo propio — podés subirlo si pasás a Premium.");
+        toast("Tu cuenta arranca en el plan Básico, que no incluye logo propio — puedes subirlo si pasas a Premium.");
       }
 
       // La cuenta y la organización ya quedaron creadas, pero sin confirmar
@@ -94,7 +94,7 @@ export default function SignupPage() {
           </div>
           <h2 className="font-display text-2xl font-semibold text-white mb-2">Tu tiempo manda.</h2>
           <p className="text-pizarra-400 text-sm max-w-xs">
-            Nosotros cuidamos lo más valioso que tenés: tu tiempo.
+            Nosotros cuidamos lo más valioso que tienes: tu tiempo.
           </p>
         </motion.div>
       </div>
@@ -121,10 +121,10 @@ export default function SignupPage() {
               <div className="w-12 h-12 rounded-full bg-lila-50 flex items-center justify-center mx-auto mb-4">
                 <Mail className="w-5 h-5 text-lila-600" />
               </div>
-              <h1 className="text-lg font-semibold text-pizarra-900 mb-2">Revisá tu correo</h1>
+              <h1 className="text-lg font-semibold text-pizarra-900 mb-2">Revisa tu correo</h1>
               <p className="text-sm text-pizarra-500">
-                Te mandamos un link de confirmación a <strong>{sentTo}</strong>. Entrá a tu
-                bandeja de entrada y confirmá tu cuenta para poder ingresar al panel.
+                Te mandamos un link de confirmación a <strong>{sentTo}</strong>. Entra a tu
+                bandeja de entrada y confirma tu cuenta para poder ingresar al panel.
               </p>
             </motion.div>
           ) : (
@@ -135,9 +135,9 @@ export default function SignupPage() {
                 transition={{ duration: 0.35, delay: 0.05, ease: "easeOut" }}
                 className="mb-6"
               >
-                <h1 className="text-xl font-semibold text-pizarra-900">Creá tu cuenta</h1>
+                <h1 className="text-xl font-semibold text-pizarra-900">Crea tu cuenta</h1>
                 <p className="text-sm text-pizarra-500 mt-1">
-                  Empezá a gestionar los turnos de tu negocio en minutos.
+                  Empieza a gestionar los turnos de tu negocio en minutos.
                 </p>
               </motion.div>
 
@@ -224,7 +224,7 @@ export default function SignupPage() {
               </motion.form>
 
               <p className="text-center text-sm text-pizarra-500 mt-6">
-                ¿Ya tenés cuenta?{" "}
+                ¿Ya tienes cuenta?{" "}
                 <Link href="/auth/login" className="text-lila-600 font-medium hover:underline">
                   Iniciar sesión
                 </Link>

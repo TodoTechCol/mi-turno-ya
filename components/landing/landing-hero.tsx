@@ -33,7 +33,7 @@ export default function LandingHero() {
           transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
           className="mt-5 text-base md:text-lg text-pizarra-300 max-w-xl mx-auto"
         >
-          Cuidamos lo más valioso que tenés: tu tiempo.
+          Cuidamos lo más valioso que tienes: tu tiempo.
         </motion.p>
 
         <motion.div

@@ -75,7 +75,7 @@ export default function ProfessionalManager({ professionals, invitations, branch
       toast.success(
         data.emailSent
           ? "Invitación enviada por correo"
-          : "Invitación creada, pero el correo no se pudo enviar (revisá la configuración de email)"
+          : "Invitación creada, pero el correo no se pudo enviar (revisa la configuración de email)"
       );
       setInvitingId(null);
       router.refresh();
@@ -242,7 +242,7 @@ function InviteInlineForm({
 
   async function handleSend() {
     if (!email.includes("@")) {
-      toast.error("Ingresá un email válido");
+      toast.error("Ingresa un email válido");
       return;
     }
     setSending(true);

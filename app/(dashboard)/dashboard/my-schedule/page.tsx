@@ -54,7 +54,7 @@ export default async function MySchedulePage() {
             })}
           </div>
           <p className="text-xs text-pizarra-400 mt-3">
-            ¿Necesitás cambiar tu horario? Pedíselo al administrador del negocio.
+            ¿Necesitas cambiar tu horario? Pídeselo al administrador del negocio.
           </p>
         </div>
 
@@ -63,7 +63,7 @@ export default async function MySchedulePage() {
           {blocks.length === 0 ? (
             <div className="text-center py-8">
               <CalendarOff className="w-8 h-8 text-pizarra-200 mx-auto mb-2" />
-              <p className="text-sm text-pizarra-400">No tenés bloqueos próximos cargados.</p>
+              <p className="text-sm text-pizarra-400">No tienes bloqueos próximos cargados.</p>
             </div>
           ) : (
             <ul className="space-y-2.5">

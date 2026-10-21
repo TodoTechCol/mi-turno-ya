@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
   const ip = getClientIp(request);
   if (!checkRateLimit(`signup:${ip}`, 5, 60 * 60 * 1000)) {
     return NextResponse.json(
-      { error: "Demasiados intentos de registro. Probá de nuevo en un rato." },
+      { error: "Demasiados intentos de registro. Prueba de nuevo en un rato." },
       { status: 429 }
     );
   }
@@ -131,7 +131,7 @@ export async function POST(request: NextRequest) {
     // Rollback: no dejar un usuario de auth huérfano sin organización
     await admin.auth.admin.deleteUser(userId);
     return NextResponse.json(
-      { error: lastError ?? "No se pudo crear el negocio, intentá con otro nombre" },
+      { error: lastError ?? "No se pudo crear el negocio, intenta con otro nombre" },
       { status: 500 }
     );
   }

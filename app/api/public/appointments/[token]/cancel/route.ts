@@ -14,7 +14,7 @@ export async function POST(request: NextRequest, { params }: Props) {
 
   const ip = getClientIp(request);
   if (!checkRateLimit(`appointment-cancel:${ip}`, 10, 10 * 60 * 1000)) {
-    return NextResponse.json({ error: "Demasiados intentos. Probá de nuevo en un rato." }, { status: 429 });
+    return NextResponse.json({ error: "Demasiados intentos. Prueba de nuevo en un rato." }, { status: 429 });
   }
 
   const result = await cancelAppointmentByToken(token);

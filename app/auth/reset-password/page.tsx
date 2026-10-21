@@ -92,7 +92,7 @@ export default function ResetPasswordPage() {
           <div className="bg-white rounded-2xl shadow-sm border border-pizarra-100 p-8 text-center">
             <h1 className="text-lg font-semibold text-pizarra-900 mb-2">Link no válido</h1>
             <p className="text-sm text-pizarra-500">
-              El link venció o ya fue usado. Pedí uno nuevo.
+              El link venció o ya fue usado. Pide uno nuevo.
             </p>
           </div>
         )}
@@ -104,7 +104,7 @@ export default function ResetPasswordPage() {
           >
             <div className="text-center mb-2">
               <h1 className="text-xl font-display font-semibold text-pizarra-900">Nueva contraseña</h1>
-              <p className="text-sm text-pizarra-500 mt-1">Elegí una contraseña nueva para tu cuenta.</p>
+              <p className="text-sm text-pizarra-500 mt-1">Elige una contraseña nueva para tu cuenta.</p>
             </div>
             <div>
               <label className="block text-sm font-medium text-pizarra-700 mb-1">Contraseña</label>

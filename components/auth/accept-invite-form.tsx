@@ -48,12 +48,12 @@ export default function AcceptInviteForm({ token, email }: Props) {
       });
 
       if (signInError) {
-        toast.error("Cuenta activada, pero no se pudo iniciar sesión automáticamente. Ingresá manualmente.");
+        toast.error("Cuenta activada, pero no se pudo iniciar sesión automáticamente. Ingresa manualmente.");
         router.push("/auth/login");
         return;
       }
 
-      toast.success("¡Listo! Ya tenés acceso a tu panel.");
+      toast.success("¡Listo! Ya tienes acceso a tu panel.");
       router.push("/dashboard");
       router.refresh();
     } catch (e: unknown) {

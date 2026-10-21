@@ -57,7 +57,7 @@ export default function HeroFloatCards() {
             <Zap className="w-[18px] h-[18px] text-lila-600" />
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold text-pizarra-900 whitespace-nowrap">Reservá al toque</p>
+            <p className="text-xs font-semibold text-pizarra-900 whitespace-nowrap">Reserva al toque</p>
             <p className="text-[11px] text-pizarra-400 whitespace-nowrap">Sin llamadas, sin esperas</p>
           </div>
         </div>

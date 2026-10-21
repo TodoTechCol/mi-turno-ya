@@ -3,7 +3,7 @@ import { z } from "zod";
 export const signupSchema = z
   .object({
     business_name: z.string().min(2, "El nombre del negocio es muy corto").max(100),
-    email: z.string().email("Ingresá un email válido"),
+    email: z.string().email("Ingresa un email válido"),
     password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres"),
     confirm_password: z.string(),
   })

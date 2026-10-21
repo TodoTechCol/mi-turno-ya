@@ -57,7 +57,7 @@ export default function MobileHeroBanner() {
         </div>
         <h2 className="font-display text-xl font-semibold text-white mb-1">Tu tiempo manda.</h2>
         <p className="text-pizarra-400 text-xs max-w-[220px]">
-          Te agendás, te recuerdan y te atienden sin esperar.
+          Te agendas, te recuerdan y te atienden sin esperar.
         </p>
       </motion.div>
     </div>

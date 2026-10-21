@@ -27,7 +27,7 @@ export default async function AcceptInvitePage({ searchParams }: Props) {
           </div>
           <h2 className="font-display text-2xl font-semibold text-white mb-2">Tu tiempo manda.</h2>
           <p className="text-pizarra-400 text-sm max-w-xs">
-            Te agendás, te recuerdan y te atienden sin esperar.
+            Te agendas, te recuerdan y te atienden sin esperar.
           </p>
         </div>
       </div>
@@ -48,8 +48,8 @@ export default async function AcceptInvitePage({ searchParams }: Props) {
               </h1>
               <p className="text-sm text-pizarra-500 mb-6">
                 {invitation?.status === "accepted"
-                  ? "Esta cuenta ya está activa. Iniciá sesión con tu contraseña."
-                  : "El link venció o ya no existe. Pedile al administrador que te envíe una invitación nueva."}
+                  ? "Esta cuenta ya está activa. Inicia sesión con tu contraseña."
+                  : "El link venció o ya no existe. Pídele al administrador que te envíe una invitación nueva."}
               </p>
               <Link
                 href="/auth/login"
@@ -65,7 +65,7 @@ export default async function AcceptInvitePage({ searchParams }: Props) {
                   Te invitaron a {invitation.organization_name}
                 </h1>
                 <p className="text-sm text-pizarra-500 mt-1">
-                  Creá tu contraseña para activar tu acceso como profesional.
+                  Crea tu contraseña para activar tu acceso como profesional.
                 </p>
               </div>
               <AcceptInviteForm token={token!} email={invitation.email} />
