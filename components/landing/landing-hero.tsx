@@ -24,7 +24,9 @@ export default function LandingHero() {
           transition={{ duration: 0.4, ease: "easeOut" }}
           className="font-display text-4xl md:text-5xl lg:text-6xl font-semibold text-white tracking-tight max-w-3xl mx-auto"
         >
-          Tu negocio, en orden. Tus clientes, felices.
+          Tu negocio, en orden.
+          <br />
+          Tus clientes, felices.
         </motion.h1>
 
         <motion.p
