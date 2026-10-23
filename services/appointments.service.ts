@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { getDayBoundsUTC, getWeekBoundsUTC, getMonthBoundsUTC } from "@/lib/timezone";
 import type { Appointment, AppointmentWithDetails, AppointmentStatus } from "@/types/app.types";
 import { APPOINTMENT_NEXT_STATUSES } from "@/types/app.types";
@@ -127,22 +128,53 @@ export async function getAppointmentsForMonth(
   return data as unknown as AppointmentWithDetails[];
 }
 
+export type CreateAppointmentResult =
+  | { success: true; manageToken: string }
+  | { success: false; reason: "slot_taken" | "db_error" };
+
 /**
- * Devuelve el manage_token del turno creado (null si falló). Se
- * genera en código — igual patrón que organization_invitations.token
- * — en vez de pedirlo de vuelta con .select(): quien reserva es
- * anónimo y no tiene permiso de lectura sobre appointments, así que
- * un RETURNING haría fallar la operación por RLS.
+ * Crea el turno de la reserva pública. Antes de insertar, re-chequea
+ * que el profesional siga libre en ese rango — el grid de horarios
+ * que vio el cliente puede haber quedado desactualizado (otra
+ * persona reservó mientras tanto, o el mismo cliente reenvía el
+ * formulario), y hasta ahora NADA lo impedía: esta función insertaba
+ * directo sin volver a validar, a diferencia de createManualAppointment
+ * y rescheduleAppointmentByAdmin, que sí usan hasConflictingAppointment.
+ * Eso permitía turnos duplicados en el mismo horario (bug reportado).
+ *
+ * El manage_token se genera en código — igual patrón que
+ * organization_invitations.token — en vez de pedirlo de vuelta con
+ * .select(): quien reserva es anónimo y no tiene permiso de lectura
+ * sobre appointments, así que un RETURNING haría fallar la operación
+ * por RLS.
+ *
+ * El chequeo de conflicto usa el admin client (no el cliente anónimo):
+ * no existe ninguna policy de SELECT para anon sobre appointments
+ * (a propósito, migración 009), así que con el cliente normal la
+ * consulta de hasConflictingAppointment siempre devuelve vacío y el
+ * chequeo queda anulado en silencio — esto es lo que permitía el
+ * doble turno (bug reportado).
  */
 export async function createAppointment(
   input: CreateAppointmentInput,
   durationMinutes: number,
   customerId: string | null
-): Promise<string | null> {
+): Promise<CreateAppointmentResult> {
   const supabase = await createClient();
+  const admin = createAdminClient();
 
   const startDt = new Date(input.start_datetime);
   const endDt = addMinutes(startDt, durationMinutes);
+
+  const conflict = await hasConflictingAppointment(
+    admin,
+    input.professional_id,
+    null,
+    startDt.toISOString(),
+    endDt.toISOString()
+  );
+  if (conflict) return { success: false, reason: "slot_taken" };
+
   const manageToken = crypto.randomBytes(32).toString("hex");
 
   const { error } = await supabase.from("appointments").insert({
@@ -161,7 +193,7 @@ export async function createAppointment(
     manage_token: manageToken,
   });
 
-  return error ? null : manageToken;
+  return error ? { success: false, reason: "db_error" } : { success: true, manageToken };
 }
 
 export type UpdateStatusResult =

@@ -38,7 +38,8 @@ export function generateAvailableSlots(
   serviceDuration: number,
   schedule: WorkSchedule | null,
   appointments: ExistingAppointment[],
-  blocks: ScheduleBlock[]
+  blocks: ScheduleBlock[],
+  now: Date = new Date()
 ): TimeSlot[] {
   if (!schedule) return [];
 
@@ -65,7 +66,9 @@ export function generateAvailableSlots(
       return workStart < blkEnd && slotEnd > blkStart;
     });
 
-    const available = !conflictsAppointment && !conflictsBlock;
+    const isPast = workStart < now;
+
+    const available = !conflictsAppointment && !conflictsBlock && !isPast;
 
     slots.push({
       time: formatInTimeZone(workStart, timezone, "HH:mm"),
