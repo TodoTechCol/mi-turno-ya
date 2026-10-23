@@ -65,7 +65,7 @@ export default function LandingPricing() {
               href="/auth/signup"
               className="mt-7 block text-center py-2.5 border border-pizarra-200 text-pizarra-700 font-medium rounded-lg hover:bg-pizarra-50 transition-colors"
             >
-              Empezar gratis
+              Empezar
             </Link>
           </div>
 
@@ -94,7 +94,7 @@ export default function LandingPricing() {
               href="/auth/signup"
               className="relative mt-7 block text-center py-2.5 bg-lila-600 text-white font-medium rounded-lg hover:bg-lila-700 transition-colors"
             >
-              Empezar con Pro
+              Empezar
             </Link>
           </div>
         </div>
