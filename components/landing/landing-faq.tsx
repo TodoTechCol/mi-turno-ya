@@ -6,30 +6,31 @@ import { cn } from "@/lib/utils";
 
 const FAQS = [
   {
-    question: "¿Necesito tarjeta para el plan gratis?",
-    answer: "No. El plan Básico es gratis y no vence — puedes usarlo todo el tiempo que quieras.",
+    question: "¿Necesito tarjeta de crédito para el plan gratis?",
+    answer: "No, el plan Básico es gratis y no se vence. Puedes usarlo todo el tiempo que quieras.",
   },
   {
     question: "¿Mis clientes necesitan instalar una app?",
-    answer: "No. Reservan desde el navegador, en la página de tu negocio, sin descargar nada.",
+    answer:
+      "No, lo queremos hacer simple para ti. Pueden reservar desde el navegador, en la página de tu negocio, sin descargar nada.",
   },
   {
     question: "¿Puedo tener más de una sede?",
-    answer: "Sí. En el plan Básico puedes tener 1 sede; en Pro, todas las que necesites.",
+    answer: "Sí, en el plan Básico puedes tener 1 sede y en el plan Pro, todas las que necesites.",
   },
   {
     question: "¿Cómo paso del plan Básico a Pro?",
-    answer: "Todavía no hay upgrade automático desde el panel — contáctanos y lo activamos en tu cuenta.",
+    answer: "Fácil: solo escríbenos y activamos tu plan Pro para que disfrutes de sus beneficios.",
   },
   {
     question: "¿Qué pasa si un cliente quiere cambiar su turno?",
     answer:
-      "Cada confirmación de turno incluye un link donde el cliente puede reprogramar o cancelar por su cuenta, sin que tú tengas que hacer nada.",
+      "Cada confirmación de turno incluye un link donde el cliente puede reprogramar o cancelar por su cuenta, sin que tengas que hacer nada.",
   },
   {
     question: "¿Cuánto tarda en activarse mi cuenta?",
     answer:
-      "Cada negocio nuevo pasa por una revisión rápida de nuestro equipo antes de poder recibir reservas — te avisamos por email apenas quede aprobada.",
+      "Despreocúpate: activamos tu cuenta en menos de 24 horas para que puedas empezar a gestionar tu negocio.",
   },
 ];
 
