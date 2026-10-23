@@ -7,10 +7,10 @@ export default function LandingCta() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] bg-lila-500/10 rounded-full blur-[100px]" />
       <div className="relative max-w-2xl mx-auto px-4 text-center">
         <h2 className="font-display text-3xl md:text-4xl font-semibold text-white">
-          Empieza a recibir reservas hoy
+          Empieza a gestionar y crecer tu negocio hoy
         </h2>
         <p className="mt-3 text-pizarra-300">
-          Crea tu cuenta gratis. No necesitas tarjeta para probarlo.
+          Mi Turno Ya cuida tu tiempo, gestiona tus clientes y te da reportes de ingresos, para que tú te dediques a atenderlos.
         </p>
         <Link
           href="/auth/signup"
