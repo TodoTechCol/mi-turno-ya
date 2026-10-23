@@ -7,9 +7,6 @@ import { sendEmail } from "@/lib/email/resend";
 import { emailConfirmationEmail } from "@/lib/email/templates";
 import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 import { notifyPendingOrganization } from "@/services/admin-organizations.service";
-import { validateLogoFile } from "@/lib/logo-validation";
-import { uploadOrganizationLogo } from "@/services/storage.service";
-import { canUploadCustomLogo } from "@/services/plan-limits.service";
 
 const MAX_SLUG_ATTEMPTS = 5;
 
@@ -46,17 +43,6 @@ export async function POST(request: NextRequest) {
       { error: "Datos inválidos", details: parsed.error.flatten() },
       { status: 400 }
     );
-  }
-
-  // El logo es opcional (ver AC); si viene, se valida ACÁ también —
-  // nunca confiar solo en la validación del cliente.
-  const logoFile = formData.get("logo");
-  const hasLogo = logoFile instanceof File && logoFile.size > 0;
-  if (hasLogo) {
-    const logoError = validateLogoFile(logoFile as File);
-    if (logoError) {
-      return NextResponse.json({ error: logoError }, { status: 400 });
-    }
   }
 
   const { business_name, email, password } = parsed.data;
@@ -148,24 +134,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "No se pudo completar el registro" }, { status: 500 });
   }
 
-  // 3.5. Subir el logo si vino — también best effort: el logo es
-  // opcional (ver AC), así que una falla acá no debe tumbar el
-  // registro. Toda cuenta nueva arranca en plan Básico, que no
-  // incluye logo propio (ver landing) — se avisa en la respuesta en
-  // vez de fallar en silencio, y el dueño puede subirlo más adelante
-  // si pasa a Premium.
-  let logoSkippedByPlan = false;
-  if (hasLogo) {
-    if (!canUploadCustomLogo("basico")) {
-      logoSkippedByPlan = true;
-    } else {
-      const logoUrl = await uploadOrganizationLogo(organizationId, logoFile as File);
-      if (logoUrl) {
-        await admin.from("organizations").update({ logo_url: logoUrl }).eq("id", organizationId);
-      }
-    }
-  }
-
   // 4. Mandar el email de confirmación — best effort: si falla, la cuenta
   // ya quedó creada igual, y el usuario puede intentar loguearse para
   // disparar un nuevo intento más adelante (o contactar soporte).
@@ -177,5 +145,5 @@ export async function POST(request: NextRequest) {
   // emails de este flujo: nunca debe tumbar el signup en sí.
   await notifyPendingOrganization(organizationId, business_name);
 
-  return NextResponse.json({ success: true, emailSent, logoSkippedByPlan }, { status: 201 });
+  return NextResponse.json({ success: true, emailSent }, { status: 201 });
 }
