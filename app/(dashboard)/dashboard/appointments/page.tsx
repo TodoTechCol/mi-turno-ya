@@ -195,6 +195,8 @@ export default async function AllAppointmentsPage({ searchParams }: Props) {
       <AppointmentList
         appointments={appointments}
         organizationId={ctx.organizationId}
+        timezone={ctx.timezone}
+        showDate={view !== "day"}
         emptyMessage={emptyMessage}
       />
     </div>

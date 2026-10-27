@@ -2,13 +2,15 @@
 
 import { motion, type Variants } from "framer-motion";
 import type { AppointmentWithDetails } from "@/types/app.types";
-import AppointmentCard from "./appointment-card";
+import AppointmentRow from "./appointment-row";
 import { CalendarX2 } from "lucide-react";
 
 interface Props {
   appointments: AppointmentWithDetails[];
   organizationId: string;
+  timezone: string;
   emptyMessage?: string;
+  showDate?: boolean;
 }
 
 const container: Variants = {
@@ -23,7 +25,9 @@ const item: Variants = {
 
 export default function AppointmentList({
   appointments,
+  timezone,
   emptyMessage = "No hay turnos.",
+  showDate = false,
 }: Props) {
   if (appointments.length === 0) {
     return (
@@ -40,15 +44,10 @@ export default function AppointmentList({
   }
 
   return (
-    <motion.div
-      className="grid gap-3 sm:grid-cols-2"
-      variants={container}
-      initial="hidden"
-      animate="show"
-    >
+    <motion.div className="space-y-2" variants={container} initial="hidden" animate="show">
       {appointments.map((apt) => (
         <motion.div key={apt.id} variants={item}>
-          <AppointmentCard appointment={apt} />
+          <AppointmentRow appointment={apt} timezone={timezone} showDate={showDate} />
         </motion.div>
       ))}
     </motion.div>

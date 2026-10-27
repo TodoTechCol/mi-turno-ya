@@ -18,11 +18,17 @@ interface Props {
   appointment: AppointmentWithDetails;
   timezone: string;
   onClose: () => void;
+  initialRescheduling?: boolean;
 }
 
-export default function AppointmentDetailModal({ appointment, timezone, onClose }: Props) {
+export default function AppointmentDetailModal({
+  appointment,
+  timezone,
+  onClose,
+  initialRescheduling = false,
+}: Props) {
   const router = useRouter();
-  const [rescheduling, setRescheduling] = useState(false);
+  const [rescheduling, setRescheduling] = useState(initialRescheduling);
   const [pickedDate, setPickedDate] = useState<Date | null>(null);
   const [loading, setLoading] = useState(false);
 
