@@ -6,9 +6,8 @@ import { ArrowRight, CalendarCheck, Wallet, LayoutDashboard } from "lucide-react
 
 export default function LandingHero() {
   return (
-    <section className="relative overflow-hidden bg-pizarra-950">
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-lila-500/20 rounded-full blur-3xl" />
-      <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-lila-400/10 rounded-full blur-3xl" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-lila-500 via-lila-700 to-lila-900">
+      <div className="absolute top-0 right-0 w-[32rem] h-[32rem] bg-white/10 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3" />
       <div
         className="absolute inset-0 opacity-[0.06]"
         style={{
@@ -33,7 +32,7 @@ export default function LandingHero() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: "easeOut" }}
-          className="mt-5 text-base md:text-lg text-pizarra-300 max-w-xl mx-auto"
+          className="mt-5 text-base md:text-lg text-lila-100 max-w-xl mx-auto"
         >
           Cuidamos lo más valioso que tienes: tu tiempo.
         </motion.p>
@@ -46,14 +45,14 @@ export default function LandingHero() {
         >
           <Link
             href="/auth/signup"
-            className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-3 bg-lila-500 text-white font-medium rounded-xl hover:bg-lila-600 hover:shadow-lg transition-all"
+            className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-3 bg-white text-lila-700 font-medium rounded-xl hover:bg-lila-50 hover:shadow-lg transition-all"
           >
             Empezar gratis
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <Link
             href="/auth/login"
-            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-pizarra-700 text-white font-medium rounded-xl hover:bg-white/5 transition-colors"
+            className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 border border-white/40 text-white font-medium rounded-xl hover:bg-white/10 transition-colors"
           >
             Iniciar sesión
           </Link>
@@ -72,9 +71,9 @@ export default function LandingHero() {
           ].map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm text-pizarra-200"
+              className="flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-sm text-white"
             >
-              <Icon className="w-4 h-4 text-lila-400" />
+              <Icon className="w-4 h-4 text-lila-100" />
               {label}
             </div>
           ))}
