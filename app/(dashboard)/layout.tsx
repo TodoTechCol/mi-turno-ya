@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getDashboardContext } from "@/lib/dashboard-context";
-import NavBar from "@/components/shared/nav-bar";
+import Sidebar from "@/components/shared/sidebar";
 import PageTransition from "@/components/shared/page-transition";
 import PendingApproval from "./pending-approval";
 
@@ -22,9 +22,9 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-pizarra-50">
-      <NavBar userEmail={user.email ?? ""} role={ctx?.role ?? "professional"} />
-      <main className="max-w-5xl mx-auto px-4 py-6">
+    <div className="min-h-screen bg-pizarra-50 md:flex">
+      <Sidebar organizationName={ctx?.organizationName ?? ""} role={ctx?.role ?? "professional"} />
+      <main className="flex-1 min-w-0 max-w-5xl mx-auto px-4 py-6">
         <PageTransition>{children}</PageTransition>
       </main>
     </div>
