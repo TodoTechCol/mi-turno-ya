@@ -70,17 +70,17 @@ export default function LandingPricing() {
           </div>
 
           {/* Premium */}
-          <div className="bg-pizarra-950 rounded-2xl p-7 relative overflow-hidden">
-            <div className="absolute -top-16 -right-16 w-48 h-48 bg-lila-500/20 rounded-full blur-3xl" />
-            <span className="relative inline-block bg-lila-500 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3">
+          <div className="bg-gradient-to-b from-lila-600 to-lila-900 rounded-2xl p-7 relative overflow-hidden">
+            <div className="absolute -top-16 -right-16 w-48 h-48 bg-white/10 rounded-full blur-3xl" />
+            <span className="relative inline-block bg-white text-lila-700 text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3">
               Más elegido
             </span>
             <h3 className="relative font-semibold text-white">Pro</h3>
             <div className="relative mt-3 flex items-baseline gap-1">
               <span className="font-display text-4xl font-semibold text-white">$12.90</span>
-              <span className="text-sm text-pizarra-400">USD/mes</span>
+              <span className="text-sm text-lila-200">USD/mes</span>
             </div>
-            <p className="relative mt-2 text-sm text-pizarra-300">
+            <p className="relative mt-2 text-sm text-lila-100">
               Para cuando tu negocio ya no entra en los límites del plan gratis.
             </p>
 
@@ -92,7 +92,7 @@ export default function LandingPricing() {
 
             <Link
               href="/auth/signup"
-              className="relative mt-7 block text-center py-2.5 bg-lila-500 text-white font-medium rounded-lg hover:bg-lila-600 transition-colors"
+              className="relative mt-7 block text-center py-2.5 bg-white text-lila-700 font-medium rounded-lg hover:bg-lila-50 transition-colors"
             >
               Empezar
             </Link>
@@ -108,7 +108,7 @@ function PlanFeatureRow({ label, included, dark }: { label: string; included: bo
   return (
     <li className="flex items-center gap-2.5 text-sm">
       {included ? (
-        <Check className={cn("w-4 h-4 shrink-0", dark ? "text-lila-400" : "text-lila-600")} />
+        <Check className={cn("w-4 h-4 shrink-0", dark ? "text-white" : "text-lila-600")} />
       ) : (
         <X className="w-4 h-4 shrink-0 text-pizarra-300" />
       )}

@@ -40,11 +40,10 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen lg:flex">
       {/* Panel de marca — oculto en mobile (ver MobileHeroBanner para el equivalente) */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-pizarra-950 items-center justify-center overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-to-b from-lila-600 to-lila-900 items-center justify-center overflow-hidden">
         {/* Glow decorativo — capas para dar profundidad detrás del logo */}
-        <div className="absolute -top-24 -left-24 w-96 h-96 bg-lila-500/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-lila-400/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[28rem] h-[28rem] bg-lila-500/10 rounded-full blur-[100px]" />
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-32 -right-16 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
 
         <HeroFloatCards />
 
@@ -59,7 +58,7 @@ export default function LoginPage() {
             <img src="/logo-mi-turno-ya-icon.png" alt="Mi Turno Ya" className="w-full h-full object-contain" />
           </div>
           <h2 className="font-display text-2xl font-semibold text-white mb-2">Tu tiempo manda.</h2>
-          <p className="text-pizarra-400 text-sm max-w-xs">
+          <p className="text-lila-100 text-sm max-w-xs">
             Te agendas, te recuerdan y te atienden sin esperar.
           </p>
         </motion.div>
