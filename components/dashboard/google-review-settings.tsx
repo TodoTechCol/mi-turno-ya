@@ -47,7 +47,7 @@ export default function GoogleReviewSettings({ initialUrl }: Props) {
         <button
           type="submit"
           disabled={saving}
-          className="px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 disabled:opacity-50 transition-colors shrink-0"
+          className="px-4 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 disabled:opacity-50 transition-colors shrink-0"
         >
           {saving ? "Guardando..." : "Guardar"}
         </button>

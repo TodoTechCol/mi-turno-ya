@@ -14,7 +14,7 @@ export default function LandingCta() {
         </p>
         <Link
           href="/auth/signup"
-          className="group mt-7 inline-flex items-center justify-center gap-1.5 px-7 py-3 bg-lila-600 text-white font-medium rounded-xl hover:bg-lila-700 hover:shadow-lg transition-all"
+          className="group mt-7 inline-flex items-center justify-center gap-1.5 px-7 py-3 bg-lila-500 text-white font-medium rounded-xl hover:bg-lila-600 hover:shadow-lg transition-all"
         >
           Crear mi cuenta gratis
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

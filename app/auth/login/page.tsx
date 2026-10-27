@@ -127,7 +127,7 @@ export default function LoginPage() {
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="group w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-lila-700 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+              className="group w-full py-2.5 bg-lila-500 text-white text-sm font-medium rounded-lg shadow-sm hover:bg-lila-600 hover:shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
             >
               {loading ? "Ingresando..." : "Ingresar"}
               {!loading && (

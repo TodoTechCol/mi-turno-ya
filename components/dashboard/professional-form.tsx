@@ -94,7 +94,7 @@ export default function ProfessionalForm({ professional, branches, onSaved, onCa
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50"
+          className="px-4 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors disabled:opacity-50"
         >
           {isSubmitting ? "Guardando..." : "Guardar"}
         </button>

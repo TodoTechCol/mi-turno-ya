@@ -100,7 +100,7 @@ export default function ProfessionalManager({ professionals, invitations, branch
       <div className="flex justify-end mb-4">
         <button
           onClick={openCreate}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Nuevo profesional
@@ -263,7 +263,7 @@ function InviteInlineForm({
       <button
         onClick={handleSend}
         disabled={sending}
-        className="p-1.5 rounded-lg bg-lila-600 text-white hover:bg-lila-700 transition-colors disabled:opacity-50 shrink-0"
+        className="p-1.5 rounded-lg bg-lila-500 text-white hover:bg-lila-600 transition-colors disabled:opacity-50 shrink-0"
         title="Enviar invitación"
       >
         <Send className="w-3 h-3" />

@@ -83,7 +83,7 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-sm">
         {status === "loading" && (
           <div className="bg-white rounded-2xl shadow-sm border border-pizarra-100 p-8 text-center">
-            <div className="w-10 h-10 border-2 border-lila-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-10 h-10 border-2 border-lila-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-sm text-pizarra-500">Verificando el link...</p>
           </div>
         )}
@@ -131,7 +131,7 @@ export default function ResetPasswordPage() {
             <button
               type="submit"
               disabled={submitting}
-              className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50"
+              className="w-full py-2.5 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors disabled:opacity-50"
             >
               {submitting ? "Guardando..." : "Guardar contraseña"}
             </button>

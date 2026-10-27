@@ -72,7 +72,7 @@ export default function LandingPricing() {
           {/* Premium */}
           <div className="bg-pizarra-950 rounded-2xl p-7 relative overflow-hidden">
             <div className="absolute -top-16 -right-16 w-48 h-48 bg-lila-500/20 rounded-full blur-3xl" />
-            <span className="relative inline-block bg-lila-600 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3">
+            <span className="relative inline-block bg-lila-500 text-white text-[11px] font-semibold px-2.5 py-1 rounded-full mb-3">
               Más elegido
             </span>
             <h3 className="relative font-semibold text-white">Pro</h3>
@@ -92,7 +92,7 @@ export default function LandingPricing() {
 
             <Link
               href="/auth/signup"
-              className="relative mt-7 block text-center py-2.5 bg-lila-600 text-white font-medium rounded-lg hover:bg-lila-700 transition-colors"
+              className="relative mt-7 block text-center py-2.5 bg-lila-500 text-white font-medium rounded-lg hover:bg-lila-600 transition-colors"
             >
               Empezar
             </Link>

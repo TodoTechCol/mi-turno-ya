@@ -71,7 +71,7 @@ export default function AuthCallbackPage() {
       <div className="w-full max-w-sm text-center bg-white rounded-2xl shadow-sm border border-pizarra-100 p-8">
         {status === "loading" ? (
           <>
-            <div className="w-10 h-10 border-2 border-lila-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+            <div className="w-10 h-10 border-2 border-lila-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
             <p className="text-sm text-pizarra-500">Confirmando tu cuenta...</p>
           </>
         ) : (
@@ -82,7 +82,7 @@ export default function AuthCallbackPage() {
             </p>
             <Link
               href="/auth/login"
-              className="inline-block px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors"
+              className="inline-block px-4 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors"
             >
               Ir a iniciar sesión
             </Link>

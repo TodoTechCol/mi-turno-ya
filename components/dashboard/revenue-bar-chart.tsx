@@ -33,7 +33,7 @@ export default function RevenueBarChart({ rows }: Props) {
           </div>
           <div className="h-6 bg-pizarra-50 rounded-full overflow-hidden">
             <div
-              className="h-full bg-lila-600 rounded-full transition-all"
+              className="h-full bg-lila-500 rounded-full transition-all"
               style={{ width: `${Math.max((row.revenue / max) * 100, row.revenue > 0 ? 3 : 0)}%` }}
             />
           </div>

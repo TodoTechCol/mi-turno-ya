@@ -33,7 +33,7 @@ export default function LandingHeader() {
           </Link>
           <Link
             href="/auth/signup"
-            className="px-3 sm:px-4 py-2 bg-lila-600 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-lila-700 hover:shadow-md transition-all whitespace-nowrap"
+            className="px-3 sm:px-4 py-2 bg-lila-500 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-lila-600 hover:shadow-md transition-all whitespace-nowrap"
           >
             Crear cuenta
           </Link>

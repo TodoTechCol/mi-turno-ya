@@ -197,7 +197,7 @@ export default function BookingWizard({
         {step !== "confirm" && (
           <div className="mt-3 h-1 bg-pizarra-100 rounded-full overflow-hidden">
             <div
-              className="h-full bg-lila-600 rounded-full transition-all duration-300"
+              className="h-full bg-lila-500 rounded-full transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>

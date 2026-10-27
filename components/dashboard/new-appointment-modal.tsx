@@ -201,7 +201,7 @@ export default function NewAppointmentModal({
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 disabled:opacity-50 transition-colors"
+            className="w-full py-2.5 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 disabled:opacity-50 transition-colors"
           >
             {submitting ? "Guardando..." : "Cargar turno"}
           </button>

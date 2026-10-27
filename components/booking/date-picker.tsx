@@ -93,7 +93,7 @@ export default function DatePicker({ onSelect }: Props) {
                 "aspect-square flex items-center justify-center text-sm rounded-lg transition-colors",
                 isPast && "text-pizarra-300 cursor-not-allowed",
                 !isPast && !isSelected && "text-pizarra-700 hover:bg-lila-50 hover:text-lila-600",
-                isSelected && "bg-lila-600 text-white font-semibold",
+                isSelected && "bg-lila-500 text-white font-semibold",
                 isToday && !isSelected && "font-bold text-lila-600"
               )}
             >

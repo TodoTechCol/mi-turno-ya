@@ -50,7 +50,7 @@ export default function PlanSelector({ organizationId, plan }: Props) {
             disabled={loading}
             className={cn(
               "px-3 py-1 text-xs font-medium transition-colors disabled:opacity-50",
-              plan === p.value ? "bg-lila-600 text-white" : "text-pizarra-500 hover:bg-pizarra-50",
+              plan === p.value ? "bg-lila-500 text-white" : "text-pizarra-500 hover:bg-pizarra-50",
               p.value === "premium" && "border-l border-pizarra-200"
             )}
           >

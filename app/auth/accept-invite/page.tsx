@@ -53,7 +53,7 @@ export default async function AcceptInvitePage({ searchParams }: Props) {
               </p>
               <Link
                 href="/auth/login"
-                className="inline-block px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors"
+                className="inline-block px-4 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors"
               >
                 Ir a iniciar sesión
               </Link>

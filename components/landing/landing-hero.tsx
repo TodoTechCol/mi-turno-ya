@@ -46,7 +46,7 @@ export default function LandingHero() {
         >
           <Link
             href="/auth/signup"
-            className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-3 bg-lila-600 text-white font-medium rounded-xl hover:bg-lila-700 hover:shadow-lg transition-all"
+            className="group w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-6 py-3 bg-lila-500 text-white font-medium rounded-xl hover:bg-lila-600 hover:shadow-lg transition-all"
           >
             Empezar gratis
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />

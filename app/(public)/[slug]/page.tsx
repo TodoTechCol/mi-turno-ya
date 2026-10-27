@@ -73,7 +73,7 @@ export default async function OrganizationPublicPage({ params }: Props) {
               className="w-20 h-20 rounded-2xl object-cover mx-auto mb-5"
             />
           ) : (
-            <div className="w-20 h-20 rounded-2xl bg-lila-600 flex items-center justify-center mx-auto mb-5">
+            <div className="w-20 h-20 rounded-2xl bg-lila-500 flex items-center justify-center mx-auto mb-5">
               <Scissors className="w-9 h-9 text-white" />
             </div>
           )}
@@ -98,7 +98,7 @@ export default async function OrganizationPublicPage({ params }: Props) {
 
           <Link
             href={`/${slug}/booking`}
-            className="mt-7 w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-lila-600 text-white font-medium rounded-xl hover:bg-lila-700 hover:shadow-md transition-all"
+            className="mt-7 w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-lila-500 text-white font-medium rounded-xl hover:bg-lila-600 hover:shadow-md transition-all"
           >
             <CalendarCheck className="w-5 h-5" />
             Reservar turno

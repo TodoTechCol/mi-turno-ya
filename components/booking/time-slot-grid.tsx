@@ -81,7 +81,7 @@ export default function TimeSlotGrid({
             className={cn(
               "py-2.5 rounded-xl text-sm font-medium border transition-all",
               selected === slot.time
-                ? "bg-lila-600 border-lila-600 text-white"
+                ? "bg-lila-500 border-lila-500 text-white"
                 : "bg-white border-pizarra-100 text-pizarra-700 hover:border-lila-300 hover:text-lila-600"
             )}
           >

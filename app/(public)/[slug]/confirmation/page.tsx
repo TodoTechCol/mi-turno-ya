@@ -40,7 +40,7 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
         <div className="flex flex-col gap-2">
           <Link
             href={`/${slug}/booking`}
-            className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors"
+            className="w-full py-2.5 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors"
           >
             Reservar otro turno
           </Link>

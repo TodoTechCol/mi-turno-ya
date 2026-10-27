@@ -13,7 +13,7 @@ export default function StatTile({ label, value, icon: Icon, accent }: Props) {
     <div
       className={cn(
         "rounded-xl border p-4",
-        accent ? "bg-lila-600 border-lila-600" : "bg-white border-pizarra-100"
+        accent ? "bg-lila-500 border-lila-500" : "bg-white border-pizarra-100"
       )}
     >
       <Icon className={cn("w-4 h-4 mb-2", accent ? "text-lila-200" : "text-lila-500")} />

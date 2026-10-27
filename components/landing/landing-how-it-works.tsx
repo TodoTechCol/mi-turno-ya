@@ -36,7 +36,7 @@ export default function LandingHowItWorks() {
           {STEPS.map(({ icon: Icon, title, description }, i) => (
             <div key={title} className="relative">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-lila-600 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-lila-500 flex items-center justify-center shrink-0">
                   <Icon className="w-5 h-5 text-white" />
                 </div>
                 <span className="font-display text-2xl font-semibold text-pizarra-200">

@@ -119,7 +119,7 @@ export default function ClientForm({
         <button
           type="submit"
           disabled={submitting}
-          className="w-full py-3 bg-lila-600 text-white text-sm font-semibold rounded-xl hover:bg-lila-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 bg-lila-500 text-white text-sm font-semibold rounded-xl hover:bg-lila-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {submitting ? "Confirmando..." : "Confirmar turno"}
         </button>

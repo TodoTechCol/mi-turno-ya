@@ -57,7 +57,7 @@ export default function BranchManager({ branches }: Props) {
       <div className="flex justify-end mb-4">
         <button
           onClick={openCreate}
-          className="inline-flex items-center gap-1.5 px-3 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors"
+          className="inline-flex items-center gap-1.5 px-3 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Nueva sede

@@ -95,7 +95,7 @@ export default function ScheduleEditor({ professionalId, schedules }: Props) {
       <button
         onClick={save}
         disabled={saving}
-        className="mt-4 px-4 py-2 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50"
+        className="mt-4 px-4 py-2 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors disabled:opacity-50"
       >
         {saving ? "Guardando..." : "Guardar horario"}
       </button>

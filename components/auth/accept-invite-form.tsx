@@ -111,7 +111,7 @@ export default function AcceptInviteForm({ token, email }: Props) {
         whileTap={{ scale: 0.98 }}
         type="submit"
         disabled={loading}
-        className="w-full py-2.5 bg-lila-600 text-white text-sm font-medium rounded-lg hover:bg-lila-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-2.5 bg-lila-500 text-white text-sm font-medium rounded-lg hover:bg-lila-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? "Activando..." : "Activar mi acceso"}
       </motion.button>
