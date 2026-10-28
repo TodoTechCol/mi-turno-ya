@@ -75,9 +75,9 @@ export default function LoginPage() {
             transition={{ duration: 0.35, delay: 0.05, ease: "easeOut" }}
             className="mb-7 text-center"
           >
-            <h1 className="text-2xl font-display font-semibold text-pizarra-900">Bienvenido de nuevo</h1>
+            <h1 className="text-2xl font-display font-semibold text-pizarra-900">¡Qué bueno verte!</h1>
             <p className="text-sm text-pizarra-500 mt-1.5">
-              Ingresa para gestionar los turnos de tu negocio.
+              Entra para ver tu agenda de hoy.
             </p>
           </motion.div>
 
@@ -136,9 +136,9 @@ export default function LoginPage() {
           </motion.form>
 
           <p className="text-center text-sm text-pizarra-500 mt-6">
-            ¿No tienes cuenta?{" "}
+            ¿Aún no estás registrado?{" "}
             <Link href="/auth/signup" className="text-lila-600 font-medium hover:underline">
-              Crea tu negocio
+              Crea tu cuenta
             </Link>
           </p>
         </div>
