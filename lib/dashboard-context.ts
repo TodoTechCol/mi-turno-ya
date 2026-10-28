@@ -59,7 +59,7 @@ export async function getDashboardContext(): Promise<DashboardContext | null> {
     organizationId: orgMember.organization_id,
     organizationName: organization?.name ?? "",
     organizationActive: organization?.is_active ?? false,
-    timezone: organization?.timezone ?? "America/Argentina/Buenos_Aires",
+    timezone: organization?.timezone ?? "America/Bogota",
     role: orgMember.role,
     professionalId,
   };

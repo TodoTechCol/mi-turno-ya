@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         phone: null,
         address: null,
         logo_url: null,
-        timezone: "America/Argentina/Buenos_Aires",
+        timezone: "America/Bogota",
         // Pendiente de aprobación — un platform_admin la activa desde
         // /super-admin antes de que el dueño pueda usar el dashboard.
         is_active: false,

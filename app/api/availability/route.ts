@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Profesional no encontrado" }, { status: 404 });
   }
   const organization = await getOrganizationById(professional.organization_id);
-  const timezone = organization?.timezone ?? "America/Argentina/Buenos_Aires";
+  const timezone = organization?.timezone ?? "America/Bogota";
 
   // Día de la semana (0=Dom ... 6=Sáb) — la fecha calendario elegida no
   // depende de zona horaria, por eso usamos mediodía UTC para evitar
